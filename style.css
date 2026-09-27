@@ -30,8 +30,16 @@
     --ink: #4d313a;
     --ink-dark: #311E0F;
 
-    --book-width: min(1360px, calc(100vw - 100px));
-    --book-height: min(820px, calc(100vh - 145px));
+    /*
+     * The book should occupy most of the available viewport.
+     *
+     * 92vw gives the book enough breathing room while preventing
+     * it from becoming absurdly wide on very large screens.
+     *
+     * 80vh leaves room for the header and bottom controls.
+     */
+    --book-width: min(1600px, 92vw);
+    --book-height: min(820px, 78vh);
 
     --page-flip-time: 900ms;
 }
@@ -197,13 +205,20 @@ a {
 
 .archive {
     width: 100%;
+
+    /*
+     * The archive area takes the remaining viewport space.
+     */
     min-height: calc(100vh - 90px);
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    padding: 15px 0 45px;
+    /*
+     * Keep enough room for the navigation controls.
+     */
+    padding: 10px 0 35px;
 }
 
 
@@ -212,12 +227,22 @@ a {
    ========================================================= */
 
 .book-wrapper {
+    /*
+     * Explicitly use the viewport-based book dimensions.
+     * This prevents the book from collapsing into a small
+     * content-sized box.
+     */
     width: var(--book-width);
     height: var(--book-height);
+
+    min-width: 0;
+    min-height: 0;
 
     position: relative;
 
     perspective: 5000px;
+
+    flex: 0 0 auto;
 }
 
 
@@ -228,6 +253,9 @@ a {
 .book {
     width: 100%;
     height: 100%;
+
+    min-width: 0;
+    min-height: 0;
 
     position: relative;
 
@@ -279,8 +307,8 @@ a {
 /* =========================================================
    ORIGINAL SPREADS
    ---------------------------------------------------------
-   The HTML contains normal spreads. JavaScript converts
-   those pages into physical sheets after the document loads.
+   JavaScript converts the original spread structure into
+   the physical page/sheet system after the document loads.
    ========================================================= */
 
 .book > .spread {
@@ -294,7 +322,17 @@ a {
 
 .flipbook-layer {
     position: absolute;
-    inset: 10px;
+
+    /*
+     * Match the inside of the book cover exactly.
+     */
+    top: 10px;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+
+    width: auto;
+    height: auto;
 
     z-index: 10;
 
@@ -302,6 +340,8 @@ a {
     perspective: 5000px;
 
     pointer-events: none;
+
+    overflow: visible;
 }
 
 
@@ -311,10 +351,12 @@ a {
 
 .static-page {
     position: absolute;
+
     top: 0;
     bottom: 0;
 
     width: 50%;
+    height: 100%;
 
     overflow: hidden;
 
@@ -338,6 +380,7 @@ a {
 
 .static-left {
     left: 0;
+
     z-index: 1;
 
     box-shadow:
@@ -347,6 +390,7 @@ a {
 
 .static-right {
     left: 50%;
+
     z-index: 1;
 
     box-shadow:
@@ -386,22 +430,18 @@ a {
 /* =========================================================
    PHYSICAL SHEET
    ---------------------------------------------------------
-   IMPORTANT:
-   A sheet is ONLY the right-hand half of the book.
+   A physical sheet is ONLY the right half of the book.
 
-   It rotates around its LEFT edge — the spine — exactly
-   like the original Janitor AI book system.
+   It rotates around its LEFT EDGE.
 
-   Front = current right page.
+   Front = current spread's right page.
    Back  = next spread's left page.
 
    Forward:
        rotateY(-180deg)
-       right page -> left page
 
    Backward:
        rotateY(0deg)
-       left page -> right page
    ========================================================= */
 
 .flip-sheet {
@@ -412,9 +452,12 @@ a {
     left: 50%;
 
     width: 50%;
+    height: 100%;
 
     transform-origin: left center;
+
     transform: rotateY(0deg);
+
     transform-style: preserve-3d;
 
     transition:
@@ -427,14 +470,17 @@ a {
 }
 
 
-/* Sheet is now physically sitting on the left side. */
+/* Sheet physically turned onto the left side. */
+
 .flip-sheet.is-turned {
     transform: rotateY(-180deg);
 }
 
 
-/* The currently moving physical sheet must be above
-   every other sheet for the whole animation. */
+/*
+ * The currently moving sheet must be above every other sheet.
+ */
+
 .flip-sheet.is-turning {
     z-index: 5000 !important;
 }
@@ -446,6 +492,7 @@ a {
 
 .flip-sheet-face {
     position: absolute;
+
     inset: 0;
 
     width: 100%;
@@ -472,8 +519,10 @@ a {
 }
 
 
-/* Front of the physical sheet:
-   visible on the right before turning. */
+/* =========================================================
+   FRONT FACE
+   ========================================================= */
+
 .flip-sheet-front {
     transform: rotateY(0deg);
 
@@ -483,10 +532,17 @@ a {
 }
 
 
-/* Back of the physical sheet:
-   after the parent rotates -180deg, this becomes the
-   visible left-hand page. */
+/* =========================================================
+   BACK FACE
+   ========================================================= */
+
 .flip-sheet-back {
+    /*
+     * The back is rotated 180deg inside the sheet.
+     *
+     * When the parent sheet rotates -180deg, this face
+     * becomes correctly oriented on the left-hand side.
+     */
     transform: rotateY(180deg);
 
     box-shadow:
@@ -555,8 +611,9 @@ a {
             rgba(80,45,55,.12)
         );
 
-    /* Below the turning pages, so it never cuts through
-       a page while the sheet is moving. */
+    /*
+     * Below all actual page sheets.
+     */
     z-index: 5;
 
     pointer-events: none;
@@ -564,6 +621,8 @@ a {
     box-shadow:
         0 0 5px rgba(60,30,40,.16);
 }
+
+
 /* =========================================================
    PAGE CONTENT
    ========================================================= */
@@ -1774,7 +1833,20 @@ summary:focus-visible {
 
 
 /* =========================================================
-   MOBILE
+   LARGE SCREENS
+   ========================================================= */
+
+@media (min-width: 1600px) {
+
+    :root {
+        --book-width: min(1600px, 92vw);
+        --book-height: min(820px, 78vh);
+    }
+}
+
+
+/* =========================================================
+   MOBILE / TABLET
    ========================================================= */
 
 @media (max-width: 900px) {
