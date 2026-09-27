@@ -1,6 +1,6 @@
 /* ============================================================
-   LUC'S SCRAPBOOK ARCHIVE
-   Main stylesheet
+   DREAMLAND ARCHIVES
+   Static Scrapbook Book
    ============================================================ */
 
 
@@ -8,16 +8,18 @@
    01. FONTS
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Special+Elite&display=swap');
+@import url(
+    'https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Special+Elite&display=swap'
+);
 
 
 /* ============================================================
-   02. ROOT / COLOR PALETTE
+   02. ROOT
    ============================================================ */
 
 :root {
 
-    /* Main scrapbook colors */
+    /* Scrapbook palette */
     --pink: #D2899D;
     --light-pink: #F7CACD;
     --soft-pink: #FDD8D8;
@@ -37,7 +39,6 @@
     --lavender: #EFCFE3;
     --soft-lavender: #F0DDE8;
 
-    /* Borders / shadows */
     --paper-border: rgba(77, 49, 58, 0.28);
     --soft-shadow: rgba(49, 30, 15, 0.18);
     --deep-shadow: rgba(49, 30, 15, 0.30);
@@ -46,27 +47,34 @@
     --heading-font: "Special Elite", "Courier New", monospace;
     --body-font: "Cutive Mono", "Courier New", monospace;
 
-    /* Book dimensions */
+    /* Book */
     --book-width: min(1400px, 92vw);
     --book-height: min(820px, 78vh);
+
+    /* Page turning */
+    --page-flip-time: 1s;
 
 }
 
 
 /* ============================================================
-   03. GLOBAL RESET
+   03. RESET
    ============================================================ */
 
 * {
     box-sizing: border-box;
 }
 
+
 html {
     scroll-behavior: smooth;
 }
 
+
 body {
+
     margin: 0;
+
     min-height: 100vh;
 
     background:
@@ -92,14 +100,20 @@ body {
     font-family: var(--body-font);
 
     overflow-x: hidden;
+
 }
 
 
-/* subtle paper-like overlay */
+/* ============================================================
+   04. PAPER GRAIN
+   ============================================================ */
+
 body::before {
+
     content: "";
 
     position: fixed;
+
     inset: 0;
 
     pointer-events: none;
@@ -115,12 +129,13 @@ body::before {
             transparent 4px
         );
 
-    z-index: 999;
+    z-index: 9999;
+
 }
 
 
 /* ============================================================
-   04. SITE HEADER
+   05. HEADER
    ============================================================ */
 
 .site-header {
@@ -130,51 +145,73 @@ body::before {
     margin: 18px auto 10px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     gap: 20px;
 
     position: relative;
-    z-index: 20;
+
+    z-index: 100;
+
 }
 
-
-/* ------------------------------------------------------------
-   Site title
-   ------------------------------------------------------------ */
 
 .site-title {
+
     display: flex;
+
     flex-direction: column;
+
     gap: 3px;
+
 }
+
 
 .site-title-main {
+
     font-family: var(--heading-font);
+
     font-size: 20px;
+
     color: var(--deep-mauve);
+
     letter-spacing: 1px;
+
 }
+
 
 .site-title-sub {
+
     font-family: var(--body-font);
+
     font-size: 10px;
+
     text-transform: uppercase;
+
     letter-spacing: 2px;
+
     color: var(--mauve);
+
 }
 
 
-/* ------------------------------------------------------------
-   Top navigation
-   ------------------------------------------------------------ */
+/* ============================================================
+   06. HEADER NAV
+   ============================================================ */
 
 .site-nav {
+
     display: flex;
+
     align-items: center;
+
     gap: 7px;
+
 }
+
 
 .nav-button {
 
@@ -185,6 +222,7 @@ body::before {
     color: var(--deep-mauve);
 
     font-family: var(--heading-font);
+
     font-size: 11px;
 
     padding: 7px 13px;
@@ -198,21 +236,41 @@ body::before {
 
     box-shadow:
         2px 2px 0 rgba(77, 49, 58, 0.12);
+
 }
+
 
 .nav-button:hover {
+
     background: var(--deep-mauve);
+
     color: var(--cream);
+
     transform: translateY(-1px);
+
 }
 
+
 .nav-button:active {
+
     transform: translateY(1px);
+
+}
+
+
+.nav-button:disabled {
+
+    opacity: 0.35;
+
+    cursor: default;
+
+    transform: none;
+
 }
 
 
 /* ============================================================
-   05. MAIN ARCHIVE AREA
+   07. ARCHIVE STAGE
    ============================================================ */
 
 .archive {
@@ -223,45 +281,50 @@ body::before {
         calc(100vh - 80px);
 
     display: flex;
+
     flex-direction: column;
 
     align-items: center;
+
     justify-content: center;
 
-    padding:
-        5px 20px 25px;
+    padding: 5px 20px 25px;
 
 }
 
 
 /* ============================================================
-   06. BOOK WRAPPER
+   08. BOOK WRAPPER
    ============================================================ */
 
 .book-wrapper {
 
     width: var(--book-width);
+
     height: var(--book-height);
 
     position: relative;
 
-    perspective: 2500px;
+    perspective: 3000px;
 
 }
 
 
 /* ============================================================
-   07. BOOK
+   09. BOOK
    ============================================================ */
 
 .book {
 
     width: 100%;
+
     height: 100%;
 
     position: relative;
 
     transform-style: preserve-3d;
+
+    perspective: 3000px;
 
     filter:
         drop-shadow(
@@ -272,16 +335,15 @@ body::before {
 }
 
 
-/* ------------------------------------------------------------
-   Decorative book backing
-   ------------------------------------------------------------ */
+/* ============================================================
+   10. BOOK BACKING
+   ============================================================ */
 
 .book-back {
 
     position: absolute;
 
-    inset:
-        -12px -12px -12px -12px;
+    inset: -12px;
 
     background:
         linear-gradient(
@@ -304,8 +366,22 @@ body::before {
 
 
 /* ============================================================
-   08. SPREAD
+   11. THE SPREAD STACK
    ============================================================ */
+
+/*
+   THIS IS THE IMPORTANT PART.
+
+   Every spread exists physically inside the book.
+
+   We do NOT fade spreads in/out anymore.
+
+   Instead, JavaScript controls which right-hand page
+   is currently flipped.
+
+   That means the page underneath can actually be seen
+   during the rotation.
+*/
 
 .spread {
 
@@ -317,28 +393,22 @@ body::before {
 
     grid-template-columns: 1fr 1fr;
 
-    z-index: 1;
-
     transform-style: preserve-3d;
-
-    opacity: 0;
-    visibility: hidden;
 
     pointer-events: none;
 
-    transition:
-        opacity 0.35s ease,
-        visibility 0.35s ease;
+    visibility: visible;
+
+    opacity: 1;
 
 }
 
 
-/* Active spread */
+/*
+   Remove the old .spread.active behavior.
+*/
+
 .spread.active {
-
-    opacity: 1;
-
-    visibility: visible;
 
     pointer-events: auto;
 
@@ -346,14 +416,18 @@ body::before {
 
 
 /* ============================================================
-   09. PAGES
+   12. PHYSICAL PAGES
    ============================================================ */
 
 .page {
 
-    position: relative;
+    position: absolute;
 
-    height: 100%;
+    top: 0;
+
+    bottom: 0;
+
+    width: 50%;
 
     overflow: hidden;
 
@@ -376,37 +450,59 @@ body::before {
     box-shadow:
         inset 0 0 18px rgba(77, 49, 58, 0.06);
 
+    transform-style: preserve-3d;
+
+    backface-visibility: hidden;
+
+    -webkit-backface-visibility: hidden;
+
+    will-change: transform;
+
 }
 
 
-/* ------------------------------------------------------------
-   Left page
-   ------------------------------------------------------------ */
+/* ============================================================
+   13. LEFT PAGES
+   ============================================================ */
 
 .page-left {
+
+    left: 0;
 
     border-left:
         1px solid rgba(77, 49, 58, 0.30);
 
     border-right:
         1px solid rgba(77, 49, 58, 0.12);
+
+    /*
+       A left page is attached to the spine on its RIGHT edge.
+    */
 
     transform-origin: right center;
 
 }
 
 
-/* ------------------------------------------------------------
-   Right page
-   ------------------------------------------------------------ */
+/* ============================================================
+   14. RIGHT PAGES
+   ============================================================ */
 
 .page-right {
+
+    right: 0;
 
     border-right:
         1px solid rgba(77, 49, 58, 0.30);
 
     border-left:
         1px solid rgba(77, 49, 58, 0.12);
+
+    /*
+       A right page is attached to the spine on its LEFT edge.
+
+       THIS is what makes the page swing around the spine.
+    */
 
     transform-origin: left center;
 
@@ -414,7 +510,248 @@ body::before {
 
 
 /* ============================================================
-   10. BOOK SPINE
+   15. PAGE FLIP STATES
+   ============================================================ */
+
+/*
+   Forward:
+
+       ┌────────┐│
+       │        ││
+       │  PAGE  ││
+       │        ││
+       └────────┘│
+              ↓
+       ┌────────┐
+       │ PAGE   │
+       │  ↘     │
+       │    ↘   │
+       └────────┘
+
+   The right page rotates toward the left.
+*/
+
+.page-right.flipping-forward {
+
+    transform:
+        rotateY(-180deg);
+
+}
+
+
+/*
+   Backward:
+
+   The previously turned page swings back
+   from the left side to the right.
+*/
+
+.page-right.flipping-backward {
+
+    transform:
+        rotateY(0deg);
+
+}
+
+
+/* ============================================================
+   16. TURNED PAGES
+   ============================================================ */
+
+/*
+   When a page has already been turned forward,
+   it stays at -180 degrees.
+
+   This is crucial.
+
+   Otherwise the page would snap back to its
+   original position after the animation.
+*/
+
+.page-right.turned {
+
+    transform:
+        rotateY(-180deg);
+
+}
+
+
+/* ============================================================
+   17. PAGE Z-INDEX SYSTEM
+   ============================================================ */
+
+/*
+   The later spreads sit underneath earlier spreads.
+
+   JavaScript will also update z-index during navigation.
+*/
+
+.spread {
+
+    z-index: 1;
+
+}
+
+
+/*
+   The page currently being turned must be above
+   everything else.
+*/
+
+.page.flipping-forward,
+.page.flipping-backward {
+
+    z-index: 500;
+
+}
+
+
+/* ============================================================
+   18. FLIPPING PAGE SHADOW
+   ============================================================ */
+
+.page-right.flipping-forward::after,
+.page-right.flipping-backward::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 50;
+
+    opacity: 0;
+
+}
+
+
+/*
+   Forward shadow.
+
+   The shadow moves across the page as it turns.
+*/
+
+.page-right.flipping-forward::after {
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(49, 30, 15, 0.35),
+            rgba(49, 30, 15, 0.05) 65%,
+            transparent
+        );
+
+    animation:
+        flipShadowForward var(--page-flip-time)
+        ease-in-out forwards;
+
+}
+
+
+/*
+   Backward shadow.
+*/
+
+.page-right.flipping-backward::after {
+
+    background:
+        linear-gradient(
+            270deg,
+            rgba(49, 30, 15, 0.35),
+            rgba(49, 30, 15, 0.05) 65%,
+            transparent
+        );
+
+    animation:
+        flipShadowBackward var(--page-flip-time)
+        ease-in-out forwards;
+
+}
+
+
+@keyframes flipShadowForward {
+
+    0% {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 0.15;
+    }
+
+    50% {
+        opacity: 0.55;
+    }
+
+    80% {
+        opacity: 0.15;
+    }
+
+    100% {
+        opacity: 0;
+    }
+
+}
+
+
+@keyframes flipShadowBackward {
+
+    0% {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 0.15;
+    }
+
+    50% {
+        opacity: 0.55;
+    }
+
+    80% {
+        opacity: 0.15;
+    }
+
+    100% {
+        opacity: 0;
+    }
+
+}
+
+
+/* ============================================================
+   19. PAGE EDGE
+   ============================================================ */
+
+.page::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(49, 30, 15, 0.05),
+            transparent 5%,
+            transparent 95%,
+            rgba(49, 30, 15, 0.05)
+        );
+
+    z-index: 40;
+
+}
+
+
+/* ============================================================
+   20. BOOK SPINE
    ============================================================ */
 
 .book::after {
@@ -424,6 +761,7 @@ body::before {
     position: absolute;
 
     top: 0;
+
     bottom: 0;
 
     left: 50%;
@@ -436,22 +774,53 @@ body::before {
     background:
         linear-gradient(
             90deg,
-            rgba(49, 30, 15, 0.17),
+            rgba(49, 30, 15, 0.18),
             rgba(255,255,255,0.20) 45%,
-            rgba(49,30,15,0.17)
+            rgba(49,30,15,0.18)
         );
 
     pointer-events: none;
 
-    z-index: 15;
+    z-index: 1000;
 
     opacity: 0.7;
 
 }
 
 
+/*
+   Give the spine a subtle central shadow.
+*/
+
+.book::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    bottom: 0;
+
+    left: 50%;
+
+    width: 3px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        rgba(49, 30, 15, 0.20);
+
+    pointer-events: none;
+
+    z-index: 1001;
+
+}
+
+
 /* ============================================================
-   11. PAGE CONTENT
+   21. PAGE CONTENT
    ============================================================ */
 
 .page-content {
@@ -459,10 +828,10 @@ body::before {
     position: relative;
 
     width: 100%;
+
     height: 100%;
 
-    padding:
-        45px 55px;
+    padding: 45px 55px;
 
     overflow-y: auto;
 
@@ -475,24 +844,31 @@ body::before {
 }
 
 
-/* Webkit scrollbar */
-
 .page-content::-webkit-scrollbar {
+
     width: 6px;
+
 }
+
 
 .page-content::-webkit-scrollbar-track {
+
     background: transparent;
+
 }
 
+
 .page-content::-webkit-scrollbar-thumb {
+
     background: var(--dusty-rose);
+
     border-radius: 20px;
+
 }
 
 
 /* ============================================================
-   12. PAGE LABELS
+   22. PAGE LABEL
    ============================================================ */
 
 .page-label {
@@ -507,14 +883,11 @@ body::before {
 
     color: var(--cream);
 
-    background:
-        var(--deep-mauve);
+    background: var(--deep-mauve);
 
-    padding:
-        5px 10px;
+    padding: 5px 10px;
 
-    transform:
-        rotate(-1deg);
+    transform: rotate(-1deg);
 
     box-shadow:
         2px 2px 0 rgba(49, 30, 15, 0.12);
@@ -525,28 +898,23 @@ body::before {
 
 
 /* ============================================================
-   13. TYPOGRAPHY
+   23. TYPOGRAPHY
    ============================================================ */
 
 .page-title {
 
-    margin:
-        0 0 18px;
+    margin: 0 0 18px;
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
     font-size:
         clamp(30px, 3vw, 48px);
 
-    font-weight:
-        normal;
+    font-weight: normal;
 
-    line-height:
-        1.1;
+    line-height: 1.1;
 
-    color:
-        var(--deep-mauve);
+    color: var(--deep-mauve);
 
 }
 
@@ -554,31 +922,26 @@ body::before {
 .page-intro,
 .page-note {
 
-    max-width:
-        560px;
+    max-width: 560px;
 
-    font-size:
-        13px;
+    font-size: 13px;
 
-    line-height:
-        1.9;
+    line-height: 1.9;
 
-    color:
-        var(--dark);
+    color: var(--dark);
 
 }
 
 
 .page-note {
 
-    opacity:
-        0.82;
+    opacity: 0.82;
 
 }
 
 
 /* ============================================================
-   14. FRONT / COVER
+   24. COVER
    ============================================================ */
 
 .page-cover {
@@ -591,8 +954,7 @@ body::before {
             #996b78
         );
 
-    color:
-        var(--cream);
+    color: var(--cream);
 
     border:
         2px solid rgba(49, 30, 15, 0.25);
@@ -602,231 +964,165 @@ body::before {
 
 .page-cover .page-content {
 
-    display:
-        flex;
+    display: flex;
 
-    flex-direction:
-        column;
+    flex-direction: column;
 
-    align-items:
-        center;
+    align-items: center;
 
-    justify-content:
-        center;
+    justify-content: center;
 
-    text-align:
-        center;
+    text-align: center;
 
-    padding:
-        45px;
+    padding: 45px;
 
 }
 
 
-/* ------------------------------------------------------------
-   Cover title
-   ------------------------------------------------------------ */
-
 .cover-title {
 
-    display:
-        flex;
+    display: flex;
 
-    flex-direction:
-        column;
+    flex-direction: column;
 
-    align-items:
-        center;
+    align-items: center;
 
-    gap:
-        3px;
+    gap: 3px;
 
-    position:
-        relative;
+    position: relative;
 
-    z-index:
-        4;
+    z-index: 4;
 
 }
 
 
 .cover-small {
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
-    font-size:
-        12px;
+    font-size: 12px;
 
-    letter-spacing:
-        5px;
+    letter-spacing: 5px;
 
-    text-transform:
-        uppercase;
+    text-transform: uppercase;
 
 }
 
 
 .cover-title h1 {
 
-    margin:
-        5px 0;
+    margin: 5px 0;
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
     font-size:
         clamp(42px, 5vw, 75px);
 
-    font-weight:
-        normal;
+    font-weight: normal;
 
-    line-height:
-        0.95;
+    line-height: 0.95;
 
 }
 
-
-/* ------------------------------------------------------------
-   Cover image
-   ------------------------------------------------------------ */
 
 .cover-image {
 
     width:
         min(260px, 60%);
 
-    aspect-ratio:
-        1 / 1;
+    aspect-ratio: 1 / 1;
 
-    margin:
-        28px 0;
+    margin: 28px 0;
 
-    padding:
-        9px;
+    padding: 9px;
 
-    background:
-        var(--cream);
+    background: var(--cream);
 
     box-shadow:
         6px 8px 0 rgba(49, 30, 15, 0.20);
 
-    transform:
-        rotate(2deg);
+    transform: rotate(2deg);
 
 }
 
 
 .cover-image img {
 
-    width:
-        100%;
+    width: 100%;
 
-    height:
-        100%;
+    height: 100%;
 
-    display:
-        block;
+    display: block;
 
-    object-fit:
-        cover;
+    object-fit: cover;
 
 }
 
 
-/* ------------------------------------------------------------
-   Cover decorations
-   ------------------------------------------------------------ */
-
 .cover-decoration {
 
-    position:
-        absolute;
+    position: absolute;
 
-    top:
-        35px;
+    top: 35px;
 
-    right:
-        35px;
+    right: 35px;
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
-    font-size:
-        10px;
+    font-size: 10px;
 
-    letter-spacing:
-        2px;
+    letter-spacing: 2px;
 
-    padding:
-        9px;
+    padding: 9px;
 
     border:
         1px solid rgba(255,255,255,0.75);
 
-    transform:
-        rotate(8deg);
+    transform: rotate(8deg);
 
 }
 
 
 .cover-footer {
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
-    font-size:
-        10px;
+    font-size: 10px;
 
-    letter-spacing:
-        3px;
+    letter-spacing: 3px;
 
-    opacity:
-        0.8;
+    opacity: 0.8;
 
 }
 
 
 .cover-sticker {
 
-    position:
-        absolute;
+    position: absolute;
 
-    bottom:
-        35px;
+    bottom: 35px;
 
-    left:
-        40px;
+    left: 40px;
 
-    width:
-        50px;
+    width: 50px;
 
-    height:
-        50px;
+    height: 50px;
 
-    display:
-        flex;
+    display: flex;
 
-    align-items:
-        center;
+    align-items: center;
 
-    justify-content:
-        center;
+    justify-content: center;
 
-    background:
-        var(--soft-pink);
+    background: var(--soft-pink);
 
-    color:
-        var(--deep-mauve);
+    color: var(--deep-mauve);
 
-    border-radius:
-        50%;
+    border-radius: 50%;
 
-    font-size:
-        24px;
+    font-size: 24px;
 
-    transform:
-        rotate(-12deg);
+    transform: rotate(-12deg);
 
     box-shadow:
         2px 3px 0 rgba(49, 30, 15, 0.16);
@@ -835,19 +1131,16 @@ body::before {
 
 
 /* ============================================================
-   15. SCRAPBOOK INDEX
+   25. INDEX
    ============================================================ */
 
 .scrapbook-index {
 
-    display:
-        flex;
+    display: flex;
 
-    flex-direction:
-        column;
+    flex-direction: column;
 
-    margin-top:
-        25px;
+    margin-top: 25px;
 
     border-top:
         1px dashed var(--dusty-rose);
@@ -857,35 +1150,27 @@ body::before {
 
 .index-link {
 
-    display:
-        grid;
+    display: grid;
 
     grid-template-columns:
         45px 1fr 30px;
 
-    align-items:
-        center;
+    align-items: center;
 
-    gap:
-        10px;
+    gap: 10px;
 
-    padding:
-        15px 8px;
+    padding: 15px 8px;
 
-    color:
-        var(--dark);
+    color: var(--dark);
 
-    text-decoration:
-        none;
+    text-decoration: none;
 
     border-bottom:
         1px dashed var(--dusty-rose);
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
-    font-size:
-        13px;
+    font-size: 13px;
 
     transition:
         background 0.2s ease,
@@ -896,22 +1181,18 @@ body::before {
 
 .index-link span:first-child {
 
-    color:
-        var(--mauve);
+    color: var(--mauve);
 
-    font-size:
-        11px;
+    font-size: 11px;
 
 }
 
 
 .index-link span:last-child {
 
-    text-align:
-        right;
+    text-align: right;
 
-    color:
-        var(--pink);
+    color: var(--pink);
 
 }
 
@@ -921,37 +1202,27 @@ body::before {
     background:
         rgba(247, 202, 205, 0.45);
 
-    padding-left:
-        15px;
+    padding-left: 15px;
 
 }
 
 
-/* ============================================================
-   16. INDEX NOTES
-   ============================================================ */
-
 .index-notes {
 
-    display:
-        flex;
+    display: flex;
 
-    flex-direction:
-        column;
+    flex-direction: column;
 
-    gap:
-        15px;
+    gap: 15px;
 
-    margin-top:
-        25px;
+    margin-top: 25px;
 
 }
 
 
 .index-note {
 
-    padding:
-        14px 17px;
+    padding: 14px 17px;
 
     background:
         rgba(255, 216, 216, 0.45);
@@ -959,62 +1230,51 @@ body::before {
     border-left:
         4px solid var(--pink);
 
-    transform:
-        rotate(-0.5deg);
+    transform: rotate(-0.5deg);
 
 }
 
 
 .index-note:nth-child(even) {
 
-    transform:
-        rotate(0.7deg);
+    transform: rotate(0.7deg);
 
 }
 
 
 .index-note strong {
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
-    color:
-        var(--deep-mauve);
+    color: var(--deep-mauve);
 
 }
 
 
 .index-note p {
 
-    margin:
-        7px 0 0;
+    margin: 7px 0 0;
 
-    font-size:
-        11px;
+    font-size: 11px;
 
-    line-height:
-        1.7;
+    line-height: 1.7;
 
 }
 
 
 /* ============================================================
-   17. SCRAPBOOK DROPDOWNS
+   26. DROPDOWNS
    ============================================================ */
 
 .accordion-list {
 
-    display:
-        flex;
+    display: flex;
 
-    flex-direction:
-        column;
+    flex-direction: column;
 
-    gap:
-        10px;
+    gap: 10px;
 
-    margin-top:
-        25px;
+    margin-top: 25px;
 
 }
 
@@ -1032,59 +1292,49 @@ body::before {
 
 .scrapbook-dropdown summary {
 
-    display:
-        grid;
+    display: grid;
 
     grid-template-columns:
         35px 1fr 25px;
 
-    align-items:
-        center;
+    align-items: center;
 
-    gap:
-        10px;
+    gap: 10px;
 
-    padding:
-        12px 15px;
+    padding: 12px 15px;
 
-    cursor:
-        pointer;
+    cursor: pointer;
 
-    list-style:
-        none;
+    list-style: none;
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
-    font-size:
-        12px;
+    font-size: 12px;
 
-    color:
-        var(--deep-mauve);
+    color: var(--deep-mauve);
 
 }
 
 
 .scrapbook-dropdown summary::-webkit-details-marker {
+
     display: none;
+
 }
 
 
 .scrapbook-dropdown summary span:last-child {
 
-    text-align:
-        right;
+    text-align: right;
 
-    color:
-        var(--pink);
+    color: var(--pink);
 
 }
 
 
 .scrapbook-dropdown[open] summary {
 
-    background:
-        var(--soft-pink);
+    background: var(--soft-pink);
 
 }
 
@@ -1094,157 +1344,225 @@ body::before {
     padding:
         0 20px 18px 50px;
 
-    font-size:
-        11px;
+    font-size: 11px;
 
-    line-height:
-        1.8;
+    line-height: 1.8;
 
 }
 
 
 .dropdown-content a {
 
-    color:
-        var(--deep-mauve);
+    color: var(--deep-mauve);
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
-    text-decoration:
-        none;
+    text-decoration: none;
 
 }
 
 
 .dropdown-content a:hover {
 
-    text-decoration:
-        underline;
+    text-decoration: underline;
 
 }
 
 
 /* ============================================================
-   18. POLAROIDS
+   27. CHARACTER GALLERY
    ============================================================ */
 
-.polaroid-stack {
+.character-gallery {
 
-    position:
-        relative;
+    display: grid;
 
-    width:
-        100%;
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(145px, 1fr)
+        );
 
-    height:
-        470px;
+    gap: 22px 18px;
+
+    width: 100%;
+
+    padding: 10px 5px 35px;
+
+    align-items: start;
 
 }
 
 
-.polaroid {
+.character-polaroid {
 
-    position:
-        absolute;
+    position: relative;
 
-    width:
-        220px;
+    width: 100%;
+
+    min-width: 0;
 
     padding:
-        12px 12px 25px;
-
-    background:
-        #fffaf7;
+        9px 9px 18px;
 
     border:
-        1px solid rgba(77, 49, 58, 0.22);
+        1px solid rgba(77, 49, 58, 0.25);
+
+    background: #fffaf7;
+
+    color: var(--dark);
+
+    font-family: var(--body-font);
+
+    cursor: pointer;
+
+    appearance: none;
+
+    -webkit-appearance: none;
 
     box-shadow:
-        4px 7px 13px rgba(49, 30, 15, 0.18);
+        3px 5px 9px rgba(49, 30, 15, 0.16);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 
 }
 
 
-.polaroid img {
+.character-polaroid:nth-child(4n + 1) {
 
-    width:
-        100%;
-
-    aspect-ratio:
-        4 / 5;
-
-    display:
-        block;
-
-    object-fit:
-        cover;
+    transform: rotate(-2.2deg);
 
 }
 
 
-.polaroid figcaption {
+.character-polaroid:nth-child(4n + 2) {
 
-    margin-top:
-        10px;
-
-    text-align:
-        center;
-
-    font-family:
-        var(--heading-font);
-
-    font-size:
-        10px;
-
-    color:
-        var(--dark);
+    transform: rotate(1.5deg);
 
 }
 
 
-.polaroid-one {
+.character-polaroid:nth-child(4n + 3) {
 
-    top:
-        30px;
+    transform: rotate(-1deg);
 
-    left:
-        20px;
+}
+
+
+.character-polaroid:nth-child(4n + 4) {
+
+    transform: rotate(2.4deg);
+
+}
+
+
+.character-polaroid:hover {
 
     transform:
-        rotate(-7deg);
+        translateY(-6px)
+        rotate(0deg)
+        scale(1.025);
+
+    box-shadow:
+        5px 9px 16px rgba(49, 30, 15, 0.23);
+
+    z-index: 5;
 
 }
 
 
-.polaroid-two {
+.polaroid-image {
 
-    top:
-        100px;
+    display: block;
 
-    right:
-        20px;
+    width: 100%;
 
-    transform:
-        rotate(6deg);
+    aspect-ratio: 4 / 5;
+
+    overflow: hidden;
+
+    background: var(--soft-lavender);
+
+}
+
+
+.polaroid-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.35s ease;
+
+}
+
+
+.character-polaroid:hover
+.polaroid-image img {
+
+    transform: scale(1.035);
+
+}
+
+
+.polaroid-caption {
+
+    display: block;
+
+    margin-top: 10px;
+
+    padding: 0 3px;
+
+    text-align: center;
+
+    font-family: var(--heading-font);
+
+    font-size: 10px;
+
+    line-height: 1.3;
+
+    color: var(--dark);
+
+}
+
+
+.polaroid-number {
+
+    position: absolute;
+
+    right: 9px;
+
+    bottom: 5px;
+
+    font-family: var(--heading-font);
+
+    font-size: 7px;
+
+    color: var(--dusty-rose);
+
+    opacity: 0.75;
 
 }
 
 
 /* ============================================================
-   19. SCRAPBOOK PHOTOS
+   28. SCRAPBOOK PHOTOS
    ============================================================ */
 
 .scrapbook-photo {
 
-    display:
-        inline-block;
+    display: inline-block;
 
-    padding:
-        9px;
+    padding: 9px;
 
-    background:
-        #fffaf7;
+    background: #fffaf7;
 
     border:
         1px solid rgba(77, 49, 58, 0.20);
@@ -1257,123 +1575,100 @@ body::before {
 
 .scrapbook-photo img {
 
-    width:
-        100%;
+    width: 100%;
 
-    display:
-        block;
+    display: block;
 
-    object-fit:
-        cover;
+    object-fit: cover;
 
 }
 
 
 .scrapbook-photo figcaption {
 
-    padding-top:
-        8px;
+    padding-top: 8px;
 
-    text-align:
-        center;
+    text-align: center;
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
-    font-size:
-        9px;
+    font-size: 9px;
 
 }
 
 
 .photo-small {
 
-    width:
-        210px;
+    width: 210px;
 
-    margin:
-        25px 0;
+    margin: 25px 0;
 
-    transform:
-        rotate(-3deg);
+    transform: rotate(-3deg);
 
 }
 
 
 .photo-small img {
 
-    aspect-ratio:
-        4 / 3;
+    aspect-ratio: 4 / 3;
 
 }
 
 
 /* ============================================================
-   20. ART GRID
+   29. ART GRID
    ============================================================ */
 
 .art-grid {
 
-    display:
-        grid;
+    display: grid;
 
     grid-template-columns:
         repeat(2, 1fr);
 
-    gap:
-        25px;
+    gap: 25px;
 
-    margin-top:
-        30px;
+    margin-top: 30px;
 
 }
 
 
 .art-grid .scrapbook-photo:first-child {
 
-    transform:
-        rotate(-2deg);
+    transform: rotate(-2deg);
 
 }
 
 
 .art-grid .scrapbook-photo:last-child {
 
-    transform:
-        rotate(3deg);
+    transform: rotate(3deg);
 
 }
 
 
 /* ============================================================
-   21. FILM STRIP
+   30. FILM STRIP
    ============================================================ */
 
 .film-strip {
 
-    width:
-        85%;
+    width: 85%;
 
-    margin:
-        25px auto;
+    margin: 25px auto;
 
-    padding:
-        15px 20px;
+    padding: 15px 20px;
 
-    background:
-        #49313a;
+    background: #49313a;
 
     border:
         2px solid #2e2025;
 
-    display:
-        flex;
+    display: flex;
 
-    flex-direction:
-        column;
+    flex-direction: column;
 
-    gap:
-        14px;
+    gap: 14px;
 
     box-shadow:
         4px 5px 10px rgba(49,30,15,0.20);
@@ -1381,71 +1676,45 @@ body::before {
 }
 
 
-/* perforation effect */
-
-.film-strip::before,
-.film-strip::after {
-
-    content:
-        "";
-
-    position:
-        absolute;
-
-}
-
-
 .film-frame {
 
-    position:
-        relative;
+    position: relative;
 
-    background:
-        #f8eee8;
+    background: #f8eee8;
 
-    padding:
-        5px;
+    padding: 5px;
 
 }
 
 
 .film-frame img {
 
-    width:
-        100%;
+    width: 100%;
 
-    aspect-ratio:
-        4 / 3;
+    aspect-ratio: 4 / 3;
 
-    object-fit:
-        cover;
+    object-fit: cover;
 
-    display:
-        block;
+    display: block;
 
 }
 
 
 /* ============================================================
-   22. POSTCARD
+   31. POSTCARD
    ============================================================ */
 
 .postcard {
 
-    margin:
-        30px auto;
+    margin: 30px auto;
 
-    width:
-        90%;
+    width: 90%;
 
-    min-height:
-        300px;
+    min-height: 300px;
 
-    padding:
-        22px;
+    padding: 22px;
 
-    background:
-        #F8E9DF;
+    background: #F8E9DF;
 
     border:
         1px solid var(--dusty-rose);
@@ -1453,147 +1722,115 @@ body::before {
     box-shadow:
         4px 5px 10px rgba(49,30,15,0.15);
 
-    transform:
-        rotate(1.5deg);
+    transform: rotate(1.5deg);
 
 }
 
 
 .postcard-header {
 
-    padding-bottom:
-        10px;
+    padding-bottom: 10px;
 
     border-bottom:
         1px dashed var(--dusty-rose);
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
-    font-size:
-        12px;
+    font-size: 12px;
 
-    letter-spacing:
-        2px;
+    letter-spacing: 2px;
 
 }
 
 
 .postcard-body {
 
-    display:
-        flex;
+    display: flex;
 
-    justify-content:
-        space-between;
+    justify-content: space-between;
 
-    gap:
-        20px;
+    gap: 20px;
 
-    padding-top:
-        20px;
+    padding-top: 20px;
 
 }
 
 
 .postcard-message {
 
-    max-width:
-        65%;
+    max-width: 65%;
 
-    font-size:
-        11px;
+    font-size: 11px;
 
-    line-height:
-        1.8;
+    line-height: 1.8;
 
 }
 
 
 .postcard-stamp {
 
-    width:
-        55px;
+    width: 55px;
 
-    height:
-        65px;
+    height: 65px;
 
     border:
         1px dashed var(--mauve);
 
-    display:
-        flex;
+    display: flex;
 
-    align-items:
-        center;
+    align-items: center;
 
-    justify-content:
-        center;
+    justify-content: center;
 
-    color:
-        var(--deep-mauve);
+    color: var(--deep-mauve);
 
-    transform:
-        rotate(5deg);
+    transform: rotate(5deg);
 
 }
 
 
 /* ============================================================
-   23. NOTES / STICKY NOTES
+   32. NOTES
    ============================================================ */
 
 .handwritten-note {
 
-    width:
-        190px;
+    width: 190px;
 
-    padding:
-        20px;
+    padding: 20px;
 
-    background:
-        var(--soft-pink);
+    background: var(--soft-pink);
 
     box-shadow:
         3px 4px 8px rgba(49,30,15,0.14);
 
-    transform:
-        rotate(-3deg);
+    transform: rotate(-3deg);
 
-    font-size:
-        11px;
+    font-size: 11px;
 
-    line-height:
-        1.7;
+    line-height: 1.7;
 
 }
 
 
 .sticky-note {
 
-    width:
-        210px;
+    width: 210px;
 
-    padding:
-        22px;
+    padding: 22px;
 
-    background:
-        #F7D4D6;
+    background: #F7D4D6;
 
     box-shadow:
         4px 5px 9px rgba(49,30,15,0.14);
 
-    transform:
-        rotate(4deg);
+    transform: rotate(4deg);
 
-    position:
-        absolute;
+    position: absolute;
 
-    right:
-        45px;
+    right: 45px;
 
-    bottom:
-        65px;
+    bottom: 65px;
 
 }
 
@@ -1601,17 +1838,13 @@ body::before {
 .sticky-note h3,
 .paper-note h3 {
 
-    margin:
-        0 0 10px;
+    margin: 0 0 10px;
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
-    font-weight:
-        normal;
+    font-weight: normal;
 
-    color:
-        var(--deep-mauve);
+    color: var(--deep-mauve);
 
 }
 
@@ -1619,32 +1852,22 @@ body::before {
 .sticky-note p,
 .paper-note p {
 
-    font-size:
-        11px;
+    font-size: 11px;
 
-    line-height:
-        1.8;
+    line-height: 1.8;
 
 }
 
 
-/* ------------------------------------------------------------
-   Larger writing note
-   ------------------------------------------------------------ */
-
 .large-note {
 
-    max-width:
-        430px;
+    max-width: 430px;
 
-    margin:
-        45px auto;
+    margin: 45px auto;
 
-    padding:
-        30px;
+    padding: 30px;
 
-    background:
-        #FFF9F4;
+    background: #FFF9F4;
 
     border:
         1px solid var(--paper-border);
@@ -1652,65 +1875,48 @@ body::before {
     box-shadow:
         4px 5px 12px rgba(49,30,15,0.12);
 
-    transform:
-        rotate(-1deg);
+    transform: rotate(-1deg);
 
 }
 
 
 /* ============================================================
-   24. INDEX STICKER
+   33. INDEX STICKER
    ============================================================ */
 
 .index-sticker {
 
-    width:
-        75px;
+    width: 75px;
 
-    height:
-        75px;
+    height: 75px;
 
-    display:
-        flex;
+    display: flex;
 
-    align-items:
-        center;
+    align-items: center;
 
-    justify-content:
-        center;
+    justify-content: center;
 
-    text-align:
-        center;
+    text-align: center;
 
-    background:
-        var(--accent-pink);
+    background: var(--accent-pink);
 
-    color:
-        var(--cream);
+    color: var(--cream);
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
-    font-size:
-        10px;
+    font-size: 10px;
 
-    line-height:
-        1.2;
+    line-height: 1.2;
 
-    border-radius:
-        50%;
+    border-radius: 50%;
 
-    position:
-        absolute;
+    position: absolute;
 
-    right:
-        40px;
+    right: 40px;
 
-    bottom:
-        35px;
+    bottom: 35px;
 
-    transform:
-        rotate(10deg);
+    transform: rotate(10deg);
 
     box-shadow:
         3px 4px 0 rgba(49,30,15,0.12);
@@ -1719,79 +1925,60 @@ body::before {
 
 
 /* ============================================================
-   25. POSTMARK
+   34. POSTMARK
    ============================================================ */
 
 .postmark {
 
-    width:
-        90px;
+    width: 90px;
 
-    height:
-        90px;
+    height: 90px;
 
     border:
         2px dashed var(--mauve);
 
-    border-radius:
-        50%;
+    border-radius: 50%;
 
-    display:
-        flex;
+    display: flex;
 
-    align-items:
-        center;
+    align-items: center;
 
-    justify-content:
-        center;
+    justify-content: center;
 
-    text-align:
-        center;
+    text-align: center;
 
-    font-family:
-        var(--heading-font);
+    font-family: var(--heading-font);
 
-    font-size:
-        9px;
+    font-size: 9px;
 
-    line-height:
-        1.5;
+    line-height: 1.5;
 
-    color:
-        var(--mauve);
+    color: var(--mauve);
 
-    position:
-        absolute;
+    position: absolute;
 
-    right:
-        45px;
+    right: 45px;
 
-    bottom:
-        40px;
+    bottom: 40px;
 
-    transform:
-        rotate(-12deg);
+    transform: rotate(-12deg);
 
-    opacity:
-        0.65;
+    opacity: 0.65;
 
 }
 
 
 /* ============================================================
-   26. TAPE
+   35. TAPE
    ============================================================ */
 
 .tape {
 
-    width:
-        120px;
+    width: 120px;
 
-    height:
-        28px;
+    height: 28px;
 
-    position:
-        absolute;
+    position: absolute;
 
     background:
         rgba(247, 202, 205, 0.72);
@@ -1804,34 +1991,28 @@ body::before {
 
 .tape-top-left {
 
-    top:
-        25px;
+    top: 25px;
 
-    left:
-        35px;
+    left: 35px;
 
-    transform:
-        rotate(-7deg);
+    transform: rotate(-7deg);
 
 }
 
 
 .tape-bottom-right {
 
-    right:
-        30px;
+    right: 30px;
 
-    bottom:
-        25px;
+    bottom: 25px;
 
-    transform:
-        rotate(8deg);
+    transform: rotate(8deg);
 
 }
 
 
 /* ============================================================
-   27. BOOK CONTROLS
+   36. BOOK CONTROLS
    ============================================================ */
 
 .book-controls {
@@ -1839,17 +2020,13 @@ body::before {
     width:
         min(1400px, 92vw);
 
-    margin-top:
-        14px;
+    margin-top: 14px;
 
-    display:
-        flex;
+    display: flex;
 
-    align-items:
-        center;
+    align-items: center;
 
-    justify-content:
-        space-between;
+    justify-content: space-between;
 
 }
 
@@ -1878,7 +2055,9 @@ body::before {
         pointer;
 
     transition:
-        0.2s ease;
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 
 }
 
@@ -1890,6 +2069,15 @@ body::before {
 
     color:
         var(--cream);
+
+}
+
+
+.book-control:disabled {
+
+    opacity: 0.35;
+
+    cursor: default;
 
 }
 
@@ -1910,10 +2098,6 @@ body::before {
 
 }
 
-
-/* ============================================================
-   28. KEYBOARD HINT
-   ============================================================ */
 
 .keyboard-hint {
 
@@ -1936,86 +2120,73 @@ body::before {
 
 
 /* ============================================================
-   29. PAGE EDGE DETAILS
+   37. ACCESSIBILITY
    ============================================================ */
 
-.page::before {
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible {
 
-    content:
-        "";
+    outline:
+        2px solid var(--deep-mauve);
 
-    position:
-        absolute;
-
-    inset:
-        0;
-
-    pointer-events:
-        none;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(49,30,15,0.05),
-            transparent 5%,
-            transparent 95%,
-            rgba(49,30,15,0.05)
-        );
-
-    z-index:
-        5;
+    outline-offset:
+        3px;
 
 }
 
 
 /* ============================================================
-   30. RESPONSIVE — TABLET
+   38. RESPONSIVE
    ============================================================ */
 
 @media (max-width: 1000px) {
 
     :root {
+
         --book-width: 94vw;
+
         --book-height: 76vh;
+
     }
 
 
     .page-content {
+
         padding:
-            35px 35px;
+            35px;
+
     }
 
 
     .page-title {
+
         font-size:
             32px;
+
     }
 
 
     .cover-title h1 {
+
         font-size:
             48px;
-    }
 
-
-    .polaroid {
-        width:
-            175px;
     }
 
 }
 
 
-/* ============================================================
-   31. RESPONSIVE — MOBILE
-   ============================================================ */
-
 @media (max-width: 700px) {
 
-    body {
-        overflow-x: hidden;
-    }
+    /*
+       True two-page 3D book flipping is intentionally
+       preserved on desktop/tablet.
 
+       Mobile switches to a single-page layout instead
+       because a half-screen physical page flip becomes
+       extremely cramped.
+    */
 
     .site-header {
 
@@ -2035,24 +2206,20 @@ body::before {
 
 
     .site-nav {
-        width:
-            100%;
 
-        justify-content:
-            flex-start;
+        width: 100%;
 
-        flex-wrap:
-            wrap;
+        justify-content: flex-start;
+
+        flex-wrap: wrap;
 
     }
 
 
     .archive {
+
         padding:
             5px 10px 20px;
-
-        min-height:
-            auto;
 
     }
 
@@ -2068,13 +2235,42 @@ body::before {
         min-height:
             700px;
 
+        perspective:
+            none;
+
     }
 
 
-    /*
-       On small screens, the two-page book remains
-       visually intact but becomes vertically stacked.
-    */
+    .book {
+
+        height:
+            auto;
+
+        min-height:
+            700px;
+
+        perspective:
+            none;
+
+    }
+
+
+    .book-back {
+
+        display:
+            none;
+
+    }
+
+
+    .book::before,
+    .book::after {
+
+        display:
+            none;
+
+    }
+
 
     .spread {
 
@@ -2095,18 +2291,32 @@ body::before {
 
     .page {
 
+        position:
+            relative;
+
+        left:
+            auto;
+
+        right:
+            auto;
+
         width:
             100%;
 
         min-height:
             700px;
 
+        transform:
+            none !important;
+
     }
 
 
-    .book::after {
-        display:
+    .page-right.turned {
+
+        transform:
             none;
+
     }
 
 
@@ -2118,6 +2328,14 @@ body::before {
     }
 
 
+    .character-gallery {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
     .book-controls {
 
         width:
@@ -2125,267 +2343,11 @@ body::before {
 
     }
 
-
-    .cover-image {
-
-        width:
-            190px;
-
-    }
-
-
-    .polaroid-stack {
-
-        height:
-            430px;
-
-    }
-
 }
 
 
 /* ============================================================
-   32. ACCESSIBILITY
-   ============================================================ */
-
-button:focus-visible,
-a:focus-visible,
-summary:focus-visible {
-
-    outline:
-        2px solid var(--deep-mauve);
-
-    outline-offset:
-        3px;
-
-}
-
-
-/* ============================================================
-   33. REDUCED MOTION
-   ============================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-
-        scroll-behavior:
-            auto !important;
-
-        transition:
-            none !important;
-
-        animation:
-            none !important;
-
-    }
-
-}
-/* ============================================================
-   REAL PAGE FLIP SYSTEM
-   ============================================================ */
-
-/*
-   The book itself becomes the 3D stage.
-*/
-
-.book {
-    perspective: 2500px;
-    transform-style: preserve-3d;
-}
-
-
-/*
-   Each spread still represents two physical pages,
-   but the individual pages are allowed to animate.
-*/
-
-.spread {
-    display: contents;
-}
-
-
-/*
-   All pages occupy exactly half of the book.
-*/
-
-.page {
-    position: absolute;
-
-    top: 0;
-    bottom: 0;
-
-    width: 50%;
-
-    overflow: hidden;
-
-    transform-style: preserve-3d;
-
-    backface-visibility: hidden;
-
-    transition:
-        transform 1s cubic-bezier(
-            0.645,
-            0.045,
-            0.355,
-            1
-        );
-
-    /*
-       Prevent the page from disappearing during
-       the rotation.
-    */
-
-    will-change: transform;
-}
-
-
-/* ============================================================
-   LEFT / RIGHT PAGE POSITIONING
-   ============================================================ */
-
-.page-left {
-
-    left: 0;
-
-    transform-origin: right center;
-
-}
-
-
-.page-right {
-
-    right: 0;
-
-    transform-origin: left center;
-
-}
-
-
-/*
-   The page has two faces.
-   These are created by the JavaScript/CSS system below.
-*/
-
-.page.flipping-forward {
-
-    transform:
-        rotateY(-180deg);
-
-}
-
-
-.page.flipping-backward {
-
-    transform:
-        rotateY(180deg);
-
-}
-
-
-/* ============================================================
-   PAGE SHADOW DURING FLIP
-   ============================================================ */
-
-.page.flipping-forward::after,
-.page.flipping-backward::after {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(49, 30, 15, 0.30),
-            transparent 45%,
-            rgba(255,255,255,0.15)
-        );
-
-    opacity: 0;
-
-    animation:
-        pageFlipShadow 1s ease forwards;
-
-}
-
-
-@keyframes pageFlipShadow {
-
-    0% {
-        opacity: 0;
-    }
-
-    35% {
-        opacity: 0.45;
-    }
-
-    65% {
-        opacity: 0.25;
-    }
-
-    100% {
-        opacity: 0;
-    }
-
-}
-
-
-/* ============================================================
-   PAGE STACKING
-   ============================================================ */
-
-.page {
-
-    z-index: 1;
-
-}
-
-
-/*
-   Pages that have already been turned sit underneath
-   the currently visible pages.
-*/
-
-.page.turned {
-
-    z-index: 0;
-
-}
-
-
-/*
-   The currently flipping sheet needs to sit above
-   everything else.
-*/
-
-.page.flipping-forward,
-.page.flipping-backward {
-
-    z-index: 100;
-
-}
-
-
-/* ============================================================
-   BOOK SPINE
-   ============================================================ */
-
-.book::after {
-
-    pointer-events: none;
-
-}
-
-
-/* ============================================================
-   REDUCED MOTION
+   39. REDUCED MOTION
    ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
@@ -2393,7 +2355,7 @@ summary:focus-visible {
     .page {
 
         transition:
-            none;
+            none !important;
 
     }
 
