@@ -2183,3 +2183,218 @@ summary:focus-visible {
     }
 
 }
+/* ============================================================
+   REAL PAGE FLIP SYSTEM
+   ============================================================ */
+
+/*
+   The book itself becomes the 3D stage.
+*/
+
+.book {
+    perspective: 2500px;
+    transform-style: preserve-3d;
+}
+
+
+/*
+   Each spread still represents two physical pages,
+   but the individual pages are allowed to animate.
+*/
+
+.spread {
+    display: contents;
+}
+
+
+/*
+   All pages occupy exactly half of the book.
+*/
+
+.page {
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+
+    width: 50%;
+
+    overflow: hidden;
+
+    transform-style: preserve-3d;
+
+    backface-visibility: hidden;
+
+    transition:
+        transform 1s cubic-bezier(
+            0.645,
+            0.045,
+            0.355,
+            1
+        );
+
+    /*
+       Prevent the page from disappearing during
+       the rotation.
+    */
+
+    will-change: transform;
+}
+
+
+/* ============================================================
+   LEFT / RIGHT PAGE POSITIONING
+   ============================================================ */
+
+.page-left {
+
+    left: 0;
+
+    transform-origin: right center;
+
+}
+
+
+.page-right {
+
+    right: 0;
+
+    transform-origin: left center;
+
+}
+
+
+/*
+   The page has two faces.
+   These are created by the JavaScript/CSS system below.
+*/
+
+.page.flipping-forward {
+
+    transform:
+        rotateY(-180deg);
+
+}
+
+
+.page.flipping-backward {
+
+    transform:
+        rotateY(180deg);
+
+}
+
+
+/* ============================================================
+   PAGE SHADOW DURING FLIP
+   ============================================================ */
+
+.page.flipping-forward::after,
+.page.flipping-backward::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(49, 30, 15, 0.30),
+            transparent 45%,
+            rgba(255,255,255,0.15)
+        );
+
+    opacity: 0;
+
+    animation:
+        pageFlipShadow 1s ease forwards;
+
+}
+
+
+@keyframes pageFlipShadow {
+
+    0% {
+        opacity: 0;
+    }
+
+    35% {
+        opacity: 0.45;
+    }
+
+    65% {
+        opacity: 0.25;
+    }
+
+    100% {
+        opacity: 0;
+    }
+
+}
+
+
+/* ============================================================
+   PAGE STACKING
+   ============================================================ */
+
+.page {
+
+    z-index: 1;
+
+}
+
+
+/*
+   Pages that have already been turned sit underneath
+   the currently visible pages.
+*/
+
+.page.turned {
+
+    z-index: 0;
+
+}
+
+
+/*
+   The currently flipping sheet needs to sit above
+   everything else.
+*/
+
+.page.flipping-forward,
+.page.flipping-backward {
+
+    z-index: 100;
+
+}
+
+
+/* ============================================================
+   BOOK SPINE
+   ============================================================ */
+
+.book::after {
+
+    pointer-events: none;
+
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .page {
+
+        transition:
+            none;
+
+    }
+
+}
