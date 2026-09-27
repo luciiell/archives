@@ -1,41 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Special+Elite&display=swap');
 
-/* =========================================================
-   DREAMLAND ARCHIVES
-   PHYSICAL SCRAPBOOK / BOOK
-   ========================================================= */
-
 :root {
-    --dusty-pink: #d2899d;
-    --soft-pink: #f7cacd;
-    --blush: #fdd8d8;
-    --coral-pink: #f29ca3;
+    --dusty-pink: #D2899D;
+    --soft-pink: #F7CACD;
+    --blush: #FDD8D8;
+    --coral-pink: #F29CA3;
 
-    --mauve: #c699a5;
+    --mauve: #C699A5;
     --deep-mauve: #996b78;
     --dark-mauve: #795268;
 
-    --paper: #fff8f1;
-    --paper-warm: #f9efe8;
-    --paper-white: #fffdfc;
+    --paper: #FFF8F1;
+    --paper-warm: #F9EFE8;
+    --paper-white: #FFFDFC;
 
     --ink: #4d313a;
-    --dark-ink: #311e0f;
+    --dark-ink: #311E0F;
 
-    --lavender: #efcfe3;
-    --lavender-soft: #f0dde8;
+    --lavender: #EFCFE3;
+    --lavender-soft: #F0DDE8;
 
     --page-flip-time: 950ms;
 
     --book-width: min(1180px, 92vw);
     --book-height: min(760px, 82vh);
-
-    --paper-shadow:
-        0 15px 30px rgba(49, 30, 15, 0.16),
-        0 4px 10px rgba(49, 30, 15, 0.1);
-
-    --soft-shadow:
-        0 8px 20px rgba(49, 30, 15, 0.12);
 }
 
 /* =========================================================
@@ -57,12 +45,12 @@ body {
     background:
         radial-gradient(
             circle at 20% 20%,
-            rgba(255,255,255,0.45),
+            rgba(255,255,255,.45),
             transparent 30%
         ),
         radial-gradient(
             circle at 80% 80%,
-            rgba(210,137,157,0.12),
+            rgba(210,137,157,.12),
             transparent 35%
         ),
         #e8c5d8;
@@ -74,21 +62,21 @@ body {
     overflow-x: hidden;
 }
 
-/* subtle paper/grain effect */
 body::before {
     content: "";
+
     position: fixed;
     inset: 0;
 
     pointer-events: none;
 
-    opacity: 0.08;
+    opacity: .06;
 
-    background-image:
+    background:
         repeating-linear-gradient(
             0deg,
-            rgba(49,30,15,0.2) 0,
-            rgba(49,30,15,0.2) 1px,
+            rgba(49,30,15,.2) 0,
+            rgba(49,30,15,.2) 1px,
             transparent 1px,
             transparent 4px
         );
@@ -128,6 +116,7 @@ summary {
 
 .archive-header {
     width: min(1180px, 92vw);
+
     margin: 0 auto;
     padding: 28px 0 18px;
 
@@ -141,6 +130,7 @@ summary {
 .archive-brand {
     display: flex;
     flex-direction: column;
+
     gap: 4px;
 }
 
@@ -150,7 +140,8 @@ summary {
     color: var(--dark-mauve);
 
     font-size: clamp(1.7rem, 3vw, 2.8rem);
-    letter-spacing: 0.08em;
+
+    letter-spacing: .08em;
 }
 
 .archive-subtitle {
@@ -158,13 +149,15 @@ summary {
 
     color: var(--deep-mauve);
 
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
+    font-size: .8rem;
+
+    letter-spacing: .08em;
 }
 
 .archive-nav {
     display: flex;
     align-items: center;
+
     gap: 8px;
 }
 
@@ -172,9 +165,9 @@ summary {
 .archive-nav a {
     appearance: none;
 
-    border: 1px solid rgba(121,82,104,0.28);
+    border: 1px solid rgba(121,82,104,.28);
 
-    background: rgba(255,248,241,0.65);
+    background: rgba(255,248,241,.8);
 
     color: var(--dark-mauve);
 
@@ -192,11 +185,12 @@ summary {
 
 .archive-nav button:hover,
 .archive-nav a:hover {
-    background: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,.95);
 
     transform: translateY(-2px);
 
-    box-shadow: 0 5px 12px rgba(49,30,15,0.1);
+    box-shadow:
+        0 5px 12px rgba(49,30,15,.1);
 }
 
 /* =========================================================
@@ -209,10 +203,7 @@ summary {
     display: flex;
     justify-content: center;
 
-    padding:
-        10px
-        20px
-        50px;
+    padding: 10px 20px 50px;
 }
 
 /* =========================================================
@@ -247,7 +238,7 @@ summary {
 }
 
 /* =========================================================
-   BACK BOARD / COVER
+   BOOK BACK
    ========================================================= */
 
 .book-back {
@@ -265,8 +256,8 @@ summary {
         );
 
     box-shadow:
-        0 25px 50px rgba(49,30,15,0.25),
-        0 8px 15px rgba(49,30,15,0.15);
+        0 25px 50px rgba(49,30,15,.25),
+        0 8px 15px rgba(49,30,15,.15);
 
     transform: translateZ(-20px);
 
@@ -274,8 +265,7 @@ summary {
 }
 
 /* =========================================================
-   ORIGINAL SPREADS
-   JS MOVES THEIR PAGE CONTENT INTO PHYSICAL SHEETS
+   ORIGINAL SPREAD WRAPPERS
    ========================================================= */
 
 .book > .spread {
@@ -299,60 +289,90 @@ summary {
 }
 
 /* =========================================================
-   STATIC PAGES
+   ALL PHYSICAL PAGE SURFACES
    ========================================================= */
 
-.static-page {
+/*
+    THIS IS THE IMPORTANT FIX.
+
+    Every physical page gets a real opaque paper surface.
+
+    The previous version allowed the moved page elements
+    to inherit transparency from the old page structure.
+*/
+
+.static-page,
+.flip-sheet-face {
     position: absolute;
+
+    overflow: hidden;
+
+    background-color: var(--paper) !important;
+
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(49,30,15,.025),
+            transparent 12%,
+            transparent 88%,
+            rgba(49,30,15,.035)
+        ) !important;
+
+    color: var(--ink);
+
+    isolation: isolate;
+}
+
+/* =========================================================
+   STATIC LEFT
+   ========================================================= */
+
+.static-left {
+    left: 0;
 
     top: 0;
     bottom: 0;
 
     width: 50%;
 
-    overflow: hidden;
+    border-radius:
+        8px 0 0 8px;
 
-    background:
-        linear-gradient(
-            90deg,
-            rgba(49,30,15,0.025),
-            transparent 12%,
-            transparent 88%,
-            rgba(49,30,15,0.035)
-        ),
-        var(--paper);
+    z-index: 1;
 
-    box-shadow: var(--paper-shadow);
+    box-shadow:
+        inset -7px 0 10px rgba(49,30,15,.045),
+        0 10px 25px rgba(49,30,15,.08);
 
     pointer-events: auto;
 }
 
-.static-left {
-    left: 0;
-
-    border-radius:
-        8px
-        0
-        0
-        8px;
-
-    z-index: 1;
-}
+/* =========================================================
+   STATIC RIGHT
+   ========================================================= */
 
 .static-right {
     right: 0;
 
+    top: 0;
+    bottom: 0;
+
+    width: 50%;
+
     border-radius:
-        0
-        8px
-        8px
-        0;
+        0 8px 8px 0;
 
     z-index: 1;
+
+    box-shadow:
+        inset 7px 0 10px rgba(49,30,15,.045),
+        0 10px 25px rgba(49,30,15,.08);
+
+    pointer-events: auto;
 }
 
 /* =========================================================
-   PHYSICAL PAPER SHEETS
+   PHYSICAL SHEET
    ========================================================= */
 
 .flip-sheet {
@@ -378,116 +398,146 @@ summary {
     pointer-events: none;
 }
 
-/*
-    IMPORTANT:
-
-    The JS changes the z-index of each sheet based on
-    whether it is already turned.
-
-    This is what prevents old pages from remaining
-    visually stacked over newer pages.
-*/
-
-.flip-sheet.is-turning {
-    z-index: 5000 !important;
-}
+/* =========================================================
+   SHEET STATES
+   ========================================================= */
 
 .flip-sheet.is-turned {
     transform: rotateY(-180deg);
 }
 
+.flip-sheet.is-turning {
+    z-index: 5000 !important;
+}
+
 /* =========================================================
-   SHEET FACES
+   PHYSICAL SHEET FACES
    ========================================================= */
 
 .flip-sheet-face {
-    position: absolute;
-
     top: 0;
     bottom: 0;
 
     width: 50%;
 
-    overflow: hidden;
+    /*
+        OPAQUE BACKGROUND — DO NOT REMOVE
+    */
+    background-color: var(--paper) !important;
 
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
 
     transform-style: preserve-3d;
 
-    background:
-        linear-gradient(
-            90deg,
-            rgba(49,30,15,0.025),
-            transparent 12%,
-            transparent 88%,
-            rgba(49,30,15,0.035)
-        ),
-        var(--paper);
+    pointer-events: auto;
 
     box-shadow:
-        0 10px 25px rgba(49,30,15,0.08);
-
-    pointer-events: auto;
+        0 8px 20px rgba(49,30,15,.08);
 }
 
 /* =========================================================
-   FRONT OF PHYSICAL SHEET
+   FRONT FACE
    ========================================================= */
 
 .flip-sheet-front {
     right: 0;
+    left: auto;
 
     transform:
         rotateY(0deg)
-        translateZ(0.5px);
+        translateZ(.5px);
 
     border-radius:
-        0
-        8px
-        8px
-        0;
+        0 8px 8px 0;
 }
 
 /* =========================================================
-   BACK OF PHYSICAL SHEET
+   BACK FACE
    ========================================================= */
 
 .flip-sheet-back {
     left: 0;
+    right: auto;
 
     transform:
         rotateY(180deg)
-        translateZ(0.5px);
+        translateZ(.5px);
 
     border-radius:
-        8px
-        0
-        0
-        8px;
+        8px 0 0 8px;
 }
 
-/*
-    These make sure the original page styling continues
-    working after the JS moves the pages.
-*/
+/* =========================================================
+   PRESERVE ORIGINAL PAGE CLASSES
+   ========================================================= */
 
-.flip-sheet-face.page {
-    position: absolute;
+.flip-sheet-face.page-left,
+.flip-sheet-face.page-right {
+    /*
+        The JS keeps these original classes.
+
+        These rules make sure their old page styling does
+        not accidentally collapse after being moved.
+    */
+
+    height: 100%;
+
+    background-color: var(--paper) !important;
 }
 
-.flip-sheet-front.page {
-    right: 0;
+/* Front is always the original right page. */
+.flip-sheet-front.page-right {
     left: auto;
+    right: 0;
 }
 
-.flip-sheet-back.page {
+/* Back is always the next spread's original left page. */
+.flip-sheet-back.page-left {
     left: 0;
     right: auto;
 }
 
 /* =========================================================
-   PAGE EDGE / TURNING LIGHT
+   PAGE CONTENT
+   ========================================================= */
+
+.page-content {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 42px 44px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    background: transparent;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        var(--mauve)
+        transparent;
+}
+
+.page-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.page-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.page-content::-webkit-scrollbar-thumb {
+    background: var(--mauve);
+
+    border-radius: 10px;
+}
+
+/* =========================================================
+   PAGE EDGE LIGHTING
    ========================================================= */
 
 .flip-sheet-front::before,
@@ -503,7 +553,7 @@ summary {
 
     pointer-events: none;
 
-    z-index: 50;
+    z-index: 100;
 }
 
 .flip-sheet-front::before {
@@ -512,7 +562,7 @@ summary {
     background:
         linear-gradient(
             90deg,
-            rgba(49,30,15,0.08),
+            rgba(49,30,15,.08),
             transparent
         );
 }
@@ -523,7 +573,7 @@ summary {
     background:
         linear-gradient(
             270deg,
-            rgba(49,30,15,0.08),
+            rgba(49,30,15,.08),
             transparent
         );
 }
@@ -546,19 +596,20 @@ summary {
     background:
         linear-gradient(
             90deg,
-            rgba(49,30,15,0.20),
+            rgba(49,30,15,.20),
             transparent 25%,
             transparent 75%,
-            rgba(49,30,15,0.20)
+            rgba(49,30,15,.20)
         );
 
-    transition: opacity 300ms ease;
+    transition:
+        opacity 300ms ease;
 
-    z-index: 100;
+    z-index: 200;
 }
 
 .flip-sheet.is-turning::after {
-    opacity: 0.45;
+    opacity: .42;
 }
 
 /* =========================================================
@@ -584,9 +635,9 @@ summary {
     background:
         linear-gradient(
             90deg,
-            rgba(49,30,15,0.16),
-            rgba(255,255,255,0.22),
-            rgba(49,30,15,0.12)
+            rgba(49,30,15,.16),
+            rgba(255,255,255,.22),
+            rgba(49,30,15,.12)
         );
 
     pointer-events: none;
@@ -614,7 +665,7 @@ summary {
         linear-gradient(
             90deg,
             transparent,
-            rgba(49,30,15,0.06),
+            rgba(49,30,15,.06),
             transparent
         );
 
@@ -622,39 +673,7 @@ summary {
 }
 
 /* =========================================================
-   PAGE CONTENT
-   ========================================================= */
-
-.page-content {
-    width: 100%;
-    height: 100%;
-
-    padding: 42px 44px;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    scrollbar-width: thin;
-    scrollbar-color:
-        var(--mauve)
-        transparent;
-}
-
-.page-content::-webkit-scrollbar {
-    width: 6px;
-}
-
-.page-content::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.page-content::-webkit-scrollbar-thumb {
-    background: var(--mauve);
-    border-radius: 10px;
-}
-
-/* =========================================================
-   PAGE LABELS
+   PAGE LABEL
    ========================================================= */
 
 .page-label {
@@ -670,35 +689,41 @@ summary {
 
     font-family: "Special Elite", serif;
 
-    font-size: 0.72rem;
+    font-size: .72rem;
 
-    letter-spacing: 0.12em;
+    letter-spacing: .12em;
 
     transform: rotate(-1deg);
 
     box-shadow:
-        2px 3px 0 rgba(121,82,104,0.12);
+        2px 3px 0 rgba(121,82,104,.12);
 }
 
+/* =========================================================
+   PAGE TITLES
+   ========================================================= */
+
 .page-title {
-    margin:
-        0
-        0
-        18px;
+    margin: 0 0 18px;
 
     color: var(--dark-mauve);
 
-    font-size: clamp(1.6rem, 3vw, 2.5rem);
+    font-size:
+        clamp(
+            1.6rem,
+            3vw,
+            2.5rem
+        );
 
     line-height: 1.1;
 
-    letter-spacing: 0.04em;
+    letter-spacing: .04em;
 }
 
 .page-content p {
     line-height: 1.75;
 
-    font-size: 0.9rem;
+    font-size: .9rem;
 }
 
 /* =========================================================
@@ -713,23 +738,29 @@ summary {
     padding: 55px 45px;
 
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
     justify-content: center;
 
     text-align: center;
 
+    /*
+        COVER MUST ALSO BE OPAQUE
+    */
+
     background:
         radial-gradient(
             circle at center,
-            rgba(255,255,255,0.45),
+            rgba(255,255,255,.45),
             transparent 55%
         ),
         linear-gradient(
             135deg,
             #f7cacd,
             #efcfe3
-        );
+        ) !important;
 }
 
 .cover-page::before {
@@ -739,7 +770,9 @@ summary {
 
     inset: 18px;
 
-    border: 2px solid rgba(121,82,104,0.25);
+    border:
+        2px solid
+        rgba(121,82,104,.25);
 
     border-radius: 4px;
 
@@ -753,9 +786,14 @@ summary {
 
     color: var(--dark-mauve);
 
-    font-size: clamp(2rem, 4vw, 3.4rem);
+    font-size:
+        clamp(
+            2rem,
+            4vw,
+            3.4rem
+        );
 
-    letter-spacing: 0.08em;
+    letter-spacing: .08em;
 }
 
 .cover-subtitle {
@@ -765,9 +803,9 @@ summary {
 
     color: var(--deep-mauve);
 
-    font-size: 0.85rem;
+    font-size: .85rem;
 
-    letter-spacing: 0.12em;
+    letter-spacing: .12em;
 }
 
 /* =========================================================
@@ -776,12 +814,15 @@ summary {
 
 .archive-index {
     display: flex;
+
     flex-direction: column;
+
     gap: 10px;
 }
 
 .archive-index a {
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
@@ -793,7 +834,7 @@ summary {
 
     border-bottom:
         1px dashed
-        rgba(121,82,104,0.35);
+        rgba(121,82,104,.35);
 
     transition:
         padding-left 160ms ease,
@@ -803,11 +844,12 @@ summary {
 .archive-index a:hover {
     padding-left: 18px;
 
-    background: rgba(247,202,205,0.3);
+    background:
+        rgba(247,202,205,.3);
 }
 
 /* =========================================================
-   DETAILS / DROPDOWNS
+   DETAILS
    ========================================================= */
 
 details {
@@ -815,10 +857,10 @@ details {
 
     border:
         1px solid
-        rgba(121,82,104,0.18);
+        rgba(121,82,104,.18);
 
     background:
-        rgba(255,255,255,0.35);
+        rgba(255,255,255,.35);
 }
 
 details summary {
@@ -828,7 +870,9 @@ details summary {
 
     color: var(--dark-mauve);
 
-    font-family: "Special Elite", serif;
+    font-family:
+        "Special Elite",
+        serif;
 
     list-style: none;
 }
@@ -845,14 +889,12 @@ details summary::before {
 
 details[open] summary {
     background:
-        rgba(247,202,205,0.35);
+        rgba(247,202,205,.35);
 }
 
 .details-content {
     padding:
-        5px
-        14px
-        14px;
+        5px 14px 14px;
 }
 
 /* =========================================================
@@ -865,7 +907,10 @@ details[open] summary {
     grid-template-columns:
         repeat(
             auto-fit,
-            minmax(145px, 1fr)
+            minmax(
+                145px,
+                1fr
+            )
         );
 
     gap: 24px 18px;
@@ -880,20 +925,24 @@ details[open] summary {
 
     border: 0;
 
-    padding: 10px 10px 16px;
+    padding:
+        10px 10px 16px;
 
     background: #fffdfb;
 
     color: var(--ink);
 
     box-shadow:
-        0 7px 14px rgba(49,30,15,0.16);
+        0 7px 14px rgba(49,30,15,.16);
 
     cursor: pointer;
 
     transform:
         rotate(
-            var(--rotation, -2deg)
+            var(
+                --rotation,
+                -2deg
+            )
         );
 
     transition:
@@ -915,7 +964,7 @@ details[open] summary {
         translateY(-5px);
 
     box-shadow:
-        0 13px 22px rgba(49,30,15,0.2);
+        0 13px 22px rgba(49,30,15,.2);
 }
 
 .polaroid-image {
@@ -943,9 +992,11 @@ details[open] summary {
 
     margin-top: 10px;
 
-    font-family: "Special Elite", serif;
+    font-family:
+        "Special Elite",
+        serif;
 
-    font-size: 0.8rem;
+    font-size: .8rem;
 }
 
 .polaroid-number {
@@ -953,13 +1004,13 @@ details[open] summary {
 
     margin-top: 4px;
 
-    font-size: 0.65rem;
+    font-size: .65rem;
 
     color: var(--deep-mauve);
 }
 
 /* =========================================================
-   POLAROIDS / PHOTOS
+   PHOTOS
    ========================================================= */
 
 .polaroid,
@@ -969,7 +1020,7 @@ details[open] summary {
     padding: 10px;
 
     box-shadow:
-        0 8px 16px rgba(49,30,15,0.15);
+        0 8px 16px rgba(49,30,15,.15);
 }
 
 .polaroid img,
@@ -991,9 +1042,9 @@ details[open] summary {
     height: 25px;
 
     background:
-        rgba(242,156,163,0.65);
+        rgba(242,156,163,.65);
 
-    opacity: 0.85;
+    opacity: .85;
 
     transform: rotate(-5deg);
 
@@ -1039,12 +1090,12 @@ details[open] summary {
         "Special Elite",
         serif;
 
-    font-size: 0.7rem;
+    font-size: .7rem;
 
     text-align: center;
 
     box-shadow:
-        0 5px 10px rgba(49,30,15,0.12);
+        0 5px 10px rgba(49,30,15,.12);
 
     transform: rotate(-4deg);
 }
@@ -1058,19 +1109,20 @@ details[open] summary {
     height: 80px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     border:
         2px dashed
-        rgba(121,82,104,0.45);
+        rgba(121,82,104,.45);
 
     border-radius: 50%;
 
     color:
         var(--deep-mauve);
 
-    font-size: 0.6rem;
+    font-size: .6rem;
 
     text-align: center;
 
@@ -1087,7 +1139,10 @@ details[open] summary {
     grid-template-columns:
         repeat(
             auto-fit,
-            minmax(100px, 1fr)
+            minmax(
+                100px,
+                1fr
+            )
         );
 
     gap: 12px;
@@ -1126,10 +1181,11 @@ details[open] summary {
 
     border:
         1px solid
-        rgba(121,82,104,0.2);
+        rgba(121,82,104,.2);
 
     box-shadow:
-        var(--soft-shadow);
+        0 8px 20px
+        rgba(49,30,15,.12);
 }
 
 .postcard::after {
@@ -1141,7 +1197,7 @@ details[open] summary {
 
     border:
         1px dashed
-        rgba(121,82,104,0.22);
+        rgba(121,82,104,.22);
 
     pointer-events: none;
 }
@@ -1156,7 +1212,10 @@ details[open] summary {
     grid-template-columns:
         repeat(
             auto-fit,
-            minmax(150px, 1fr)
+            minmax(
+                150px,
+                1fr
+            )
         );
 
     gap: 18px;
@@ -1172,7 +1231,7 @@ details[open] summary {
         #fffdfb;
 
     box-shadow:
-        0 7px 14px rgba(49,30,15,0.15);
+        0 7px 14px rgba(49,30,15,.15);
 }
 
 /* =========================================================
@@ -1197,17 +1256,16 @@ details[open] summary {
 
     border:
         1px solid
-        rgba(121,82,104,0.3);
+        rgba(121,82,104,.3);
 
     background:
-        rgba(255,248,241,0.85);
+        rgba(255,248,241,.85);
 
     color:
         var(--dark-mauve);
 
     padding:
-        9px
-        16px;
+        9px 16px;
 
     cursor: pointer;
 
@@ -1217,15 +1275,14 @@ details[open] summary {
 }
 
 .book-controls button:hover:not(:disabled) {
-    background:
-        #fff;
+    background: #fff;
 
     transform:
         translateY(-2px);
 }
 
 .book-controls button:disabled {
-    opacity: 0.4;
+    opacity: .4;
 
     cursor: default;
 }
@@ -1235,9 +1292,10 @@ details[open] summary {
 
     text-align: center;
 
-    color: var(--dark-mauve);
+    color:
+        var(--dark-mauve);
 
-    font-size: 0.75rem;
+    font-size: .75rem;
 }
 
 /* =========================================================
@@ -1268,6 +1326,7 @@ details[open] summary {
 
 .character-modal.is-open {
     visibility: visible;
+
     opacity: 1;
 }
 
@@ -1277,7 +1336,7 @@ details[open] summary {
     inset: 0;
 
     background:
-        rgba(49,30,15,0.58);
+        rgba(49,30,15,.58);
 
     backdrop-filter:
         blur(4px);
@@ -1294,22 +1353,22 @@ details[open] summary {
             94vw
         );
 
-    max-height:
-        90vh;
+    max-height: 90vh;
 
     overflow: auto;
 
     display: grid;
 
     grid-template-columns:
-        minmax(240px, 0.85fr)
-        minmax(280px, 1fr);
+        minmax(240px,.85fr)
+        minmax(280px,1fr);
 
     background:
         var(--paper);
 
     box-shadow:
-        0 25px 70px rgba(49,30,15,0.3);
+        0 25px 70px
+        rgba(49,30,15,.3);
 }
 
 .character-modal-image {
@@ -1336,11 +1395,9 @@ details[open] summary {
     color:
         var(--deep-mauve);
 
-    font-size:
-        0.7rem;
+    font-size: .7rem;
 
-    letter-spacing:
-        0.12em;
+    letter-spacing: .12em;
 }
 
 .character-modal-content h2 {
@@ -1356,8 +1413,7 @@ details[open] summary {
 }
 
 .character-modal-description {
-    line-height:
-        1.8;
+    line-height: 1.8;
 }
 
 .character-modal-close {
@@ -1376,13 +1432,12 @@ details[open] summary {
     border-radius: 50%;
 
     background:
-        rgba(255,255,255,0.9);
+        rgba(255,255,255,.9);
 
     color:
         var(--dark-mauve);
 
-    font-size:
-        1.3rem;
+    font-size: 1.3rem;
 
     cursor: pointer;
 }
@@ -1422,6 +1477,7 @@ summary:focus-visible {
    ========================================================= */
 
 @media (max-width: 900px) {
+
     :root {
         --book-width: 95vw;
         --book-height: 78vh;
@@ -1429,11 +1485,13 @@ summary:focus-visible {
 
     .archive-header {
         flex-direction: column;
+
         align-items: flex-start;
     }
 
     .archive-nav {
         width: 100%;
+
         flex-wrap: wrap;
     }
 
@@ -1448,6 +1506,7 @@ summary:focus-visible {
    ========================================================= */
 
 @media (max-width: 650px) {
+
     :root {
         --book-width: 96vw;
         --book-height: 76vh;
@@ -1467,8 +1526,7 @@ summary:focus-visible {
         padding:
             7px 9px;
 
-        font-size:
-            0.7rem;
+        font-size: .7rem;
     }
 
     .page-content {
@@ -1477,15 +1535,14 @@ summary:focus-visible {
     }
 
     .page-content p {
-        font-size:
-            0.78rem;
+        font-size: .78rem;
     }
 
     .character-grid {
         grid-template-columns:
             repeat(
                 2,
-                minmax(0, 1fr)
+                minmax(0,1fr)
             );
 
         gap: 14px;
