@@ -14,3 +14,1166 @@
     <script src="script.js"></script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Luc's personal scrapbook archive."
+    >
+
+    <title>Luc's Scrapbook Archive</title>
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- =========================================================
+         SITE HEADER
+         Small header outside of the scrapbook itself.
+    ========================================================== -->
+
+    <header class="site-header">
+
+        <div class="site-title">
+            <span class="site-title-main">Luc's Archive</span>
+            <span class="site-title-sub">scrapbook collection</span>
+        </div>
+
+        <nav class="site-nav" aria-label="Main navigation">
+            <button
+                type="button"
+                class="nav-button"
+                data-action="previous"
+                aria-label="Previous spread"
+            >
+                ←
+            </button>
+
+            <button
+                type="button"
+                class="nav-button"
+                data-action="home"
+            >
+                Home
+            </button>
+
+            <button
+                type="button"
+                class="nav-button"
+                data-action="index"
+            >
+                Index
+            </button>
+
+            <button
+                type="button"
+                class="nav-button"
+                data-action="next"
+                aria-label="Next spread"
+            >
+                →
+            </button>
+        </nav>
+
+    </header>
+
+
+    <!-- =========================================================
+         SCRAPBOOK AREA
+    ========================================================== -->
+
+    <main class="archive">
+
+        <div class="book-wrapper">
+
+            <!-- =================================================
+                 THE BOOK
+            ================================================== -->
+
+            <section
+                class="book"
+                id="scrapbook"
+                aria-label="Scrapbook archive"
+            >
+
+                <!-- Decorative backing behind the pages -->
+                <div class="book-back" aria-hidden="true"></div>
+
+
+                <!-- =================================================
+                     SPREAD 01 — FRONT MATTER
+                ================================================== -->
+
+                <section
+                    class="spread active"
+                    id="spread-front"
+                    data-spread="0"
+                    data-section="front"
+                    aria-label="Front matter"
+                >
+
+                    <!-- LEFT PAGE -->
+                    <article
+                        class="page page-left page-front-inside"
+                        id="page-front-left"
+                        data-page="front-left"
+                    >
+
+                        <div class="page-content">
+
+                            <div class="page-label">
+                                PERSONAL ARCHIVE
+                            </div>
+
+                            <h1 class="page-title">
+                                Welcome
+                            </h1>
+
+                            <p class="page-intro">
+                                A little corner of the internet
+                                dedicated to memories, characters,
+                                ideas, stories, and miscellaneous
+                                things worth keeping.
+                            </p>
+
+
+                            <!-- Decorative photograph area -->
+                            <div class="scrapbook-photo photo-small">
+                                <img
+                                    src="assets/images/placeholder.jpg"
+                                    alt="Decorative scrapbook photograph"
+                                >
+                            </div>
+
+
+                            <div class="handwritten-note">
+                                <p>
+                                    collected, remembered,
+                                    and carefully tucked away.
+                                </p>
+                            </div>
+
+
+                            <div class="tape tape-top-left" aria-hidden="true"></div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- RIGHT PAGE -->
+                    <article
+                        class="page page-right page-cover"
+                        id="page-cover"
+                        data-page="cover"
+                    >
+
+                        <div class="page-content cover-content">
+
+                            <div class="cover-decoration cover-stamp">
+                                ARCHIVE
+                            </div>
+
+                            <div class="cover-title">
+
+                                <span class="cover-small">
+                                    THE
+                                </span>
+
+                                <h1>
+                                    Scrapbook
+                                </h1>
+
+                                <span class="cover-small">
+                                    of Luc
+                                </span>
+
+                            </div>
+
+
+                            <div class="cover-image">
+                                <img
+                                    src="assets/images/cover.jpg"
+                                    alt="Scrapbook cover artwork"
+                                >
+                            </div>
+
+
+                            <div class="cover-footer">
+                                EST. 2026
+                            </div>
+
+                            <div
+                                class="cover-sticker"
+                                aria-hidden="true"
+                            >
+                                ✦
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     SPREAD 02 — INDEX
+                ================================================== -->
+
+                <section
+                    class="spread"
+                    id="spread-index"
+                    data-spread="1"
+                    data-section="index"
+                    aria-label="Archive index"
+                >
+
+                    <!-- LEFT PAGE -->
+                    <article
+                        class="page page-left index-page"
+                        id="page-index-left"
+                        data-page="index-left"
+                    >
+
+                        <div class="page-content">
+
+                            <div class="page-label">
+                                TABLE OF CONTENTS
+                            </div>
+
+                            <h2 class="page-title">
+                                Index
+                            </h2>
+
+                            <p class="page-note">
+                                Find your way through the archive.
+                            </p>
+
+
+                            <nav
+                                class="scrapbook-index"
+                                aria-label="Archive index"
+                            >
+
+                                <a
+                                    href="#characters"
+                                    data-go-to="characters"
+                                    class="index-link"
+                                >
+                                    <span>01</span>
+                                    <span>Characters</span>
+                                    <span>→</span>
+                                </a>
+
+                                <a
+                                    href="#worlds"
+                                    data-go-to="worlds"
+                                    class="index-link"
+                                >
+                                    <span>02</span>
+                                    <span>Worlds &amp; Lore</span>
+                                    <span>→</span>
+                                </a>
+
+                                <a
+                                    href="#writing"
+                                    data-go-to="writing"
+                                    class="index-link"
+                                >
+                                    <span>03</span>
+                                    <span>Writing</span>
+                                    <span>→</span>
+                                </a>
+
+                                <a
+                                    href="#art"
+                                    data-go-to="art"
+                                    class="index-link"
+                                >
+                                    <span>04</span>
+                                    <span>Art Archive</span>
+                                    <span>→</span>
+                                </a>
+
+                                <a
+                                    href="#misc"
+                                    data-go-to="misc"
+                                    class="index-link"
+                                >
+                                    <span>05</span>
+                                    <span>Miscellaneous</span>
+                                    <span>→</span>
+                                </a>
+
+                            </nav>
+
+
+                            <div class="index-sticker">
+                                <span>flip<br>through</span>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- RIGHT PAGE -->
+                    <article
+                        class="page page-right index-page"
+                        id="page-index-right"
+                        data-page="index-right"
+                    >
+
+                        <div class="page-content">
+
+                            <div class="page-label">
+                                QUICK ACCESS
+                            </div>
+
+                            <h2 class="page-title">
+                                Sections
+                            </h2>
+
+
+                            <div class="index-notes">
+
+                                <div class="index-note">
+                                    <strong>Characters</strong>
+                                    <p>
+                                        Character profiles,
+                                        relationships, references,
+                                        and collected notes.
+                                    </p>
+                                </div>
+
+                                <div class="index-note">
+                                    <strong>Worlds &amp; Lore</strong>
+                                    <p>
+                                        Locations, settings,
+                                        timelines, and worldbuilding.
+                                    </p>
+                                </div>
+
+                                <div class="index-note">
+                                    <strong>Writing</strong>
+                                    <p>
+                                        Stories, concepts,
+                                        scenes, and unfinished ideas.
+                                    </p>
+                                </div>
+
+                                <div class="index-note">
+                                    <strong>Art Archive</strong>
+                                    <p>
+                                        Artwork, references,
+                                        image collections, and projects.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div class="postmark">
+                                ARCHIVE<br>
+                                COLLECTION
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     SPREAD 03 — CHARACTERS
+                ================================================== -->
+
+                <section
+                    class="spread"
+                    id="spread-characters"
+                    data-spread="2"
+                    data-section="characters"
+                    aria-label="Characters"
+                >
+
+                    <!-- LEFT PAGE -->
+                    <article
+                        class="page page-left"
+                        id="page-characters"
+                        data-page="characters"
+                    >
+
+                        <div class="page-content">
+
+                            <div class="page-label">
+                                ARCHIVE / 01
+                            </div>
+
+                            <h2 class="page-title">
+                                Characters
+                            </h2>
+
+                            <p class="page-note">
+                                A collection of characters,
+                                references, and associated notes.
+                            </p>
+
+
+                            <!-- Expandable character sections -->
+
+                            <div class="accordion-list">
+
+                                <details class="scrapbook-dropdown">
+
+                                    <summary>
+                                        <span>01</span>
+                                        Axel Blackwood
+                                        <span>+</span>
+                                    </summary>
+
+                                    <div class="dropdown-content">
+
+                                        <p>
+                                            Character information,
+                                            personality notes,
+                                            appearance references,
+                                            relationships, and lore.
+                                        </p>
+
+                                        <a href="#axel">
+                                            Open character →
+                                        </a>
+
+                                    </div>
+
+                                </details>
+
+
+                                <details class="scrapbook-dropdown">
+
+                                    <summary>
+                                        <span>02</span>
+                                        Milo Axford
+                                        <span>+</span>
+                                    </summary>
+
+                                    <div class="dropdown-content">
+
+                                        <p>
+                                            Character notes and
+                                            associated archive material.
+                                        </p>
+
+                                        <a href="#milo">
+                                            Open character →
+                                        </a>
+
+                                    </div>
+
+                                </details>
+
+
+                                <details class="scrapbook-dropdown">
+
+                                    <summary>
+                                        <span>03</span>
+                                        Other Characters
+                                        <span>+</span>
+                                    </summary>
+
+                                    <div class="dropdown-content">
+
+                                        <p>
+                                            Additional characters
+                                            will be collected here.
+                                        </p>
+
+                                    </div>
+
+                                </details>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- RIGHT PAGE -->
+                    <article
+                        class="page page-right"
+                        id="page-character-notes"
+                        data-page="character-notes"
+                    >
+
+                        <div class="page-content">
+
+                            <div class="page-label">
+                                CHARACTER NOTES
+                            </div>
+
+                            <div class="polaroid-stack">
+
+                                <figure class="polaroid polaroid-one">
+
+                                    <img
+                                        src="assets/images/character-01.jpg"
+                                        alt="Character reference"
+                                    >
+
+                                    <figcaption>
+                                        character reference
+                                    </figcaption>
+
+                                </figure>
+
+
+                                <figure class="polaroid polaroid-two">
+
+                                    <img
+                                        src="assets/images/character-02.jpg"
+                                        alt="Character reference"
+                                    >
+
+                                    <figcaption>
+                                        archive photo
+                                    </figcaption>
+
+                                </figure>
+
+                            </div>
+
+
+                            <div class="sticky-note">
+                                <p>
+                                    More character pages
+                                    coming soon.
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     SPREAD 04 — WORLDS & LORE
+                ================================================== -->
+
+                <section
+                    class="spread"
+                    id="spread-worlds"
+                    data-spread="3"
+                    data-section="worlds"
+                    aria-label="Worlds and lore"
+                >
+
+                    <!-- LEFT PAGE -->
+                    <article
+                        class="page page-left"
+                        id="page-worlds"
+                        data-page="worlds"
+                    >
+
+                        <div class="page-content">
+
+                            <div class="page-label">
+                                ARCHIVE / 02
+                            </div>
+
+                            <h2 class="page-title">
+                                Worlds &amp; Lore
+                            </h2>
+
+                            <p class="page-note">
+                                Places, settings, timelines,
+                                and little pieces of fictional
+                                history.
+                            </p>
+
+
+                            <div class="accordion-list">
+
+                                <details class="scrapbook-dropdown">
+
+                                    <summary>
+                                        Crimmshaw Heights
+                                        <span>+</span>
+                                    </summary>
+
+                                    <div class="dropdown-content">
+
+                                        <p>
+                                            Town information,
+                                            locations, atmosphere,
+                                            landmarks, and local lore.
+                                        </p>
+
+                                    </div>
+
+                                </details>
+
+
+                                <details class="scrapbook-dropdown">
+
+                                    <summary>
+                                        Westvale University
+                                        <span>+</span>
+                                    </summary>
+
+                                    <div class="dropdown-content">
+
+                                        <p>
+                                            Campus information,
+                                            departments, facilities,
+                                            student life, and lore.
+                                        </p>
+
+                                    </div>
+
+                                </details>
+
+
+                                <details class="scrapbook-dropdown">
+
+                                    <summary>
+                                        Other Worlds
+                                        <span>+</span>
+                                    </summary>
+
+                                    <div class="dropdown-content">
+
+                                        <p>
+                                            Additional settings and
+                                            worldbuilding projects.
+                                        </p>
+
+                                    </div>
+
+                                </details>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- RIGHT PAGE -->
+                    <article
+                        class="page page-right"
+                        id="page-world-notes"
+                        data-page="world-notes"
+                    >
+
+                        <div class="page-content">
+
+                            <div class="postcard">
+
+                                <div class="postcard-header">
+                                    POSTCARD
+                                </div>
+
+                                <div class="postcard-body">
+
+                                    <div class="postcard-message">
+
+                                        <p>
+                                            Dear future me,
+                                        </p>
+
+                                        <p>
+                                            Remember all the tiny
+                                            details that make these
+                                            worlds feel alive.
+                                        </p>
+
+                                        <p>
+                                            — Luc
+                                        </p>
+
+                                    </div>
+
+
+                                    <div class="postcard-stamp">
+                                        ✦
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="tape tape-bottom-right"
+                                 aria-hidden="true">
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     SPREAD 05 — WRITING
+                ================================================== -->
+
+                <section
+                    class="spread"
+                    id="spread-writing"
+                    data-spread="4"
+                    data-section="writing"
+                    aria-label="Writing archive"
+                >
+
+                    <!-- LEFT PAGE -->
+                    <article
+                        class="page page-left"
+                        id="page-writing"
+                        data-page="writing"
+                    >
+
+                        <div class="page-content">
+
+                            <div class="page-label">
+                                ARCHIVE / 03
+                            </div>
+
+                            <h2 class="page-title">
+                                Writing
+                            </h2>
+
+                            <p class="page-note">
+                                Stories, scenes, concepts,
+                                dialogue, and unfinished ideas.
+                            </p>
+
+
+                            <div class="writing-list">
+
+                                <details class="scrapbook-dropdown">
+
+                                    <summary>
+                                        Story Concepts
+                                        <span>+</span>
+                                    </summary>
+
+                                    <div class="dropdown-content">
+
+                                        <p>
+                                            Story ideas and
+                                            larger concepts.
+                                        </p>
+
+                                    </div>
+
+                                </details>
+
+
+                                <details class="scrapbook-dropdown">
+
+                                    <summary>
+                                        Scenes
+                                        <span>+</span>
+                                    </summary>
+
+                                    <div class="dropdown-content">
+
+                                        <p>
+                                            Individual scenes,
+                                            snippets, and moments.
+                                        </p>
+
+                                    </div>
+
+                                </details>
+
+
+                                <details class="scrapbook-dropdown">
+
+                                    <summary>
+                                        Unfinished
+                                        <span>+</span>
+                                    </summary>
+
+                                    <div class="dropdown-content">
+
+                                        <p>
+                                            Things that aren't finished
+                                            yet but deserve to stay.
+                                        </p>
+
+                                    </div>
+
+                                </details>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- RIGHT PAGE -->
+                    <article
+                        class="page page-right"
+                        id="page-writing-notes"
+                        data-page="writing-notes"
+                    >
+
+                        <div class="page-content">
+
+                            <div class="paper-note large-note">
+
+                                <h3>
+                                    Writing Desk
+                                </h3>
+
+                                <p>
+                                    This page can eventually hold
+                                    excerpts, quotes, snippets,
+                                    or decorative writing elements.
+                                </p>
+
+                                <p>
+                                    The content can be expanded
+                                    without changing the overall
+                                    scrapbook structure.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     SPREAD 06 — ART
+                ================================================== -->
+
+                <section
+                    class="spread"
+                    id="spread-art"
+                    data-spread="5"
+                    data-section="art"
+                    aria-label="Art archive"
+                >
+
+                    <!-- LEFT PAGE -->
+                    <article
+                        class="page page-left"
+                        id="page-art"
+                        data-page="art"
+                    >
+
+                        <div class="page-content">
+
+                            <div class="page-label">
+                                ARCHIVE / 04
+                            </div>
+
+                            <h2 class="page-title">
+                                Art Archive
+                            </h2>
+
+                            <p class="page-note">
+                                Artwork, references,
+                                illustrations, and projects.
+                            </p>
+
+
+                            <div class="art-grid">
+
+                                <figure class="scrapbook-photo">
+
+                                    <img
+                                        src="assets/images/art-01.jpg"
+                                        alt="Artwork"
+                                    >
+
+                                    <figcaption>
+                                        archive 01
+                                    </figcaption>
+
+                                </figure>
+
+
+                                <figure class="scrapbook-photo">
+
+                                    <img
+                                        src="assets/images/art-02.jpg"
+                                        alt="Artwork"
+                                    >
+
+                                    <figcaption>
+                                        archive 02
+                                    </figcaption>
+
+                                </figure>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- RIGHT PAGE -->
+                    <article
+                        class="page page-right"
+                        id="page-art-notes"
+                        data-page="art-notes"
+                    >
+
+                        <div class="page-content">
+
+                            <div class="film-strip">
+
+                                <div class="film-frame">
+                                    <img
+                                        src="assets/images/art-03.jpg"
+                                        alt="Artwork"
+                                    >
+                                </div>
+
+                                <div class="film-frame">
+                                    <img
+                                        src="assets/images/art-04.jpg"
+                                        alt="Artwork"
+                                    >
+                                </div>
+
+                                <div class="film-frame">
+                                    <img
+                                        src="assets/images/art-05.jpg"
+                                        alt="Artwork"
+                                    >
+                                </div>
+
+                            </div>
+
+
+                            <div class="handwritten-note">
+                                <p>
+                                    little snapshots
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     SPREAD 07 — MISCELLANEOUS
+                ================================================== -->
+
+                <section
+                    class="spread"
+                    id="spread-misc"
+                    data-spread="6"
+                    data-section="misc"
+                    aria-label="Miscellaneous archive"
+                >
+
+                    <!-- LEFT PAGE -->
+                    <article
+                        class="page page-left"
+                        id="page-misc"
+                        data-page="misc"
+                    >
+
+                        <div class="page-content">
+
+                            <div class="page-label">
+                                ARCHIVE / 05
+                            </div>
+
+                            <h2 class="page-title">
+                                Miscellaneous
+                            </h2>
+
+                            <p class="page-note">
+                                Everything that doesn't quite
+                                fit anywhere else.
+                            </p>
+
+
+                            <div class="accordion-list">
+
+                                <details class="scrapbook-dropdown">
+
+                                    <summary>
+                                        Favorites
+                                        <span>+</span>
+                                    </summary>
+
+                                    <div class="dropdown-content">
+
+                                        <p>
+                                            Favorite things,
+                                            references, media,
+                                            and little obsessions.
+                                        </p>
+
+                                    </div>
+
+                                </details>
+
+
+                                <details class="scrapbook-dropdown">
+
+                                    <summary>
+                                        Random Notes
+                                        <span>+</span>
+                                    </summary>
+
+                                    <div class="dropdown-content">
+
+                                        <p>
+                                            Completely miscellaneous
+                                            thoughts and notes.
+                                        </p>
+
+                                    </div>
+
+                                </details>
+
+
+                                <details class="scrapbook-dropdown">
+
+                                    <summary>
+                                        Future Projects
+                                        <span>+</span>
+                                    </summary>
+
+                                    <div class="dropdown-content">
+
+                                        <p>
+                                            Things I might eventually
+                                            make.
+                                        </p>
+
+                                    </div>
+
+                                </details>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- RIGHT PAGE -->
+                    <article
+                        class="page page-right"
+                        id="page-misc-notes"
+                        data-page="misc-notes"
+                    >
+
+                        <div class="page-content">
+
+                            <div class="sticky-note pink-note">
+
+                                <h3>
+                                    Note to self
+                                </h3>
+
+                                <p>
+                                    Leave room for new things.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+            </section>
+
+        </div>
+
+
+        <!-- =========================================================
+             BOOK CONTROLS
+        ========================================================== -->
+
+        <div class="book-controls">
+
+            <button
+                type="button"
+                class="book-control"
+                data-action="previous"
+                aria-label="Go to previous spread"
+            >
+                ← Previous
+            </button>
+
+
+            <div
+                class="page-counter"
+                aria-live="polite"
+            >
+                <span id="current-page">1</span>
+                /
+                <span id="total-pages">7</span>
+            </div>
+
+
+            <button
+                type="button"
+                class="book-control"
+                data-action="next"
+                aria-label="Go to next spread"
+            >
+                Next →
+            </button>
+
+        </div>
+
+
+        <!-- Small keyboard hint -->
+        <p class="keyboard-hint">
+            Use ← → to turn pages
+        </p>
+
+    </main>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
+    <script src="script.js"></script>
+
+</body>
+</html>
