@@ -1,121 +1,133 @@
 /* =========================================================
-   DREAMLAND JOURNAL
+   DREAMLAND BOOK ENGINE
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const pages = [
-        ...document.querySelectorAll(".page-turn")
-    ];
+    const sheets = [...document.querySelectorAll(".page-turn")];
+    const previousButton = document.getElementById("previousPage");
+    const nextButton = document.getElementById("nextPage");
+    const currentPageLabel = document.getElementById("currentPage");
+    const restartButton = document.getElementById("restartBook");
 
-    const previousButton =
-        document.getElementById("previousPage");
+    const totalPages = sheets.length * 2;
 
-    const nextButton =
-        document.getElementById("nextPage");
-
-    const currentPage =
-        document.getElementById("currentPage");
-
-    const restartButton =
-        document.getElementById("restartBook");
-
-
-    let current = 0;
-
-    const total = pages.length;
+    /*
+       0 = cover + index
+       1 = socials + series
+       2 = friends + creators
+       3 = archives + back cover
+    */
+    let spread = 0;
 
 
     /* =====================================================
-       UPDATE PAGE STATE
+       LAYER ORDER
     ====================================================== */
 
-    function updateBook() {
+    function updateZIndexes() {
 
-        pages.forEach((page, index) => {
+        sheets.forEach((sheet, index) => {
 
-            page.classList.toggle(
+            /*
+               The page currently turning should sit above
+               untouched pages. Once flipped, it sits below
+               later sheets but above the static cover.
+            */
+
+            if (index < spread) {
+                sheet.style.zIndex = String(10 + index);
+            } else {
+                sheet.style.zIndex = String(30 - index);
+            }
+
+        });
+
+    }
+
+
+    /* =====================================================
+       LABEL
+    ====================================================== */
+
+    function updateLabel() {
+
+        const visiblePage = [1, 2, 4, 6][spread] ?? 6;
+
+        currentPageLabel.textContent =
+            String(visiblePage).padStart(2, "0");
+
+        previousButton.disabled = spread === 0;
+        nextButton.disabled = spread === sheets.length;
+
+    }
+
+
+    /* =====================================================
+       RENDER
+    ====================================================== */
+
+    function renderBook() {
+
+        sheets.forEach((sheet, index) => {
+
+            sheet.classList.toggle(
                 "flipped",
-                index < current
+                index < spread
             );
 
         });
 
-
-        currentPage.textContent =
-            String(Math.min(current + 1, total))
-                .padStart(2, "0");
-
-
-        previousButton.disabled =
-            current === 0;
-
-        nextButton.disabled =
-            current === total;
-
-
-        /*
-         * Make the navigation state feel like
-         * an actual book rather than a normal website.
-         */
-
-        if (current === total) {
-
-            currentPage.textContent =
-                String(total).padStart(2, "0");
-
-        }
+        updateZIndexes();
+        updateLabel();
 
     }
 
 
     /* =====================================================
-       NEXT PAGE
+       TURN FORWARD
     ====================================================== */
 
-    function nextPage() {
+    function nextSpread() {
 
-        if (current >= total) {
+        if (spread >= sheets.length) {
             return;
         }
 
-        current++;
-
-        updateBook();
+        spread += 1;
+        renderBook();
 
     }
 
 
     /* =====================================================
-       PREVIOUS PAGE
+       TURN BACK
     ====================================================== */
 
-    function previousPage() {
+    function previousSpread() {
 
-        if (current <= 0) {
+        if (spread <= 0) {
             return;
         }
 
-        current--;
-
-        updateBook();
+        spread -= 1;
+        renderBook();
 
     }
 
 
     /* =====================================================
-       NAVIGATION BUTTONS
+       BUTTONS
     ====================================================== */
 
     nextButton.addEventListener(
         "click",
-        nextPage
+        nextSpread
     );
-
 
     previousButton.addEventListener(
         "click",
-        previousPage
+        previousSpread
     );
 
 
@@ -127,11 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
         "keydown",
         (event) => {
 
-            /*
-             * Don't hijack arrow keys while someone
-             * is interacting with a form field.
-             */
-
             const tag =
                 event.target.tagName.toLowerCase();
 
@@ -140,41 +147,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 tag === "textarea" ||
                 tag === "select"
             ) {
-
                 return;
-
             }
 
 
             if (event.key === "ArrowRight") {
-
-                nextPage();
-
+                nextSpread();
             }
-
 
             if (event.key === "ArrowLeft") {
-
-                previousPage();
-
+                previousSpread();
             }
-
 
             if (event.key === "Home") {
-
-                current = 0;
-
-                updateBook();
-
+                spread = 0;
+                renderBook();
             }
-
 
             if (event.key === "End") {
-
-                current = total;
-
-                updateBook();
-
+                spread = sheets.length;
+                renderBook();
             }
 
         }
@@ -182,80 +174,70 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       CLICK PAGE EDGE
+       BOOK EDGE CLICK
     ====================================================== */
 
-    document.addEventListener(
-        "click",
-        (event) => {
+    document
+        .querySelector(".book")
+        .addEventListener(
+            "click",
+            (event) => {
 
-            const bookScene =
-                event.target.closest(".book-scene");
+                /*
+                   Do not hijack actual links, buttons,
+                   postcards or polaroids.
+                */
 
-            if (!bookScene) {
-                return;
-            }
-
-
-            /*
-             * Ignore interactive elements.
-             */
-
-            if (
-                event.target.closest("a") ||
-                event.target.closest("button") ||
-                event.target.closest(".postcard")
-            ) {
-
-                return;
-
-            }
+                if (
+                    event.target.closest("a") ||
+                    event.target.closest("button") ||
+                    event.target.closest(".postcard") ||
+                    event.target.closest(".friend")
+                ) {
+                    return;
+                }
 
 
-            const rect =
-                bookScene.getBoundingClientRect();
+                const book =
+                    event.currentTarget;
 
-            const x =
-                event.clientX - rect.left;
+                const rect =
+                    book.getBoundingClientRect();
+
+                const x =
+                    event.clientX - rect.left;
 
 
-            /*
-             * Clicking the right side advances.
-             * Clicking the left side goes backward.
-             */
+                /*
+                   Generous dead-zone in the middle so
+                   clicking normal content doesn't turn pages.
+                */
 
-            if (x > rect.width * 0.72) {
+                if (x <= rect.width * .12) {
+                    previousSpread();
+                    return;
+                }
 
-                nextPage();
-
-            } else if (x < rect.width * 0.28) {
-
-                previousPage();
+                if (x >= rect.width * .88) {
+                    nextSpread();
+                }
 
             }
-
-        }
-    );
+        );
 
 
     /* =====================================================
-       SWIPE SUPPORT
+       SWIPE
     ====================================================== */
 
     let touchStartX = null;
-
 
     document.addEventListener(
         "touchstart",
         (event) => {
 
-            if (
-                !event.touches ||
-                event.touches.length !== 1
-            ) {
-
+            if (event.touches.length !== 1) {
                 return;
-
             }
 
             touchStartX =
@@ -276,55 +258,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-
             const touchEndX =
                 event.changedTouches[0].clientX;
 
             const distance =
                 touchEndX - touchStartX;
 
-
             touchStartX = null;
 
-
-            /*
-             * Require a meaningful swipe.
-             */
-
-            if (Math.abs(distance) < 60) {
+            if (Math.abs(distance) < 65) {
                 return;
             }
 
-
             if (distance < 0) {
-
-                nextPage();
-
+                nextSpread();
             } else {
-
-                previousPage();
-
+                previousSpread();
             }
 
         },
         {
             passive: true
-        }
-    );
-
-
-    /* =====================================================
-       RESTART
-    ====================================================== */
-
-    restartButton.addEventListener(
-        "click",
-        () => {
-
-            current = 0;
-
-            updateBook();
-
         }
     );
 
@@ -337,20 +291,30 @@ document.addEventListener("DOMContentLoaded", () => {
         .querySelectorAll(".postcard")
         .forEach((postcard) => {
 
+            const flip = () => {
+                postcard.classList.toggle("is-flipped");
+            };
+
             postcard.addEventListener(
                 "click",
                 (event) => {
-
-                    /*
-                     * Prevent the postcard click from
-                     * being interpreted as book navigation.
-                     */
-
                     event.stopPropagation();
+                    flip();
+                }
+            );
 
-                    postcard.classList.toggle(
-                        "is-flipped"
-                    );
+            postcard.addEventListener(
+                "keydown",
+                (event) => {
+
+                    if (
+                        event.key === "Enter" ||
+                        event.key === " "
+                    ) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        flip();
+                    }
 
                 }
             );
@@ -359,9 +323,76 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       INITIAL STATE
+       INDEX ENTRIES
     ====================================================== */
 
-    updateBook();
+    document
+        .querySelectorAll(".index-entry")
+        .forEach((entry) => {
+
+            entry.addEventListener(
+                "click",
+                (event) => {
+
+                    event.preventDefault();
+
+                    const target =
+                        Number(
+                            entry.dataset.pageTarget
+                        );
+
+                    if (!Number.isInteger(target)) {
+                        return;
+                    }
+
+                    /*
+                       Index entry targets are page numbers.
+                       Convert them to spreads:
+                       0/1 -> spread 0
+                       2/3 -> spread 1
+                       4/5 -> spread 2
+                    */
+
+                    const targetSpread =
+                        Math.min(
+                            sheets.length,
+                            Math.ceil(target / 2)
+                        );
+
+                    spread = targetSpread;
+                    renderBook();
+
+                }
+            );
+
+        });
+
+
+    /* =====================================================
+       RETURN TO INDEX
+    ====================================================== */
+
+    restartButton.addEventListener(
+        "click",
+        (event) => {
+
+            event.stopPropagation();
+
+            /*
+               Index is the first right-hand page.
+            */
+
+            spread = 0;
+            renderBook();
+
+        }
+    );
+
+
+    /* =====================================================
+       INITIALISE
+    ====================================================== */
+
+    renderBook();
 
 });
