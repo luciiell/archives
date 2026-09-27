@@ -1,1 +1,2185 @@
+/* ============================================================
+   LUC'S SCRAPBOOK ARCHIVE
+   Main stylesheet
+   ============================================================ */
 
+
+/* ============================================================
+   01. FONTS
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Special+Elite&display=swap');
+
+
+/* ============================================================
+   02. ROOT / COLOR PALETTE
+   ============================================================ */
+
+:root {
+
+    /* Main scrapbook colors */
+    --pink: #D2899D;
+    --light-pink: #F7CACD;
+    --soft-pink: #FDD8D8;
+    --accent-pink: #F29CA3;
+
+    --dusty-rose: #C699A5;
+    --mauve: #996b78;
+    --deep-mauve: #795268;
+
+    --cream: #FFF8F1;
+    --paper: #F9EFE8;
+    --paper-light: #FFFDFC;
+
+    --dark: #4d313a;
+    --deep-dark: #311E0F;
+
+    --lavender: #EFCFE3;
+    --soft-lavender: #F0DDE8;
+
+    /* Borders / shadows */
+    --paper-border: rgba(77, 49, 58, 0.28);
+    --soft-shadow: rgba(49, 30, 15, 0.18);
+    --deep-shadow: rgba(49, 30, 15, 0.30);
+
+    /* Typography */
+    --heading-font: "Special Elite", "Courier New", monospace;
+    --body-font: "Cutive Mono", "Courier New", monospace;
+
+    /* Book dimensions */
+    --book-width: min(1400px, 92vw);
+    --book-height: min(820px, 78vh);
+
+}
+
+
+/* ============================================================
+   03. GLOBAL RESET
+   ============================================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(255, 255, 255, 0.65),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(210, 137, 157, 0.18),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #F0DDE8,
+            #F7CACD 45%,
+            #EFCFE3
+        );
+
+    color: var(--dark);
+
+    font-family: var(--body-font);
+
+    overflow-x: hidden;
+}
+
+
+/* subtle paper-like overlay */
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.16;
+
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(77, 49, 58, 0.035) 0px,
+            rgba(77, 49, 58, 0.035) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+
+    z-index: 999;
+}
+
+
+/* ============================================================
+   04. SITE HEADER
+   ============================================================ */
+
+.site-header {
+
+    width: min(1400px, 94vw);
+
+    margin: 18px auto 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    position: relative;
+    z-index: 20;
+}
+
+
+/* ------------------------------------------------------------
+   Site title
+   ------------------------------------------------------------ */
+
+.site-title {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.site-title-main {
+    font-family: var(--heading-font);
+    font-size: 20px;
+    color: var(--deep-mauve);
+    letter-spacing: 1px;
+}
+
+.site-title-sub {
+    font-family: var(--body-font);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--mauve);
+}
+
+
+/* ------------------------------------------------------------
+   Top navigation
+   ------------------------------------------------------------ */
+
+.site-nav {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.nav-button {
+
+    border: 1px solid var(--mauve);
+
+    background: rgba(255, 248, 241, 0.72);
+
+    color: var(--deep-mauve);
+
+    font-family: var(--heading-font);
+    font-size: 11px;
+
+    padding: 7px 13px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
+    box-shadow:
+        2px 2px 0 rgba(77, 49, 58, 0.12);
+}
+
+.nav-button:hover {
+    background: var(--deep-mauve);
+    color: var(--cream);
+    transform: translateY(-1px);
+}
+
+.nav-button:active {
+    transform: translateY(1px);
+}
+
+
+/* ============================================================
+   05. MAIN ARCHIVE AREA
+   ============================================================ */
+
+.archive {
+
+    width: 100%;
+
+    min-height:
+        calc(100vh - 80px);
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        5px 20px 25px;
+
+}
+
+
+/* ============================================================
+   06. BOOK WRAPPER
+   ============================================================ */
+
+.book-wrapper {
+
+    width: var(--book-width);
+    height: var(--book-height);
+
+    position: relative;
+
+    perspective: 2500px;
+
+}
+
+
+/* ============================================================
+   07. BOOK
+   ============================================================ */
+
+.book {
+
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+
+    transform-style: preserve-3d;
+
+    filter:
+        drop-shadow(
+            0 20px 25px
+            rgba(49, 30, 15, 0.20)
+        );
+
+}
+
+
+/* ------------------------------------------------------------
+   Decorative book backing
+   ------------------------------------------------------------ */
+
+.book-back {
+
+    position: absolute;
+
+    inset:
+        -12px -12px -12px -12px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #8e6270,
+            #a87584 45%,
+            #8d5e6d
+        );
+
+    border:
+        2px solid rgba(49, 30, 15, 0.32);
+
+    box-shadow:
+        inset 0 0 20px rgba(49, 30, 15, 0.25),
+        0 10px 25px rgba(49, 30, 15, 0.20);
+
+    z-index: 0;
+
+}
+
+
+/* ============================================================
+   08. SPREAD
+   ============================================================ */
+
+.spread {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    z-index: 1;
+
+    transform-style: preserve-3d;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease;
+
+}
+
+
+/* Active spread */
+.spread.active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+}
+
+
+/* ============================================================
+   09. PAGES
+   ============================================================ */
+
+.page {
+
+    position: relative;
+
+    height: 100%;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(49, 30, 15, 0.035),
+            transparent 7%,
+            transparent 93%,
+            rgba(49, 30, 15, 0.035)
+        ),
+        var(--paper);
+
+    border-top:
+        1px solid rgba(77, 49, 58, 0.30);
+
+    border-bottom:
+        1px solid rgba(77, 49, 58, 0.30);
+
+    box-shadow:
+        inset 0 0 18px rgba(77, 49, 58, 0.06);
+
+}
+
+
+/* ------------------------------------------------------------
+   Left page
+   ------------------------------------------------------------ */
+
+.page-left {
+
+    border-left:
+        1px solid rgba(77, 49, 58, 0.30);
+
+    border-right:
+        1px solid rgba(77, 49, 58, 0.12);
+
+    transform-origin: right center;
+
+}
+
+
+/* ------------------------------------------------------------
+   Right page
+   ------------------------------------------------------------ */
+
+.page-right {
+
+    border-right:
+        1px solid rgba(77, 49, 58, 0.30);
+
+    border-left:
+        1px solid rgba(77, 49, 58, 0.12);
+
+    transform-origin: left center;
+
+}
+
+
+/* ============================================================
+   10. BOOK SPINE
+   ============================================================ */
+
+.book::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+
+    left: 50%;
+
+    width: 18px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(49, 30, 15, 0.17),
+            rgba(255,255,255,0.20) 45%,
+            rgba(49,30,15,0.17)
+        );
+
+    pointer-events: none;
+
+    z-index: 15;
+
+    opacity: 0.7;
+
+}
+
+
+/* ============================================================
+   11. PAGE CONTENT
+   ============================================================ */
+
+.page-content {
+
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    padding:
+        45px 55px;
+
+    overflow-y: auto;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        var(--dusty-rose)
+        transparent;
+
+}
+
+
+/* Webkit scrollbar */
+
+.page-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.page-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.page-content::-webkit-scrollbar-thumb {
+    background: var(--dusty-rose);
+    border-radius: 20px;
+}
+
+
+/* ============================================================
+   12. PAGE LABELS
+   ============================================================ */
+
+.page-label {
+
+    display: inline-block;
+
+    font-family: var(--heading-font);
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+    color: var(--cream);
+
+    background:
+        var(--deep-mauve);
+
+    padding:
+        5px 10px;
+
+    transform:
+        rotate(-1deg);
+
+    box-shadow:
+        2px 2px 0 rgba(49, 30, 15, 0.12);
+
+    margin-bottom: 18px;
+
+}
+
+
+/* ============================================================
+   13. TYPOGRAPHY
+   ============================================================ */
+
+.page-title {
+
+    margin:
+        0 0 18px;
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        clamp(30px, 3vw, 48px);
+
+    font-weight:
+        normal;
+
+    line-height:
+        1.1;
+
+    color:
+        var(--deep-mauve);
+
+}
+
+
+.page-intro,
+.page-note {
+
+    max-width:
+        560px;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.9;
+
+    color:
+        var(--dark);
+
+}
+
+
+.page-note {
+
+    opacity:
+        0.82;
+
+}
+
+
+/* ============================================================
+   14. FRONT / COVER
+   ============================================================ */
+
+.page-cover {
+
+    background:
+        linear-gradient(
+            135deg,
+            #D2899D,
+            #B9788A 55%,
+            #996b78
+        );
+
+    color:
+        var(--cream);
+
+    border:
+        2px solid rgba(49, 30, 15, 0.25);
+
+}
+
+
+.page-cover .page-content {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+    padding:
+        45px;
+
+}
+
+
+/* ------------------------------------------------------------
+   Cover title
+   ------------------------------------------------------------ */
+
+.cover-title {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    gap:
+        3px;
+
+    position:
+        relative;
+
+    z-index:
+        4;
+
+}
+
+
+.cover-small {
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        12px;
+
+    letter-spacing:
+        5px;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+.cover-title h1 {
+
+    margin:
+        5px 0;
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        clamp(42px, 5vw, 75px);
+
+    font-weight:
+        normal;
+
+    line-height:
+        0.95;
+
+}
+
+
+/* ------------------------------------------------------------
+   Cover image
+   ------------------------------------------------------------ */
+
+.cover-image {
+
+    width:
+        min(260px, 60%);
+
+    aspect-ratio:
+        1 / 1;
+
+    margin:
+        28px 0;
+
+    padding:
+        9px;
+
+    background:
+        var(--cream);
+
+    box-shadow:
+        6px 8px 0 rgba(49, 30, 15, 0.20);
+
+    transform:
+        rotate(2deg);
+
+}
+
+
+.cover-image img {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    display:
+        block;
+
+    object-fit:
+        cover;
+
+}
+
+
+/* ------------------------------------------------------------
+   Cover decorations
+   ------------------------------------------------------------ */
+
+.cover-decoration {
+
+    position:
+        absolute;
+
+    top:
+        35px;
+
+    right:
+        35px;
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        10px;
+
+    letter-spacing:
+        2px;
+
+    padding:
+        9px;
+
+    border:
+        1px solid rgba(255,255,255,0.75);
+
+    transform:
+        rotate(8deg);
+
+}
+
+
+.cover-footer {
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        10px;
+
+    letter-spacing:
+        3px;
+
+    opacity:
+        0.8;
+
+}
+
+
+.cover-sticker {
+
+    position:
+        absolute;
+
+    bottom:
+        35px;
+
+    left:
+        40px;
+
+    width:
+        50px;
+
+    height:
+        50px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        var(--soft-pink);
+
+    color:
+        var(--deep-mauve);
+
+    border-radius:
+        50%;
+
+    font-size:
+        24px;
+
+    transform:
+        rotate(-12deg);
+
+    box-shadow:
+        2px 3px 0 rgba(49, 30, 15, 0.16);
+
+}
+
+
+/* ============================================================
+   15. SCRAPBOOK INDEX
+   ============================================================ */
+
+.scrapbook-index {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    margin-top:
+        25px;
+
+    border-top:
+        1px dashed var(--dusty-rose);
+
+}
+
+
+.index-link {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        45px 1fr 30px;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+    padding:
+        15px 8px;
+
+    color:
+        var(--dark);
+
+    text-decoration:
+        none;
+
+    border-bottom:
+        1px dashed var(--dusty-rose);
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        13px;
+
+    transition:
+        background 0.2s ease,
+        padding 0.2s ease;
+
+}
+
+
+.index-link span:first-child {
+
+    color:
+        var(--mauve);
+
+    font-size:
+        11px;
+
+}
+
+
+.index-link span:last-child {
+
+    text-align:
+        right;
+
+    color:
+        var(--pink);
+
+}
+
+
+.index-link:hover {
+
+    background:
+        rgba(247, 202, 205, 0.45);
+
+    padding-left:
+        15px;
+
+}
+
+
+/* ============================================================
+   16. INDEX NOTES
+   ============================================================ */
+
+.index-notes {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        15px;
+
+    margin-top:
+        25px;
+
+}
+
+
+.index-note {
+
+    padding:
+        14px 17px;
+
+    background:
+        rgba(255, 216, 216, 0.45);
+
+    border-left:
+        4px solid var(--pink);
+
+    transform:
+        rotate(-0.5deg);
+
+}
+
+
+.index-note:nth-child(even) {
+
+    transform:
+        rotate(0.7deg);
+
+}
+
+
+.index-note strong {
+
+    font-family:
+        var(--heading-font);
+
+    color:
+        var(--deep-mauve);
+
+}
+
+
+.index-note p {
+
+    margin:
+        7px 0 0;
+
+    font-size:
+        11px;
+
+    line-height:
+        1.7;
+
+}
+
+
+/* ============================================================
+   17. SCRAPBOOK DROPDOWNS
+   ============================================================ */
+
+.accordion-list {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        10px;
+
+    margin-top:
+        25px;
+
+}
+
+
+.scrapbook-dropdown {
+
+    border:
+        1px solid var(--dusty-rose);
+
+    background:
+        rgba(255,255,255,0.35);
+
+}
+
+
+.scrapbook-dropdown summary {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        35px 1fr 25px;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+    padding:
+        12px 15px;
+
+    cursor:
+        pointer;
+
+    list-style:
+        none;
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        12px;
+
+    color:
+        var(--deep-mauve);
+
+}
+
+
+.scrapbook-dropdown summary::-webkit-details-marker {
+    display: none;
+}
+
+
+.scrapbook-dropdown summary span:last-child {
+
+    text-align:
+        right;
+
+    color:
+        var(--pink);
+
+}
+
+
+.scrapbook-dropdown[open] summary {
+
+    background:
+        var(--soft-pink);
+
+}
+
+
+.dropdown-content {
+
+    padding:
+        0 20px 18px 50px;
+
+    font-size:
+        11px;
+
+    line-height:
+        1.8;
+
+}
+
+
+.dropdown-content a {
+
+    color:
+        var(--deep-mauve);
+
+    font-family:
+        var(--heading-font);
+
+    text-decoration:
+        none;
+
+}
+
+
+.dropdown-content a:hover {
+
+    text-decoration:
+        underline;
+
+}
+
+
+/* ============================================================
+   18. POLAROIDS
+   ============================================================ */
+
+.polaroid-stack {
+
+    position:
+        relative;
+
+    width:
+        100%;
+
+    height:
+        470px;
+
+}
+
+
+.polaroid {
+
+    position:
+        absolute;
+
+    width:
+        220px;
+
+    padding:
+        12px 12px 25px;
+
+    background:
+        #fffaf7;
+
+    border:
+        1px solid rgba(77, 49, 58, 0.22);
+
+    box-shadow:
+        4px 7px 13px rgba(49, 30, 15, 0.18);
+
+}
+
+
+.polaroid img {
+
+    width:
+        100%;
+
+    aspect-ratio:
+        4 / 5;
+
+    display:
+        block;
+
+    object-fit:
+        cover;
+
+}
+
+
+.polaroid figcaption {
+
+    margin-top:
+        10px;
+
+    text-align:
+        center;
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        10px;
+
+    color:
+        var(--dark);
+
+}
+
+
+.polaroid-one {
+
+    top:
+        30px;
+
+    left:
+        20px;
+
+    transform:
+        rotate(-7deg);
+
+}
+
+
+.polaroid-two {
+
+    top:
+        100px;
+
+    right:
+        20px;
+
+    transform:
+        rotate(6deg);
+
+}
+
+
+/* ============================================================
+   19. SCRAPBOOK PHOTOS
+   ============================================================ */
+
+.scrapbook-photo {
+
+    display:
+        inline-block;
+
+    padding:
+        9px;
+
+    background:
+        #fffaf7;
+
+    border:
+        1px solid rgba(77, 49, 58, 0.20);
+
+    box-shadow:
+        3px 5px 10px rgba(49, 30, 15, 0.15);
+
+}
+
+
+.scrapbook-photo img {
+
+    width:
+        100%;
+
+    display:
+        block;
+
+    object-fit:
+        cover;
+
+}
+
+
+.scrapbook-photo figcaption {
+
+    padding-top:
+        8px;
+
+    text-align:
+        center;
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        9px;
+
+}
+
+
+.photo-small {
+
+    width:
+        210px;
+
+    margin:
+        25px 0;
+
+    transform:
+        rotate(-3deg);
+
+}
+
+
+.photo-small img {
+
+    aspect-ratio:
+        4 / 3;
+
+}
+
+
+/* ============================================================
+   20. ART GRID
+   ============================================================ */
+
+.art-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap:
+        25px;
+
+    margin-top:
+        30px;
+
+}
+
+
+.art-grid .scrapbook-photo:first-child {
+
+    transform:
+        rotate(-2deg);
+
+}
+
+
+.art-grid .scrapbook-photo:last-child {
+
+    transform:
+        rotate(3deg);
+
+}
+
+
+/* ============================================================
+   21. FILM STRIP
+   ============================================================ */
+
+.film-strip {
+
+    width:
+        85%;
+
+    margin:
+        25px auto;
+
+    padding:
+        15px 20px;
+
+    background:
+        #49313a;
+
+    border:
+        2px solid #2e2025;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        14px;
+
+    box-shadow:
+        4px 5px 10px rgba(49,30,15,0.20);
+
+}
+
+
+/* perforation effect */
+
+.film-strip::before,
+.film-strip::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+}
+
+
+.film-frame {
+
+    position:
+        relative;
+
+    background:
+        #f8eee8;
+
+    padding:
+        5px;
+
+}
+
+
+.film-frame img {
+
+    width:
+        100%;
+
+    aspect-ratio:
+        4 / 3;
+
+    object-fit:
+        cover;
+
+    display:
+        block;
+
+}
+
+
+/* ============================================================
+   22. POSTCARD
+   ============================================================ */
+
+.postcard {
+
+    margin:
+        30px auto;
+
+    width:
+        90%;
+
+    min-height:
+        300px;
+
+    padding:
+        22px;
+
+    background:
+        #F8E9DF;
+
+    border:
+        1px solid var(--dusty-rose);
+
+    box-shadow:
+        4px 5px 10px rgba(49,30,15,0.15);
+
+    transform:
+        rotate(1.5deg);
+
+}
+
+
+.postcard-header {
+
+    padding-bottom:
+        10px;
+
+    border-bottom:
+        1px dashed var(--dusty-rose);
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        12px;
+
+    letter-spacing:
+        2px;
+
+}
+
+
+.postcard-body {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    gap:
+        20px;
+
+    padding-top:
+        20px;
+
+}
+
+
+.postcard-message {
+
+    max-width:
+        65%;
+
+    font-size:
+        11px;
+
+    line-height:
+        1.8;
+
+}
+
+
+.postcard-stamp {
+
+    width:
+        55px;
+
+    height:
+        65px;
+
+    border:
+        1px dashed var(--mauve);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    color:
+        var(--deep-mauve);
+
+    transform:
+        rotate(5deg);
+
+}
+
+
+/* ============================================================
+   23. NOTES / STICKY NOTES
+   ============================================================ */
+
+.handwritten-note {
+
+    width:
+        190px;
+
+    padding:
+        20px;
+
+    background:
+        var(--soft-pink);
+
+    box-shadow:
+        3px 4px 8px rgba(49,30,15,0.14);
+
+    transform:
+        rotate(-3deg);
+
+    font-size:
+        11px;
+
+    line-height:
+        1.7;
+
+}
+
+
+.sticky-note {
+
+    width:
+        210px;
+
+    padding:
+        22px;
+
+    background:
+        #F7D4D6;
+
+    box-shadow:
+        4px 5px 9px rgba(49,30,15,0.14);
+
+    transform:
+        rotate(4deg);
+
+    position:
+        absolute;
+
+    right:
+        45px;
+
+    bottom:
+        65px;
+
+}
+
+
+.sticky-note h3,
+.paper-note h3 {
+
+    margin:
+        0 0 10px;
+
+    font-family:
+        var(--heading-font);
+
+    font-weight:
+        normal;
+
+    color:
+        var(--deep-mauve);
+
+}
+
+
+.sticky-note p,
+.paper-note p {
+
+    font-size:
+        11px;
+
+    line-height:
+        1.8;
+
+}
+
+
+/* ------------------------------------------------------------
+   Larger writing note
+   ------------------------------------------------------------ */
+
+.large-note {
+
+    max-width:
+        430px;
+
+    margin:
+        45px auto;
+
+    padding:
+        30px;
+
+    background:
+        #FFF9F4;
+
+    border:
+        1px solid var(--paper-border);
+
+    box-shadow:
+        4px 5px 12px rgba(49,30,15,0.12);
+
+    transform:
+        rotate(-1deg);
+
+}
+
+
+/* ============================================================
+   24. INDEX STICKER
+   ============================================================ */
+
+.index-sticker {
+
+    width:
+        75px;
+
+    height:
+        75px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+    background:
+        var(--accent-pink);
+
+    color:
+        var(--cream);
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        10px;
+
+    line-height:
+        1.2;
+
+    border-radius:
+        50%;
+
+    position:
+        absolute;
+
+    right:
+        40px;
+
+    bottom:
+        35px;
+
+    transform:
+        rotate(10deg);
+
+    box-shadow:
+        3px 4px 0 rgba(49,30,15,0.12);
+
+}
+
+
+/* ============================================================
+   25. POSTMARK
+   ============================================================ */
+
+.postmark {
+
+    width:
+        90px;
+
+    height:
+        90px;
+
+    border:
+        2px dashed var(--mauve);
+
+    border-radius:
+        50%;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        9px;
+
+    line-height:
+        1.5;
+
+    color:
+        var(--mauve);
+
+    position:
+        absolute;
+
+    right:
+        45px;
+
+    bottom:
+        40px;
+
+    transform:
+        rotate(-12deg);
+
+    opacity:
+        0.65;
+
+}
+
+
+/* ============================================================
+   26. TAPE
+   ============================================================ */
+
+.tape {
+
+    width:
+        120px;
+
+    height:
+        28px;
+
+    position:
+        absolute;
+
+    background:
+        rgba(247, 202, 205, 0.72);
+
+    box-shadow:
+        0 1px 2px rgba(49,30,15,0.08);
+
+}
+
+
+.tape-top-left {
+
+    top:
+        25px;
+
+    left:
+        35px;
+
+    transform:
+        rotate(-7deg);
+
+}
+
+
+.tape-bottom-right {
+
+    right:
+        30px;
+
+    bottom:
+        25px;
+
+    transform:
+        rotate(8deg);
+
+}
+
+
+/* ============================================================
+   27. BOOK CONTROLS
+   ============================================================ */
+
+.book-controls {
+
+    width:
+        min(1400px, 92vw);
+
+    margin-top:
+        14px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+}
+
+
+.book-control {
+
+    border:
+        1px solid var(--mauve);
+
+    background:
+        rgba(255,248,241,0.75);
+
+    color:
+        var(--deep-mauve);
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        11px;
+
+    padding:
+        8px 15px;
+
+    cursor:
+        pointer;
+
+    transition:
+        0.2s ease;
+
+}
+
+
+.book-control:hover {
+
+    background:
+        var(--deep-mauve);
+
+    color:
+        var(--cream);
+
+}
+
+
+.page-counter {
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        11px;
+
+    color:
+        var(--mauve);
+
+    letter-spacing:
+        2px;
+
+}
+
+
+/* ============================================================
+   28. KEYBOARD HINT
+   ============================================================ */
+
+.keyboard-hint {
+
+    margin:
+        7px 0 0;
+
+    font-size:
+        9px;
+
+    letter-spacing:
+        1px;
+
+    color:
+        var(--mauve);
+
+    opacity:
+        0.7;
+
+}
+
+
+/* ============================================================
+   29. PAGE EDGE DETAILS
+   ============================================================ */
+
+.page::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    pointer-events:
+        none;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(49,30,15,0.05),
+            transparent 5%,
+            transparent 95%,
+            rgba(49,30,15,0.05)
+        );
+
+    z-index:
+        5;
+
+}
+
+
+/* ============================================================
+   30. RESPONSIVE — TABLET
+   ============================================================ */
+
+@media (max-width: 1000px) {
+
+    :root {
+        --book-width: 94vw;
+        --book-height: 76vh;
+    }
+
+
+    .page-content {
+        padding:
+            35px 35px;
+    }
+
+
+    .page-title {
+        font-size:
+            32px;
+    }
+
+
+    .cover-title h1 {
+        font-size:
+            48px;
+    }
+
+
+    .polaroid {
+        width:
+            175px;
+    }
+
+}
+
+
+/* ============================================================
+   31. RESPONSIVE — MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    body {
+        overflow-x: hidden;
+    }
+
+
+    .site-header {
+
+        margin:
+            12px auto 8px;
+
+        width:
+            94vw;
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
+    }
+
+
+    .site-nav {
+        width:
+            100%;
+
+        justify-content:
+            flex-start;
+
+        flex-wrap:
+            wrap;
+
+    }
+
+
+    .archive {
+        padding:
+            5px 10px 20px;
+
+        min-height:
+            auto;
+
+    }
+
+
+    .book-wrapper {
+
+        width:
+            96vw;
+
+        height:
+            auto;
+
+        min-height:
+            700px;
+
+    }
+
+
+    /*
+       On small screens, the two-page book remains
+       visually intact but becomes vertically stacked.
+    */
+
+    .spread {
+
+        position:
+            relative;
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        min-height:
+            1400px;
+
+    }
+
+
+    .page {
+
+        width:
+            100%;
+
+        min-height:
+            700px;
+
+    }
+
+
+    .book::after {
+        display:
+            none;
+    }
+
+
+    .page-content {
+
+        padding:
+            35px 25px;
+
+    }
+
+
+    .book-controls {
+
+        width:
+            96vw;
+
+    }
+
+
+    .cover-image {
+
+        width:
+            190px;
+
+    }
+
+
+    .polaroid-stack {
+
+        height:
+            430px;
+
+    }
+
+}
+
+
+/* ============================================================
+   32. ACCESSIBILITY
+   ============================================================ */
+
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible {
+
+    outline:
+        2px solid var(--deep-mauve);
+
+    outline-offset:
+        3px;
+
+}
+
+
+/* ============================================================
+   33. REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        scroll-behavior:
+            auto !important;
+
+        transition:
+            none !important;
+
+        animation:
+            none !important;
+
+    }
+
+}
