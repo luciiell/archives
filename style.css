@@ -1,19 +1,10 @@
-/* ==========================================================
-   DREAMLAND JOURNAL
-   Four interactive spreads:
-
-   1 = COVER / INDEX
-   2 = SOCIALS / SERIES
-   3 = FRIENDS / DREAMLAND RESIDENTS
-   4 = MAPS / CLOSING
-
-   The physical page turn follows the supplied Janitor AI CSS:
-     left: 50%
-     transform-origin: left center
-     transform: rotateY(-180deg)
-     transform-style: preserve-3d
-     .back { transform: rotateY(-180deg); }
-========================================================== */
+/* =========================================================
+   DREAMLAND
+   The page-turning mechanism intentionally follows the
+   supplied Janitor AI CSS: a 50% sheet, transform-origin
+   at its left edge, rotateY(-180deg), and back faces also
+   rotated -180deg.
+========================================================= */
 
 :root {
   --pink-top: #D2899D;
@@ -30,12 +21,15 @@
   --ink-deep: #311E0F;
 
   --film: #47333a;
+
+  --book-width: calc(100% - 120px);
+  --book-max: 1300px;
 }
 
 
-/* ==========================================================
-   RESET
-========================================================== */
+/* =========================================================
+   RESET / BODY
+========================================================= */
 
 * {
   box-sizing: border-box;
@@ -60,46 +54,51 @@ body {
     );
 
   color: var(--ink-deep);
-
-  font-family:
-    Montserrat,
-    sans-serif;
+  font-family: Montserrat, sans-serif;
 }
 
-a,
-button {
-  -webkit-tap-highlight-color: transparent;
+a {
+  color: inherit;
 }
 
 img {
   display: block;
 }
 
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
 
-/* ==========================================================
-   URL ANCHORS
-========================================================== */
 
-.anchor {
+/* =========================================================
+   TARGET ANCHORS
+   They exist for the exact :target mechanism.
+========================================================= */
+
+.anchors {
   position: fixed;
   width: 1px;
   height: 1px;
-  left: 0;
   top: 0;
+  left: 0;
   overflow: hidden;
   pointer-events: none;
 }
 
+.anchors > div {
+  width: 1px;
+  height: 1px;
+}
 
-/* ==========================================================
+
+/* =========================================================
    HEADER
-========================================================== */
+========================================================= */
 
 .site-header {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  inset: 0 0 auto 0;
   height: 67px;
 
   display: flex;
@@ -108,7 +107,7 @@ img {
 
   padding: 0 22px;
 
-  background: rgba(210,137,157,.94);
+  background: rgba(210, 137, 157, .94);
   border-bottom: 1px solid white;
 
   z-index: 100;
@@ -122,7 +121,6 @@ img {
 
 .site-logo span {
   color: #73405a;
-
   font-family:
     "Segoe Print",
     "Bradley Hand",
@@ -137,13 +135,10 @@ img {
 
 .site-logo strong {
   color: #8f4c6d;
-
-  font-family:
-    "Special Elite",
-    cursive;
-
+  font-family: "Special Elite", cursive;
   font-size: 28px;
   font-weight: 400;
+  letter-spacing: .2px;
 
   text-shadow:
     0 1px 2px rgba(255,255,255,.95),
@@ -156,11 +151,7 @@ img {
   gap: 8px;
 
   color: white;
-
-  font-family:
-    "Special Elite",
-    cursive;
-
+  font-family: "Special Elite", cursive;
   font-size: 9px;
   letter-spacing: 1.4px;
 }
@@ -168,37 +159,32 @@ img {
 .status-dot {
   width: 7px;
   height: 7px;
-
   border-radius: 50%;
-
   background: white;
-
-  box-shadow:
-    0 0 8px rgba(255,255,255,.85);
+  box-shadow: 0 0 8px rgba(255,255,255,.85);
 }
 
 
-/* ==========================================================
-   BOOK
-========================================================== */
+/* =========================================================
+   MAIN / BOOK
+========================================================= */
 
 main {
   min-height: 100vh;
 
   padding-top: 87px;
-  padding-bottom: 24px;
+  padding-bottom: 28px;
 }
 
 .book {
   height: calc(100vh - 170px);
-
   min-height: 680px;
   max-height: 890px;
 
   position: relative;
 
-  width: calc(100% - 120px);
-  max-width: 1300px;
+  width: var(--book-width);
+  max-width: var(--book-max);
 
   left: 50%;
   transform: translateX(-50%);
@@ -216,8 +202,10 @@ main {
 }
 
 .book-wrapper-back {
+  width: 100%;
+  height: 100%;
+
   position: absolute;
-  inset: 0;
 
   border-radius: 5px;
 
@@ -232,13 +220,13 @@ main {
     );
 
   box-shadow:
-    0 14px 30px rgba(49,30,15,.20);
+    0 12px 30px rgba(49,30,15,.23);
 }
 
 
-/* ==========================================================
-   PAGES
-========================================================== */
+/* =========================================================
+   BASE PAGE
+========================================================= */
 
 .page {
   height: 100%;
@@ -253,8 +241,6 @@ main {
     inset 0 0 50px 50px var(--paper-edge);
 
   border: 1px solid var(--paper-edge);
-
-  overflow: hidden;
 }
 
 .page .background {
@@ -263,9 +249,9 @@ main {
 
   object-fit: cover;
 
-  position: absolute;
-
   z-index: 0;
+
+  position: absolute;
 }
 
 .p-first {
@@ -279,233 +265,171 @@ main {
 }
 
 
-/* ==========================================================
-   TURNING SHEETS
-
-   This is the original target-driven page flip system:
-   the sheet itself rotates from the left-center spine and
-   the back face counter-rotates so its contents read normally.
-========================================================== */
+/* =========================================================
+   THE IMPORTANT PART:
+   THIS IS THE ORIGINAL WORKING SHEET MODEL.
+========================================================= */
 
 .p-middle {
   left: 50%;
 
-  transform-origin:
-    left center;
+  transform-origin: left center;
 
-  transform:
-    rotateY(0deg);
+  transform: rotateY(0deg);
 
-  transition:
-    all 1s ease;
+  transition: all 1s ease;
 
-  transform-style:
-    preserve-3d;
+  transform-style: preserve-3d;
 }
 
 .p-middle-1 {
-  z-index: 4;
-}
-
-.p-middle-2 {
   z-index: 3;
 }
 
-.p-middle-3 {
+.p-middle-2 {
   z-index: 2;
 }
 
+
 /*
-  Spread 1 = COVER / INDEX
-  No sheet is turned.
+  When page-2 is targeted:
+  sheet 1 flips left, revealing SOCIALS,
+  while sheet 2 stays right, showing SERIES.
 
-  Spread 2 = SOCIALS / SERIES
-  Sheet 1 turns.
-
-  Spread 3 = FRIENDS / DREAMLAND RESIDENTS
-  Sheets 1 + 2 turn.
-
-  Spread 4 = MAPS / CLOSING
-  Sheets 1 + 2 + 3 turn.
-
-  The selectors intentionally match the old :target-based
-  mechanism instead of using a custom body state class.
+  When page-3 is targeted:
+  sheet 1 remains left,
+  and sheet 2 flips left, revealing FRIENDS,
+  while CREATORS remains right.
 */
 
 body:has(#page-2:target) .p-middle-1,
-body:has(#page-3:target) .p-middle-1,
-body:has(#page-4:target) .p-middle-1 {
-  transform:
-    rotateY(-180deg);
-
-  z-index:
-    2;
+body:has(#page-3:target) .p-middle-1 {
+  transform: rotateY(-180deg);
+  z-index: 2;
 }
 
-body:has(#page-3:target) .p-middle-2,
-body:has(#page-4:target) .p-middle-2 {
-  transform:
-    rotateY(-180deg);
-
-  z-index:
-    3;
+body:has(#page-3:target) .p-middle-2 {
+  transform: rotateY(-180deg);
+  z-index: 3;
 }
 
-body:has(#page-4:target) .p-middle-3 {
-  transform:
-    rotateY(-180deg);
 
-  z-index:
-    4;
-}
+/*
+  EXACTLY as supplied:
+  the back face rotates -180deg.
 
-/* ==========================================================
-   PAGE FACES
-   Same orientation as supplied CSS.
-========================================================== */
+  Do NOT change this to +180deg.
+  The parent sheet is the part that rotates.
+  The two -180deg rotations cancel so the back content
+  reads normally when the sheet is turned.
+*/
 
 .front,
 .back {
   position: absolute;
 
-  width: 100%;
   height: 100%;
+  width: 100%;
 
-  backface-visibility:
-    hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 
-  -webkit-backface-visibility:
-    hidden;
+  padding: 20px;
 
-  padding:
-    20px;
-
-  transform:
-    translateZ(0);
+  transform: translateZ(0);
 }
 
-
-/*
-  Keep the -180deg rotation exactly as supplied.
-  The parent sheet performs the actual page turn.
-*/
 .back {
-  transform:
-    rotateY(-180deg);
+  transform: rotateY(-180deg);
 }
 
 
-/* ==========================================================
-   CONTENT / HEADINGS
-========================================================== */
+/* =========================================================
+   INNER CONTENT
+========================================================= */
 
 .inner-cont {
   overflow: hidden;
   overflow-y: auto;
 
-  height:
-    calc(100% - 50px);
+  height: calc(100% - 50px);
+  width: 100%;
 
-  width:
-    100%;
+  padding: 10px 0;
 
-  padding:
-    10px 0;
-
-  scrollbar-width:
-    thin;
-
+  scrollbar-width: thin;
   scrollbar-color:
     var(--pink-dark)
     transparent;
 }
 
 .inner-cont::-webkit-scrollbar {
-  width:
-    5px;
+  width: 5px;
 }
 
 .inner-cont::-webkit-scrollbar-thumb {
-  background:
-    var(--pink-dark);
+  background: var(--pink-dark);
 }
+
+
+/* =========================================================
+   HEADINGS
+========================================================= */
 
 .front h3,
 .back h3 {
-  margin:
-    0;
+  margin: 0;
 
-  padding:
-    10px 5px 5px;
+  padding: 10px 5px 5px;
 
-  background:
-    var(--pink);
+  color: var(--ink);
 
-  color:
-    white;
+  background: var(--pink);
 
-  font-family:
-    "Special Elite",
-    cursive;
+  font-family: "Special Elite", cursive;
+  font-weight: 100;
+  line-height: 1;
+  font-size: 30px;
 
-  font-weight:
-    100;
+  position: relative;
 
-  line-height:
-    1;
+  width: 100%;
 
-  font-size:
-    30px;
-
-  width:
-    100%;
-
-  white-space:
-    nowrap;
-
-  overflow:
-    hidden;
-
-  text-overflow:
-    ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .front h4,
 .back h4 {
-  font-family:
-    "Special Elite",
-    cursive;
+  padding: 10px 5px 5px;
 
-  font-weight:
-    100;
+  font-family: "Special Elite", cursive;
+  font-weight: 100;
+  line-height: 1;
+  font-size: 20px;
+
+  position: relative;
+
+  width: 100%;
 }
 
 
-/* ==========================================================
-   COVER
-   Positions taken from the supplied CSS.
-========================================================== */
+/* =========================================================
+   COVER — EXACT POSITIONING LANGUAGE FROM SUPPLIED CSS
+========================================================= */
 
 .p-first img {
-  width:
-    100%;
-
-  height:
-    100%;
-
-  object-fit:
-    cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .p-first .film-strip-wrap {
-  position:
-    absolute;
+  position: absolute;
 
-  left:
-    70%;
-
-  top:
-    50%;
+  left: 70%;
+  top: 50%;
 
   transform:
     translate(-50%, -50%);
@@ -515,455 +439,303 @@ body:has(#page-4:target) .p-middle-3 {
 }
 
 .p-first .main-img {
-  width:
-    300px;
+  position: absolute;
 
-  height:
-    450px;
-
-  position:
-    absolute;
-
-  left:
-    50%;
-
-  top:
-    50%;
+  left: 50%;
+  top: 50%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .back-big {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    350px;
+  width: 350px;
+  height: 200px;
 
-  height:
-    200px;
-
-  left:
-    40%;
-
-  top:
-    75%;
+  left: 40%;
+  top: 75%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-mid-1 {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    100px;
+  width: 100px;
+  height: 150px;
 
-  height:
-    150px;
-
-  left:
-    40%;
-
-  top:
-    85%;
+  left: 40%;
+  top: 85%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-mid-2 {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    150px;
+  width: 150px;
+  height: 150px;
 
-  height:
-    150px;
-
-  left:
-    80%;
-
-  top:
-    56%;
+  left: 80%;
+  top: 56%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-mid-3 {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    100px;
+  width: 100px;
+  height: 180px;
 
-  height:
-    180px;
-
-  left:
-    25%;
-
-  top:
-    15%;
+  left: 25%;
+  top: 15%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-sml-1 {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    50px;
+  width: 50px;
+  height: 80px;
 
-  height:
-    80px;
-
-  left:
-    28%;
-
-  top:
-    88%;
+  left: 28%;
+  top: 88%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-sml-2 {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    100px;
+  width: 100px;
+  height: 60px;
 
-  height:
-    60px;
-
-  left:
-    55%;
-
-  top:
-    89%;
+  left: 55%;
+  top: 89%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-sml-3 {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    80px;
+  width: 80px;
+  height: 80px;
 
-  height:
-    80px;
-
-  left:
-    80%;
-
-  top:
-    45%;
+  left: 80%;
+  top: 45%;
 
   transform:
     translate(-50%, -50%);
 
-  border-radius:
-    50px;
+  border-radius: 50px;
 }
 
 .p-first .front-sml-4 {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    60px;
+  width: 60px;
+  height: 70px;
 
-  height:
-    70px;
-
-  left:
-    85%;
-
-  top:
-    30%;
+  left: 85%;
+  top: 30%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-sml-5 {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    80px;
+  width: 80px;
+  height: 80px;
 
-  height:
-    80px;
-
-  left:
-    15%;
-
-  top:
-    20%;
+  left: 15%;
+  top: 20%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-strip-1 {
-  position:
-    absolute;
+  position: absolute;
 
-  left:
-    20%;
+  width: auto;
 
-  top:
-    32%;
+  left: 20%;
+  top: 32%;
 
   transform:
     translate(-50%, -50%);
 
-  padding:
-    0 5px;
+  padding: 0 5px;
 }
 
 .p-first .front-strip-2 {
-  position:
-    absolute;
+  position: absolute;
 
-  left:
-    30%;
+  width: auto;
 
-  top:
-    40%;
+  left: 30%;
+  top: 40%;
 
   transform:
     translate(-50%, -50%);
 
-  padding:
-    0 5px;
+  padding: 0 5px;
 }
 
 .p-first p {
-  font-family:
-    "Special Elite",
-    cursive;
+  font-family: "Special Elite", cursive;
 }
 
 .p-first .front-strip-3 {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    20px;
+  width: 20px;
+  height: 220px;
 
-  height:
-    220px;
-
-  left:
-    12%;
-
-  top:
-    65%;
+  left: 12%;
+  top: 65%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-strip-4 {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    20px;
+  width: 20px;
+  height: 120px;
 
-  height:
-    120px;
-
-  left:
-    5%;
-
-  top:
-    50%;
+  left: 5%;
+  top: 50%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-strip-5 {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    15px;
+  width: 15px;
+  height: 120px;
 
-  height:
-    120px;
-
-  left:
-    75%;
-
-  top:
-    30%;
+  left: 75%;
+  top: 30%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-strip-6 {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    15px;
+  width: 15px;
+  height: 200px;
 
-  height:
-    200px;
-
-  left:
-    75%;
-
-  top:
-    75%;
+  left: 75%;
+  top: 75%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-strip-7 {
-  position:
-    absolute;
+  position: absolute;
 
-  width:
-    15px;
+  width: 15px;
+  height: 150px;
 
-  height:
-    150px;
-
-  left:
-    85%;
-
-  top:
-    70%;
+  left: 85%;
+  top: 70%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-username {
-  position:
-    absolute;
+  position: absolute;
 
-  left:
-    65%;
-
-  top:
-    75%;
+  left: 65%;
+  top: 75%;
 
   transform:
     translate(-50%, -50%);
 
-  color:
-    white;
+  color: white;
 
-  background:
-    var(--pink-dark);
+  background: var(--pink-dark);
 
-  padding:
-    0 5px;
+  padding: 0 5px;
 }
 
 .p-first .front-username h2 {
-  margin:
-    0;
+  margin: 0;
 
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-weight:
-    100;
-
-  letter-spacing:
-    2px;
-
-  line-height:
-    1;
+  font-family: "Special Elite", cursive;
+  font-weight: 100;
+  letter-spacing: 2px;
+  line-height: 1;
 
   transform:
     translateY(7px);
 
-  font-size:
-    50px;
+  font-size: 50px;
 }
 
 
-/* ==========================================================
+/* =========================================================
    FILM STRIP
-========================================================== */
+========================================================= */
 
 .film-strip-wrap {
-  border:
-    1px solid
-    var(--film);
+  border: 1px solid var(--film);
 
-  display:
-    grid;
+  display: grid;
+  grid-auto-flow: column;
 
-  grid-auto-flow:
-    column;
+  width: fit-content;
+  height: 100%;
 
-  width:
-    fit-content;
+  background: var(--film);
 
-  height:
-    100%;
-
-  background:
-    var(--film);
-
-  padding:
-    10px 0;
+  padding: 10px 0;
 }
 
 .film-strip-wrap .film-strip-inner {
-  display:
-    grid;
+  display: grid;
 
-  height:
-    100%;
+  height: 100%;
 
-  gap:
-    15px;
+  gap: 15px;
 
-  border:
-    1px solid
-    var(--film);
+  border: 1px solid var(--film);
 
-  width:
-    fit-content;
+  width: fit-content;
 
-  background:
-    var(--film);
+  background: var(--film);
 
   grid-template-rows:
     repeat(4, 1fr);
+
+  min-height: 0;
 }
 
 .film-strip-wrap .film-strip-side {
-  border:
-    1px solid
-    var(--film);
+  border: 1px solid var(--film);
 
-  width:
-    15px;
+  width: 15px;
 
   background:
     repeating-linear-gradient(
@@ -973,131 +745,76 @@ body:has(#page-4:target) .p-middle-3 {
       var(--film) 20px
     );
 
-  margin:
-    0 5px;
+  margin: 0 5px;
 }
 
 .film-strip-wrap .img {
-  width:
-    10vw;
-
-  max-width:
-    130px;
-
-  min-width:
-    100px;
-
-  min-height:
-    0;
-
-  overflow:
-    hidden;
+  width: 10vw;
+  max-width: 130px;
+  min-width: 100px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .film-strip-wrap .img img {
-  width:
-    100%;
+  width: 100%;
+  height: 100%;
 
-  height:
-    100%;
-
-  object-fit:
-    cover;
+  object-fit: cover;
 }
 
 
-/* ==========================================================
-   INDEX
-========================================================== */
+/* =========================================================
+   INDEX — REPLACES THE ORIGINAL OVERVIEW
+========================================================= */
 
 .index-wrap {
-  color:
-    var(--ink);
-
-  font-family:
-    "Cutive Mono",
-    monospace;
-
-  position:
-    relative;
+  color: var(--ink);
+  font-family: "Cutive Mono", monospace;
+  position: relative;
 }
 
 .index-intro {
-  display:
-    flex;
+  min-height: 145px;
 
-  align-items:
-    flex-start;
+  display: flex;
+  gap: 12px;
 
-  gap:
-    12px;
+  align-items: flex-start;
 
-  min-height:
-    130px;
+  margin-bottom: 14px;
 }
 
-.index-sticker {
-  width:
-    120px;
+.index-intro img {
+  width: 145px;
+  height: 145px;
+  object-fit: contain;
 
-  height:
-    120px;
-
-  flex:
-    0 0 120px;
-}
-
-.index-sticker img {
-  width:
-    100%;
-
-  height:
-    100%;
-
-  object-fit:
-    contain;
+  flex: 0 0 145px;
 }
 
 .index-intro p {
-  margin:
-    0 0 10px;
+  margin: 0 0 12px;
 
-  font-size:
-    10px;
-
-  line-height:
-    1.45;
+  font-size: 11px;
+  line-height: 1.45;
 }
 
 .index-hand {
-  color:
-    var(--pink-dark);
-
-  font-family:
-    "Special Elite",
-    cursive !important;
-
-  font-size:
-    15px !important;
-
-  transform:
-    rotate(-2deg);
+  color: var(--pink-dark);
+  font-family: "Special Elite", cursive !important;
+  font-size: 15px !important;
+  transform: rotate(-2deg);
 }
 
 .index-list {
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  gap:
-    5px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .index-entry {
-  display:
-    grid;
+  display: grid;
 
   grid-template-columns:
     25px
@@ -1105,24 +822,20 @@ body:has(#page-4:target) .p-middle-3 {
     1fr
     max-content;
 
-  gap:
-    7px;
+  gap: 7px;
 
-  align-items:
-    center;
+  align-items: center;
 
   padding:
     8px 3px;
 
-  text-decoration:
-    none;
+  text-decoration: none;
 
-  color:
-    var(--ink);
+  color: var(--ink);
 
   border-bottom:
     1px solid
-    rgba(198,153,165,.62);
+    rgba(198,153,165,.65);
 
   font-family:
     "Special Elite",
@@ -1134,66 +847,38 @@ body:has(#page-4:target) .p-middle-3 {
 }
 
 .index-entry:hover {
-  color:
-    var(--pink-dark);
-
-  padding-left:
-    8px;
+  color: var(--pink-dark);
+  padding-left: 8px;
 }
 
-.index-entry .index-number {
-  color:
-    var(--pink-dark);
-
-  font-family:
-    "Cutive Mono",
-    monospace;
-
-  font-size:
-    10px;
+.index-entry > span {
+  color: var(--pink-dark);
+  font-family: "Cutive Mono", monospace;
+  font-size: 10px;
 }
 
-.index-entry strong {
-  font-size:
-    12px;
-
-  font-weight:
-    400;
-
-  white-space:
-    nowrap;
+.index-entry > strong {
+  font-size: 14px;
+  font-weight: 400;
 }
 
-.index-entry i {
-  height:
-    1px;
-
-  border-bottom:
-    1px dotted
-    var(--pink-dark);
+.index-entry > i {
+  height: 1px;
+  border-bottom: 1px dotted var(--pink-dark);
 }
 
-.index-entry small {
-  color:
-    var(--pink-dark);
-
-  font-family:
-    "Cutive Mono",
-    monospace;
-
-  font-size:
-    8px;
-
-  white-space:
-    nowrap;
+.index-entry > small {
+  color: var(--pink-dark);
+  font-family: "Cutive Mono", monospace;
+  font-size: 8px;
+  white-space: nowrap;
 }
 
 .index-note {
-  margin-top:
-    14px;
+  margin-top: 17px;
 
   padding:
-    9px;
+    11px;
 
   border:
     1px dashed
@@ -1202,61 +887,51 @@ body:has(#page-4:target) .p-middle-3 {
   background:
     rgba(219,180,196,.12);
 
-  text-align:
-    center;
+  text-align: center;
 }
 
 .index-note span {
-  color:
-    var(--pink-dark);
-
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    9px;
+  color: var(--pink-dark);
+  font-family: "Special Elite", cursive;
+  font-size: 10px;
 }
 
 .index-note p {
   margin:
-    6px 0 0;
+    7px 0 0;
 
-  font-size:
-    8px;
+  font-size: 9px;
+  line-height: 1.4;
+}
 
-  line-height:
-    1.4;
+.index-sticker-small {
+  position: absolute;
+
+  right: 5px;
+  bottom: 0;
+
+  width: 72px !important;
+  height: 72px !important;
 }
 
 
-/* ==========================================================
+/* =========================================================
    SOCIALS
-========================================================== */
+========================================================= */
 
 .socials-list {
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  gap:
-    10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .social-link {
-  display:
-    flex;
+  display: flex;
+  align-items: center;
 
-  align-items:
-    center;
+  gap: 10px;
 
-  gap:
-    10px;
-
-  text-decoration:
-    none;
+  text-decoration: none;
 
   padding:
     8px 12px;
@@ -1267,116 +942,89 @@ body:has(#page-4:target) .p-middle-3 {
 
   background:
     rgba(173,128,154,.15);
+
+  transition:
+    background .3s ease,
+    transform .3s ease;
 }
 
 .social-link:hover {
   background:
     rgba(173,128,154,.35);
+
+  transform:
+    translateX(4px);
 }
 
 .social-icon {
-  width:
-    28px;
+  width: 28px;
+  height: 28px;
 
-  height:
-    28px;
-
-  background:
-    beige;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  color:
-    var(--pink-dark);
+  background: beige;
 
   box-shadow:
     inset
     0 0 0 3px
     var(--pink-dark);
 
-  flex-shrink:
-    0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  color: var(--pink-dark);
 }
 
 .social-platform {
-  color:
-    var(--ink-deep);
+  color: var(--ink-deep);
 
   font-family:
     "Special Elite",
     cursive;
 
-  font-size:
-    14px;
+  font-size: 14px;
+  line-height: 1;
 
-  display:
-    block;
+  display: block;
 }
 
 .social-handle {
-  color:
-    #543943;
+  color: #543943;
 
   font-family:
     "Cutive Mono",
     monospace;
 
-  font-size:
-    10px;
+  font-size: 10px;
 
-  display:
-    block;
+  display: block;
 
-  margin-top:
-    2px;
+  margin-top: 2px;
 }
 
 .p1-deco-strip {
-  height:
-    15px;
+  height: 15px;
+  margin: 12px 0;
 
-  margin:
-    12px 0;
-
-  background:
-    var(--pink-mid);
+  background: var(--pink-mid);
 }
 
-
-/* ==========================================================
-   POLAROIDS
-========================================================== */
-
 .polaroid-gallery-wrap {
-  display:
-    flex;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 
-  flex-wrap:
-    wrap;
-
-  justify-content:
-    center;
+  justify-content: center;
 }
 
 .polaroid {
-  width:
-    170px;
+  width: 170px;
+  height: 270px;
 
-  height:
-    270px;
+  padding: 15px;
 
-  padding:
-    15px;
-
-  margin:
-    5px;
+  margin: 5px;
 
   background:
     var(--pink-paper);
@@ -1390,19 +1038,17 @@ body:has(#page-4:target) .p-middle-3 {
     var(--ink);
 
   transition:
-    transform .35s ease,
-    box-shadow .35s ease;
+    all .5s ease;
 }
 
 .polaroid img {
-  width:
-    100%;
+  width: 100%;
+  height: auto;
 
   aspect-ratio:
     23 / 31;
 
-  object-fit:
-    cover;
+  object-fit: cover;
 
   border:
     2px solid
@@ -1410,50 +1056,41 @@ body:has(#page-4:target) .p-middle-3 {
 }
 
 .polaroid p {
+  margin:
+    5px 0 0;
+
   color:
     var(--ink-deep);
 
-  text-align:
-    center;
+  text-align: center;
 
   font-family:
     "Special Elite",
     cursive;
-
-  margin:
-    5px 0 0;
 }
 
 .polaroid:hover {
   transform:
-    translateY(-4px)
-    rotate(-2deg);
+    rotate(-3deg)
+    translateY(-4px);
 
-  box-shadow:
-    4px 4px 8px
-    rgba(49,30,15,.24);
-
-  z-index:
-    2;
+  z-index: 4;
 }
 
 
-/* ==========================================================
-   SERIES
-========================================================== */
+/* =========================================================
+   SERIES / POSTCARD FLIP
+   Again matching the supplied working CSS.
+========================================================= */
 
 .series-wrap {
-  display:
-    flex;
+  display: flex;
 
-  flex-wrap:
-    wrap;
+  flex-wrap: wrap;
 
-  justify-content:
-    center;
+  justify-content: center;
 
-  gap:
-    20px;
+  gap: 20px;
 }
 
 .postcard-wrap {
@@ -1463,11 +1100,8 @@ body:has(#page-4:target) .p-middle-3 {
   height:
     calc(50% - 10px);
 
-  max-height:
-    350px;
-
-  min-height:
-    250px;
+  max-height: 350px;
+  min-height: 250px;
 
   perspective:
     5000px;
@@ -1477,67 +1111,106 @@ body:has(#page-4:target) .p-middle-3 {
 }
 
 .flip-card {
-  width:
-    100%;
+  width: 100%;
+  height: 100%;
 
-  height:
-    100%;
-
-  position:
-    relative;
+  position: relative;
 
   transform-style:
     preserve-3d;
+
+  transition:
+    transform .7s ease;
+
+  animation:
+    postcard-unflip .5s ease-in-out forwards;
 }
 
-.flip-card:hover {
-  transform:
-    scale(1.02);
+.postcard-wrap:hover .flip-card {
+  animation:
+    postcard-flip .5s ease forwards;
 }
 
-.flip-card.keyboard-flipped {
-  transform:
-    rotateY(180deg);
+@keyframes postcard-flip {
+  0% {
+    transform:
+      rotateY(0deg)
+      scale(1);
+  }
+
+  30% {
+    transform:
+      rotateY(0deg)
+      scale(1.05);
+  }
+
+  70% {
+    transform:
+      rotateY(180deg)
+      scale(1.05);
+  }
+
+  100% {
+    transform:
+      rotateY(180deg)
+      scale(1);
+  }
+}
+
+@keyframes postcard-unflip {
+  0% {
+    transform:
+      rotateY(180deg)
+      scale(1);
+  }
+
+  30% {
+    transform:
+      rotateY(180deg)
+      scale(1.05);
+  }
+
+  70% {
+    transform:
+      rotateY(0deg)
+      scale(1.05);
+  }
+
+  100% {
+    transform:
+      rotateY(0deg)
+      scale(1);
+  }
 }
 
 .face {
-  position:
-    absolute;
+  position: absolute;
 
-  inset:
-    0;
+  inset: 0;
 
   border:
     2px solid
     var(--pink-mid);
 
-  backface-visibility:
-    hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 
-  -webkit-backface-visibility:
-    hidden;
-
-  overflow:
-    hidden;
+  overflow: hidden;
 }
 
 .face-front img {
-  width:
-    100%;
+  width: 100%;
+  height: 100%;
 
-  height:
-    100%;
+  object-fit: cover;
 
-  object-fit:
-    cover;
+  display: block;
 }
 
 .face-front .postcard-overlay {
-  position:
-    absolute;
+  position: absolute;
 
-  inset:
-    0;
+  inset: 0;
 
   background:
     linear-gradient(
@@ -1546,14 +1219,11 @@ body:has(#page-4:target) .p-middle-3 {
       rgba(49,30,15,.10) 55%
     );
 
-  display:
-    flex;
+  display: flex;
 
-  flex-direction:
-    column;
+  flex-direction: column;
 
-  justify-content:
-    flex-end;
+  justify-content: flex-end;
 
   padding:
     28px 32px;
@@ -1564,8 +1234,7 @@ body:has(#page-4:target) .p-middle-3 {
     "Alegreya Sans",
     sans-serif;
 
-  font-size:
-    10px;
+  font-size: 10px;
 
   letter-spacing:
     2.5px;
@@ -1576,13 +1245,12 @@ body:has(#page-4:target) .p-middle-3 {
   color:
     rgba(255,255,255,.55);
 
-  margin:
-    0 0 8px;
+  margin-bottom:
+    8px;
 }
 
 .face-front h1 {
-  margin:
-    0;
+  margin: 0;
 
   font-family:
     "Special Elite",
@@ -1596,17 +1264,24 @@ body:has(#page-4:target) .p-middle-3 {
 
   color:
     #fff;
+
+  line-height:
+    1.15;
+
+  letter-spacing:
+    -.5px;
 }
 
 .face-back {
   transform:
     rotateY(180deg);
 
-  display:
-    flex;
+  display: flex;
 
   background:
     #faf7f0;
+
+  text-decoration: none;
 }
 
 .pc-left {
@@ -1614,13 +1289,14 @@ body:has(#page-4:target) .p-middle-3 {
     1.3;
 
   padding:
+    20px
+    20px
+    16px
     20px;
 
-  display:
-    flex;
+  display: flex;
 
-  flex-direction:
-    column;
+  flex-direction: column;
 
   justify-content:
     space-between;
@@ -1641,14 +1317,20 @@ body:has(#page-4:target) .p-middle-3 {
   font-size:
     20px;
 
+  font-weight:
+    400;
+
+  letter-spacing:
+    -.5px;
+
+  line-height:
+    1.2;
+
   margin:
     0 0 10px;
 }
 
 .pc-body {
-  color:
-    var(--ink-deep);
-
   font-size:
     11px;
 
@@ -1658,9 +1340,18 @@ body:has(#page-4:target) .p-middle-3 {
   flex:
     1;
 
+  padding-top:
+    4px;
+
   font-family:
     "Cutive Mono",
     monospace;
+
+  height:
+    100%;
+
+  color:
+    var(--ink-deep);
 }
 
 .pc-from-label {
@@ -1673,6 +1364,9 @@ body:has(#page-4:target) .p-middle-3 {
 
   font-size:
     9px;
+
+  text-transform:
+    uppercase;
 
   letter-spacing:
     1px;
@@ -1699,8 +1393,7 @@ body:has(#page-4:target) .p-middle-3 {
   padding:
     18px 20px;
 
-  display:
-    flex;
+  display: flex;
 
   flex-direction:
     column;
@@ -1710,11 +1403,13 @@ body:has(#page-4:target) .p-middle-3 {
 }
 
 .pc-stamp-row {
-  display:
-    flex;
+  display: flex;
 
   justify-content:
     flex-end;
+
+  align-items:
+    flex-start;
 
   gap:
     10px;
@@ -1727,6 +1422,9 @@ body:has(#page-4:target) .p-middle-3 {
   height:
     64px;
 
+  border-radius:
+    2px;
+
   display:
     flex;
 
@@ -1735,6 +1433,12 @@ body:has(#page-4:target) .p-middle-3 {
 
   justify-content:
     center;
+
+  position:
+    relative;
+
+  flex-shrink:
+    0;
 
   background:
     #d1b0cf;
@@ -1750,6 +1454,9 @@ body:has(#page-4:target) .p-middle-3 {
 
   font-size:
     20px;
+
+  z-index:
+    1;
 }
 
 .postmark {
@@ -1758,6 +1465,9 @@ body:has(#page-4:target) .p-middle-3 {
 
   height:
     56px;
+
+  border-radius:
+    50%;
 
   display:
     flex;
@@ -1768,21 +1478,39 @@ body:has(#page-4:target) .p-middle-3 {
   justify-content:
     center;
 
-  border:
-    1.5px solid
-    #916e86;
-
-  border-radius:
-    50%;
-
   transform:
     rotate(-12deg);
 
+  opacity:
+    .55;
+
+  margin-top:
+    4px;
+
+  border:
+    1.5px solid
+    #916e86;
+}
+
+.postmark span {
   color:
     #916e86;
 
+  font-family:
+    "Alegreya Sans",
+    sans-serif;
+
   font-size:
     8px;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    .4px;
+
+  line-height:
+    1.5;
 
   text-align:
     center;
@@ -1801,6 +1529,9 @@ body:has(#page-4:target) .p-middle-3 {
 
 .address-line {
   height:
+    1px;
+
+  border-radius:
     1px;
 
   background:
@@ -1823,9 +1554,9 @@ body:has(#page-4:target) .p-middle-3 {
 }
 
 
-/* ==========================================================
+/* =========================================================
    FRIENDS
-========================================================== */
+========================================================= */
 
 .friends-wrap {
   display:
@@ -1838,71 +1569,178 @@ body:has(#page-4:target) .p-middle-3 {
     center;
 }
 
-.friends-wrap > a:nth-child(4n+1) {
+.friends-wrap a:nth-child(4n+1) {
   transform:
     rotate(3deg);
 }
 
-.friends-wrap > a:nth-child(4n+2) {
+.friends-wrap a:nth-child(4n+2) {
   transform:
     rotate(-1deg);
 }
 
-.friends-wrap > a:nth-child(4n+3) {
+.friends-wrap a:nth-child(4n+3) {
   transform:
     rotate(2deg);
 }
 
-.friends-wrap > a:nth-child(4n) {
+.friends-wrap a:nth-child(4n) {
   transform:
     rotate(-1deg);
 }
 
+.friends-wrap .polaroid {
+  width:
+    170px;
+}
 
-/* ==========================================================
-   DREAMLAND RESIDENTS
+.friends-wrap a:hover .polaroid {
+  box-shadow:
+    5px 5px 5px
+    var(--ink-deep);
+}
 
-   Residents intentionally use the same loose polaroid style
-   as the Friends section. There are no description boxes.
-========================================================== */
 
-.resident-grid {
+/* =========================================================
+   CREATORS
+========================================================= */
+
+.film-strip-wrap-wrap {
   display:
     flex;
 
-  flex-wrap:
-    wrap;
+  flex-direction:
+    row;
 
   justify-content:
-    center;
+    space-evenly;
+
+  position:
+    relative;
+
+  min-height:
+    100%;
 }
 
-.resident-card {
-  display:
-    block;
-
-  flex:
-    0 0 auto;
-
-  margin:
-    0;
-}
-
-.resident-polaroid {
-  width:
-    170px;
-
+.p-last .film-strip-wrap .img {
   height:
-    270px;
+    100px;
 }
 
-.resident-image {
+.p-last .film-strip-wrap .img {
+  filter:
+    grayscale(50%);
+}
+
+.p-last .film-strip-wrap p {
+  text-align:
+    center;
+
+  font-family:
+    "Special Elite",
+    cursive;
+
+  opacity:
+    0;
+
+  position:
+    absolute;
+
   width:
     100%;
 
-  aspect-ratio:
-    23 / 31;
+  text-shadow:
+    0 0 3px white;
 
+  font-weight:
+    600;
+
+  color:
+    var(--ink-deep);
+
+  background:
+    rgba(115,87,96,.60);
+
+  z-index:
+    2;
+}
+
+.p-last .film-strip-wrap .img:hover {
+  filter:
+    grayscale(0);
+}
+
+.p-last .film-strip-wrap .img:hover p {
+  opacity:
+    1;
+}
+
+.film-strip-wrap-wrap [class*="sticker-"] {
+  position:
+    absolute;
+}
+
+.film-strip-wrap-wrap [class*="sticker-"] img {
+  object-fit:
+    contain;
+
+  width:
+    100px;
+
+  height:
+    100px;
+}
+
+.film-strip-wrap-wrap .sticker-1 {
+  left:
+    calc((100% - 2*175px + 5px)/3);
+
+  transform:
+    translateX(-50%);
+
+  top:
+    25%;
+}
+
+.film-strip-wrap-wrap .sticker-2 {
+  left:
+    calc((100% - 2*175px + 5px)/3 + 175px);
+
+  transform:
+    translateX(-50%);
+
+  bottom:
+    10%;
+}
+
+.film-strip-wrap-wrap .sticker-3 {
+  right:
+    calc((100% - 2*175px + 5px)/3 + 175px);
+
+  transform:
+    translateX(50%);
+
+  top:
+    60%;
+}
+
+.film-strip-wrap-wrap .sticker-4 {
+  right:
+    calc((100% - 2*175px + 5px)/3);
+
+  transform:
+    translateX(50%);
+
+  top:
+    20%;
+}
+
+
+/* =========================================================
+   CLOSING
+========================================================= */
+
+.closing-page {
   display:
     flex;
 
@@ -1912,459 +1750,43 @@ body:has(#page-4:target) .p-middle-3 {
   justify-content:
     center;
 
-  background:
-    rgba(255,255,255,.50);
+  flex-direction:
+    column;
 
-  border:
-    2px solid
-    var(--ink);
+  text-align:
+    center;
 
-  color:
-    var(--pink-dark);
-
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    8px;
-
-  letter-spacing:
-    1px;
-
-  overflow:
-    hidden;
-}
-
-.resident-grid > .resident-card:nth-child(4n+1) {
-  transform:
-    rotate(3deg);
-}
-
-.resident-grid > .resident-card:nth-child(4n+2) {
-  transform:
-    rotate(-1deg);
-}
-
-.resident-grid > .resident-card:nth-child(4n+3) {
-  transform:
-    rotate(2deg);
-}
-
-.resident-grid > .resident-card:nth-child(4n) {
-  transform:
-    rotate(-1deg);
-}
-
-/* ==========================================================
-   MAPS PAGE
-========================================================== */
-
-.maps-wrap {
   color:
     var(--ink);
 }
 
-.maps-intro {
-  margin:
-    0 0 12px;
-
-  padding:
-    9px 10px;
-
-  border:
-    1px dashed
-    var(--pink-dark);
-
+.closing-page h3 {
   background:
-    rgba(219,180,196,.12);
-}
+    transparent;
 
-.maps-intro p {
   margin:
     0;
+
+  padding:
+    0;
+
+  white-space:
+    normal;
+}
+
+.closing-page p {
+  max-width:
+    300px;
 
   font-family:
     "Cutive Mono",
     monospace;
 
   font-size:
-    9px;
+    11px;
 
   line-height:
-    1.4;
-}
-
-.map-card {
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    13px;
-
-  width:
-    100%;
-
-  margin:
-    0 0 12px;
-
-  padding:
-    8px;
-
-  border:
-    1px solid
-    var(--pink-dark);
-
-  background:
-    rgba(255,255,255,.25);
-
-  color:
-    var(--ink);
-
-  text-align:
-    left;
-
-  cursor:
-    pointer;
-}
-
-.map-card:hover {
-  background:
-    rgba(219,180,196,.28);
-}
-
-.map-preview {
-  flex:
-    0 0 120px;
-
-  width:
-    120px;
-
-  height:
-    82px;
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  border:
-    1px dashed
-    var(--pink-dark);
-
-  background:
-    rgba(240,221,232,.75);
-
-  color:
-    var(--pink-dark);
-
-  font-family:
-    "Special Elite",
-    cursive;
-}
-
-.map-preview span {
-  font-size:
-    13px;
-}
-
-.map-preview small {
-  margin-top:
-    5px;
-
-  font-size:
-    7px;
-
-  letter-spacing:
-    1px;
-}
-
-.map-card strong {
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    14px;
-
-  font-weight:
-    400;
-}
-
-
-/* ==========================================================
-   MAP FULLSCREEN VIEWER
-========================================================== */
-
-.map-viewer {
-  position:
-    fixed;
-
-  inset:
-    0;
-
-  display:
-    none;
-
-  flex-direction:
-    column;
-
-  background:
-    rgba(25,17,21,.96);
-
-  z-index:
-    10000;
-}
-
-.map-viewer.open {
-  display:
-    flex;
-}
-
-.map-toolbar {
-  flex:
-    0 0 54px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  padding:
-    0 12px;
-
-  background:
-    var(--pink-top);
-
-  border-bottom:
-    1px solid
-    white;
-
-  color:
-    white;
-}
-
-.map-toolbar strong {
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    14px;
-
-  font-weight:
-    400;
-}
-
-.map-toolbar-actions {
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    6px;
-}
-
-.map-toolbar-actions button {
-  min-width:
-    34px;
-
-  height:
-    30px;
-
-  padding:
-    0 9px;
-
-  border:
-    1px solid
-    white;
-
-  background:
-    var(--pink-mid);
-
-  color:
-    white;
-
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    10px;
-}
-
-.map-toolbar-actions button:hover {
-  background:
-    var(--pink-dark);
-}
-
-.map-viewport {
-  position:
-    relative;
-
-  flex:
-    1;
-
-  overflow:
-    hidden;
-
-  touch-action:
-    none;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-}
-
-.map-stage {
-  position:
-    absolute;
-
-  left:
-    50%;
-
-  top:
-    50%;
-
-  transform:
-    translate(-50%, -50%)
-    scale(1);
-
-  transform-origin:
-    center center;
-
-  cursor:
-    grab;
-
-  will-change:
-    transform;
-}
-
-.map-stage.dragging {
-  cursor:
-    grabbing;
-}
-
-.map-stage img {
-  max-width:
-    none;
-
-  width:
-    auto;
-
-  height:
-    auto;
-
-  max-height:
-    none;
-
-  user-select:
-    none;
-
-  -webkit-user-drag:
-    none;
-
-  display:
-    block;
-}
-
-.map-viewer-placeholder {
-  color:
-    rgba(255,255,255,.75);
-
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    14px;
-
-  letter-spacing:
-    1px;
-
-  text-align:
-    center;
-}
-
-.map-viewer.has-image .map-viewer-placeholder {
-  display:
-    none;
-}
-
-.map-viewer-hint {
-  flex:
-    0 0 31px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  color:
-    rgba(255,255,255,.65);
-
-  font-family:
-    "Alegreya Sans",
-    sans-serif;
-
-  font-size:
-    8px;
-
-  letter-spacing:
-    1px;
-}
-
-
-/* ==========================================================
-   CLOSING PAGE
-========================================================== */
-
-.closing-page {
-  position:
-    absolute;
-
-  inset:
-    0;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  flex-direction:
-    column;
-
-  text-align:
-    center;
+    1.5;
 }
 
 .closing-symbol {
@@ -2391,51 +1813,18 @@ body:has(#page-4:target) .p-middle-3 {
     var(--pink-dark);
 
   margin-bottom:
-    15px;
-}
-
-.closing-page h3 {
-  margin:
-    0;
-
-  background:
-    transparent;
-
-  color:
-    var(--ink);
-
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    24px;
-}
-
-.closing-page p {
-  max-width:
-    260px;
-
-  margin:
-    8px 0;
-
-  font-family:
-    "Cutive Mono",
-    monospace;
-
-  font-size:
-    10px;
-
-  line-height:
-    1.5;
+    16px;
 }
 
 .return-index {
+  display:
+    inline-block;
+
   margin-top:
-    10px;
+    12px;
 
   padding:
-    8px 10px;
+    8px 11px;
 
   border:
     1px solid
@@ -2453,16 +1842,16 @@ body:has(#page-4:target) .p-middle-3 {
 }
 
 
-/* ==========================================================
-   NAV
-========================================================== */
+/* =========================================================
+   PAGE NAV
+========================================================= */
 
 .page-nav {
   height:
     30px;
 
   margin:
-    10px 0;
+    10px 0 0;
 
   display:
     flex;
@@ -2474,90 +1863,132 @@ body:has(#page-4:target) .p-middle-3 {
     center;
 
   gap:
-    18px;
+    10px;
 }
 
-.nav-button {
-  border:
-    0;
+.page-nav a,
+.page-nav .page-current {
+  display:
+    inline-flex;
 
-  background:
-    transparent;
+  align-items:
+    center;
 
-  color:
-    var(--ink);
+  justify-content:
+    center;
+
+  height:
+    25px;
+
+  padding:
+    0 7px;
 
   font-family:
     "Special Elite",
     cursive;
 
   font-size:
-    11px;
+    10px;
 
-  letter-spacing:
-    1px;
+  border-radius:
+    5px;
 
-  cursor:
-    pointer;
-
-  transition:
-    color .25s ease,
-    transform .25s ease;
+  text-decoration:
+    none;
 }
 
-.nav-button:hover:not(:disabled) {
+.page-nav a {
   color:
     var(--pink-dark);
 
-  transform:
-    translateY(-2px);
+  background:
+    var(--pink-paper);
 }
 
-.nav-button:disabled {
-  opacity:
-    .25;
+.page-nav a:hover {
+  color:
+    var(--ink-deep);
 
-  cursor:
-    default;
+  border:
+    1px solid
+    var(--ink-deep);
 }
 
 .page-current {
   color:
     var(--pink-dark);
-
-  font-family:
-    "Cutive Mono",
-    monospace;
-
-  font-size:
-    10px;
 }
 
-.journal-hint {
-  display:
-    flex;
-
-  justify-content:
-    center;
-
-  color:
-    rgba(77,49,58,.55);
-
-  font-family:
-    "Alegreya Sans",
-    sans-serif;
-
-  font-size:
-    8px;
-
-  letter-spacing:
-    1.3px;
+.next-link,
+.prev-link {
+  min-width:
+    85px;
 }
 
 
-/* ==========================================================
+/* =========================================================
+   DESKTOP NAV VISIBILITY
+========================================================= */
+
+@media (min-width: 768px) {
+
+  .page-nav > a:nth-child(1),
+  .page-nav > a:nth-child(2),
+  .page-nav > a:nth-child(3) {
+    display:
+      inline-flex;
+  }
+
+  .next-link,
+  .prev-link {
+    display:
+      inline-flex;
+  }
+}
+
+
+/* =========================================================
+   CLICKABLE EDGES
+========================================================= */
+
+.book-wrapper::before,
+.book-wrapper::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  top:
+    0;
+
+  width:
+    8%;
+
+  height:
+    100%;
+
+  z-index:
+    50;
+
+  pointer-events:
+    none;
+}
+
+.book-wrapper::before {
+  left:
+    0;
+}
+
+.book-wrapper::after {
+  right:
+    0;
+}
+
+
+/* =========================================================
    MOBILE
-========================================================== */
+========================================================= */
 
 @media (max-width: 768px) {
 
@@ -2568,13 +1999,16 @@ body:has(#page-4:target) .p-middle-3 {
 
   .book {
     height:
-      calc(100vh - 135px);
+      calc(100vh - 128px);
 
     min-height:
-      610px;
+      620px;
 
     max-height:
       none;
+
+    transition:
+      all 1s ease;
 
     width:
       calc(200vw - 40px);
@@ -2584,36 +2018,30 @@ body:has(#page-4:target) .p-middle-3 {
 
     transform:
       translateX(0);
-
-    transition:
-      transform 1s ease;
   }
 
-  /* Use the same hash-driven navigation state on mobile. */
+  /*
+    EXACTLY following the supplied mobile positioning logic.
+  */
+
   body:has(#page-1:target) .book,
-  body:not(:has(#page-2:target)):not(:has(#page-3:target)):not(:has(#page-4:target)) .book {
+  body:has(#page-3:target) .book,
+  body:has(#page-5:target) .book {
     transform:
       translateX(0);
   }
 
-  body:has(#page-2:target) .book {
-    transform:
-      translateX(-25%);
-  }
-
-  body:has(#page-3:target) .book {
+  body:has(#page-2:target) .book,
+  body:has(#page-4:target) .book,
+  body:has(#page-6:target) .book {
     transform:
       translateX(-50%);
   }
 
-  body:has(#page-4:target) .book {
-    transform:
-      translateX(-75%);
-  }
-
-  body:has(#page-2:target) .p-middle-1,
   body:has(#page-3:target) .p-middle-1,
-  body:has(#page-4:target) .p-middle-1 {
+  body:has(#page-4:target) .p-middle-1,
+  body:has(#page-5:target) .p-middle-1,
+  body:has(#page-6:target) .p-middle-1 {
     transform:
       rotateY(-180deg);
 
@@ -2621,8 +2049,8 @@ body:has(#page-4:target) .p-middle-3 {
       2;
   }
 
-  body:has(#page-3:target) .p-middle-2,
-  body:has(#page-4:target) .p-middle-2 {
+  body:has(#page-5:target) .p-middle-2,
+  body:has(#page-6:target) .p-middle-2 {
     transform:
       rotateY(-180deg);
 
@@ -2630,12 +2058,32 @@ body:has(#page-4:target) .p-middle-3 {
       3;
   }
 
-  body:has(#page-4:target) .p-middle-3 {
-    transform:
-      rotateY(-180deg);
+  .page {
+    width:
+      50%;
+  }
 
-    z-index:
-      4;
+  .p-first {
+    width:
+      50%;
+  }
+
+  .p-last {
+    width:
+      50%;
+  }
+
+  .front,
+  .back {
+    padding:
+      20px;
+  }
+
+  .page-nav > a:nth-child(1),
+  .page-nav > a:nth-child(2),
+  .page-nav > a:nth-child(3) {
+    display:
+      none;
   }
 
   .site-header-right {
@@ -2648,30 +2096,34 @@ body:has(#page-4:target) .p-middle-3 {
       0 14px;
   }
 
-  .resident-grid {
-    grid-template-columns:
-      1fr;
-  }
-
-  .resident-card {
-    min-height:
-      125px;
-  }
-
-  .map-preview {
-    flex-basis:
-      95px;
-
+  .postcard-wrap {
     width:
-      95px;
+      calc(100% - 20px);
+  }
+
+  .friends-wrap .polaroid {
+    width:
+      145px;
 
     height:
-      68px;
+      235px;
+
+    padding:
+      11px;
   }
 }
 
 
+/* =========================================================
+   SMALLER
+========================================================= */
+
 @media (max-width: 543px) {
+
+  .book {
+    min-height:
+      560px;
+  }
 
   .front h3,
   .back h3 {
@@ -2681,38 +2133,51 @@ body:has(#page-4:target) .p-middle-3 {
 
   .index-intro {
     min-height:
-      105px;
+      120px;
   }
 
-  .index-sticker {
+  .index-intro img {
     width:
-      88px;
+      105px;
 
     height:
-      88px;
+      105px;
 
     flex-basis:
-      88px;
+      105px;
   }
 
   .index-intro p {
     font-size:
-      8px;
-  }
-
-  .postcard-wrap {
-    width:
-      calc(100% - 20px);
-  }
-
-  .pc-body {
-    font-size:
       9px;
   }
 
-  .journal-hint {
+  .index-entry > strong {
+    font-size:
+      12px;
+  }
+
+  .index-entry > small {
+    font-size:
+      7px;
+  }
+
+  .polaroid {
+    width:
+      140px;
+
+    height:
+      220px;
+  }
+
+  .pc-body {
     display:
       none;
+  }
+
+  .pc-left {
+    padding:
+      15px;
   }
 
   .p-first [class*=front-strip] {
@@ -2720,19 +2185,21 @@ body:has(#page-4:target) .p-middle-3 {
       none;
   }
 
-  .map-toolbar-actions button {
-    min-width:
-      29px;
+  .p-last [class*=sticker] {
+    display:
+      none;
+  }
 
-    padding:
-      0 6px;
+  .site-logo strong {
+    font-size:
+      24px;
   }
 }
 
 
-/* ==========================================================
+/* =========================================================
    REDUCED MOTION
-========================================================== */
+========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -2745,4 +2212,15 @@ body:has(#page-4:target) .p-middle-3 {
     animation:
       none !important;
   }
+}
+
+
+/* Dreamland Residents use the exact Friends polaroid structure.
+   The embedded 1px transparent placeholder is only a temporary blank image. */
+.residents-wrap .polaroid img {
+  background: rgba(198, 153, 165, 0.18);
+}
+
+.residents-wrap .friend {
+  text-decoration: none;
 }

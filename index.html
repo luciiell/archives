@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#D2899D">
   <title>Luc's Dreamland</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,22 +14,15 @@
 
 <body>
 
-  <!--
-    FOUR JOURNAL SPREADS:
-
-    SPREAD 1: COVER / INDEX
-    SPREAD 2: SOCIALS / SERIES
-    SPREAD 3: FRIENDS / DREAMLAND RESIDENTS
-    SPREAD 4: MAPS / CLOSING
-
-    The physical page-turn model is the same left-center
-    rotateY(-180deg) approach used in the supplied CSS.
-  -->
-
-  <div id="page-1" class="anchor"></div>
-  <div id="page-2" class="anchor"></div>
-  <div id="page-3" class="anchor"></div>
-  <div id="page-4" class="anchor"></div>
+  <!-- Hash targets intentionally mirror the working Janitor AI page system. -->
+  <div class="anchors" aria-hidden="true">
+    <div id="page-1"></div>
+    <div id="page-2"></div>
+    <div id="page-3"></div>
+    <div id="page-4"></div>
+    <div id="page-5"></div>
+    <div id="page-6"></div>
+  </div>
 
   <header class="site-header">
     <div class="site-logo">
@@ -38,7 +30,7 @@
       <strong>Dreamland</strong>
     </div>
 
-    <div class="site-status">
+    <div class="site-header-right">
       <span class="status-dot"></span>
       <span>THE DREAM JOURNAL</span>
     </div>
@@ -54,7 +46,7 @@
       <div class="book-wrapper">
 
         <!-- =====================================================
-             STATIC PAGE: COVER
+             LEFT STATIC COVER
         ====================================================== -->
         <section class="page p-first">
 
@@ -140,7 +132,8 @@
 
         <!-- =====================================================
              SHEET 1
-             PAGE 2 INDEX / PAGE 3 SOCIALS
+             FRONT = INDEX
+             BACK  = SOCIALS
         ====================================================== -->
         <section class="page p-middle p-middle-1">
 
@@ -148,92 +141,87 @@
                src="https://ella.janitorai.com/media-approved/3IBk9Rhr74VlmW6QZSzzs.webp"
                alt="">
 
-          <!-- PAGE 2 — INDEX -->
           <div class="front">
             <h3>Index</h3>
 
             <div class="index-wrap inner-cont">
 
               <div class="index-intro">
-                <div class="index-sticker">
-                  <img src="https://ella.janitorai.com/media-approved/HPWBISU6L64M7k3DWwLRq.webp" alt="">
-                </div>
+                <img class="index-sticker-main"
+                     src="https://ella.janitorai.com/media-approved/HPWBISU6L64M7k3DWwLRq.webp"
+                     alt="">
 
                 <div>
                   <p class="index-hand">welcome, dreamer.</p>
                   <p>
-                    Four doors lead through this journal. Click an entry
-                    and the book will turn directly to its connecting spread.
+                    The Dreamland is divided by doors. Choose one and turn directly
+                    to the spread where that dream belongs.
                   </p>
                 </div>
               </div>
 
               <div class="index-list">
 
-                <a class="index-entry" href="#page-1">
+                <a href="#page-1" class="index-entry">
                   <span>01</span>
                   <strong>COVER</strong>
                   <i></i>
-                  <small>spread 1</small>
+                  <small>opening</small>
                 </a>
 
-                <a class="index-entry" href="#page-1">
+                <a href="#page-2" class="index-entry">
                   <span>02</span>
-                  <strong>INDEX</strong>
-                  <i></i>
-                  <small>spread 1</small>
-                </a>
-
-                <a class="index-entry" href="#page-2">
-                  <span>03</span>
                   <strong>SOCIALS</strong>
                   <i></i>
-                  <small>spread 2</small>
+                  <small>door 1</small>
                 </a>
 
-                <a class="index-entry" href="#page-2">
-                  <span>04</span>
+                <a href="#page-2" class="index-entry">
+                  <span>03</span>
                   <strong>SERIES</strong>
                   <i></i>
-                  <small>spread 2</small>
+                  <small>door 1–2</small>
                 </a>
 
-                <a class="index-entry" href="#page-3">
-                  <span>05</span>
+                <a href="#page-3" class="index-entry">
+                  <span>04</span>
                   <strong>FRIENDS</strong>
                   <i></i>
-                  <small>spread 3</small>
+                  <small>connections</small>
                 </a>
 
-                <a class="index-entry" href="#page-3">
-                  <span>06</span>
+                <a href="#page-3" class="index-entry">
+                  <span>05</span>
                   <strong>DREAMLAND RESIDENTS</strong>
                   <i></i>
-                  <small>spread 3</small>
+                  <small>the inhabitants</small>
                 </a>
 
-                <a class="index-entry" href="#page-4">
-                  <span>07</span>
-                  <strong>MAPS</strong>
+                <a href="#page-3" class="index-entry">
+                  <span>06</span>
+                  <strong>ARCHIVES</strong>
                   <i></i>
-                  <small>spread 4</small>
+                  <small>coming soon</small>
                 </a>
 
               </div>
 
               <div class="index-note">
-                <span>✦ DIUS NOTE ✦</span>
+                <span>✦ NOTE FROM DIUS ✦</span>
                 <p>
-                  The index uses the same physical book navigation as the
-                  page turns. You can change the labels later.
+                  Every entry on this page points to the physical spread containing it.
+                  No dead-end buttons. No separate web pages.
                 </p>
               </div>
+
+              <img class="index-sticker-small"
+                   src="https://ella.janitorai.com/media-approved/rAb5aHv9eabswTMHM0-yn.webp"
+                   alt="">
 
             </div>
           </div>
 
 
-          <!-- PAGE 3 — SOCIALS -->
           <div class="back">
             <h3>Socials</h3>
 
@@ -243,20 +231,15 @@
 
               <div class="socials-list">
 
-                <a class="social-link"
-                   href="https://amuradius.carrd.co/"
-                   target="_blank"
-                   rel="noopener">
-
+                <a class="social-link" href="https://amuradius.carrd.co/" target="_blank" rel="noopener">
                   <div class="social-icon">✦</div>
-
                   <div class="social-text">
                     <span class="social-platform">CARRD</span>
                     <span class="social-handle">https://amuradius.carrd.co/</span>
                   </div>
                 </a>
 
-                <a class="social-link" href="#page-4">
+                <a class="social-link" href="#page-3">
                   <div class="social-icon">✦</div>
                   <div class="social-text">
                     <span class="social-platform">ARCHIVES</span>
@@ -277,21 +260,18 @@
               <div class="p1-deco-strip"></div>
 
               <div class="polaroid-gallery-wrap">
-
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/O_s3I_pjRicyVr8A-3VME.webp" alt="">
                 </div>
-
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/xROr0DCMoD8Awaq2F3h3Z.webp" alt="">
                 </div>
-
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/J2usjnLgNFXw4DYWOZOF-.webp" alt="">
                 </div>
-
               </div>
 
+              <div class="p1-deco-strip"></div>
             </div>
           </div>
 
@@ -300,7 +280,8 @@
 
         <!-- =====================================================
              SHEET 2
-             PAGE 4 SERIES / PAGE 5 FRIENDS
+             FRONT = SERIES
+             BACK  = FRIENDS
         ====================================================== -->
         <section class="page p-middle p-middle-2">
 
@@ -308,7 +289,6 @@
                src="https://ella.janitorai.com/media-approved/3IBk9Rhr74VlmW6QZSzzs.webp"
                alt="">
 
-          <!-- PAGE 4 — SERIES -->
           <div class="front">
             <h3>Series</h3>
 
@@ -326,16 +306,15 @@
                     </div>
                   </div>
 
-                  <div class="face face-back">
+                  <a class="face face-back postcard-link" href="#">
                     <div class="pc-left">
                       <div>
                         <p class="pc-greeting">Crimmshaw Heights.</p>
                         <p class="pc-body">
-                          Crimmshaw Heights, a small town in Tennessee,
-                          home to those who go against societal norms and
-                          are part of diverse groups. Most well known for
-                          its nightlife and Westvale University, the home
-                          of the seals.
+                          Crimmshaw Heights, a small town in Tennessee, home to those
+                          who go against societal norms and are part of diverse groups.
+                          Most well known for its nightlife and Westvale University,
+                          the home of the seals.
                         </p>
                       </div>
 
@@ -350,13 +329,14 @@
                         <div class="postmark"><span>ERROR<br>202X<br>DIUS</span></div>
                         <div class="stamp"><span>✦</span></div>
                       </div>
+
                       <div class="address-lines">
                         <div class="address-line"></div>
                         <div class="address-line"></div>
                         <div class="address-line"></div>
                       </div>
                     </div>
-                  </div>
+                  </a>
 
                 </div>
               </div>
@@ -374,7 +354,7 @@
                     </div>
                   </div>
 
-                  <div class="face face-back">
+                  <a class="face face-back postcard-link" href="#">
                     <div class="pc-left">
                       <div>
                         <p class="pc-greeting">Veravinyth.</p>
@@ -396,13 +376,14 @@
                         <div class="postmark"><span>ERROR<br>10XX<br>DIUS</span></div>
                         <div class="stamp"><span>✦</span></div>
                       </div>
+
                       <div class="address-lines">
                         <div class="address-line"></div>
                         <div class="address-line"></div>
                         <div class="address-line"></div>
                       </div>
                     </div>
-                  </div>
+                  </a>
 
                 </div>
               </div>
@@ -411,7 +392,6 @@
           </div>
 
 
-          <!-- PAGE 5 — FRIENDS -->
           <div class="back">
             <h3>Friends</h3>
 
@@ -508,208 +488,8 @@
 
 
         <!-- =====================================================
-             SHEET 3
-             PAGE 6 RESIDENTS / PAGE 7 MAPS
-        ====================================================== -->
-        <section class="page p-middle p-middle-3">
-
-          <img class="background"
-               src="https://ella.janitorai.com/media-approved/3IBk9Rhr74VlmW6QZSzzs.webp"
-               alt="">
-
-          <!-- PAGE 6 — DREAMLAND RESIDENTS -->
-          <div class="front">
-
-            <h3>Dreamland Residents</h3>
-
-            <div class="friends-wrap resident-grid inner-cont">
-
-              <!--
-                RESIDENT TEMPLATE
-
-                Replace the blank .resident-image contents with:
-                <img src="YOUR-IMAGE-URL" alt="Resident 01">
-
-                Replace the RESIDENT 01 label with your own name.
-                These are intentionally just polaroids — no description boxes.
-              -->
-
-              <div class="resident-card">
-                <div class="resident-polaroid polaroid">
-                  <div class="resident-image"><span>IMAGE</span></div>
-                  <p>RESIDENT 01</p>
-                </div>
-              </div>
-              <div class="resident-card">
-                <div class="resident-polaroid polaroid">
-                  <div class="resident-image"><span>IMAGE</span></div>
-                  <p>RESIDENT 02</p>
-                </div>
-              </div>
-              <div class="resident-card">
-                <div class="resident-polaroid polaroid">
-                  <div class="resident-image"><span>IMAGE</span></div>
-                  <p>RESIDENT 03</p>
-                </div>
-              </div>
-              <div class="resident-card">
-                <div class="resident-polaroid polaroid">
-                  <div class="resident-image"><span>IMAGE</span></div>
-                  <p>RESIDENT 04</p>
-                </div>
-              </div>
-              <div class="resident-card">
-                <div class="resident-polaroid polaroid">
-                  <div class="resident-image"><span>IMAGE</span></div>
-                  <p>RESIDENT 05</p>
-                </div>
-              </div>
-              <div class="resident-card">
-                <div class="resident-polaroid polaroid">
-                  <div class="resident-image"><span>IMAGE</span></div>
-                  <p>RESIDENT 06</p>
-                </div>
-              </div>
-              <div class="resident-card">
-                <div class="resident-polaroid polaroid">
-                  <div class="resident-image"><span>IMAGE</span></div>
-                  <p>RESIDENT 07</p>
-                </div>
-              </div>
-              <div class="resident-card">
-                <div class="resident-polaroid polaroid">
-                  <div class="resident-image"><span>IMAGE</span></div>
-                  <p>RESIDENT 08</p>
-                </div>
-              </div>
-              <div class="resident-card">
-                <div class="resident-polaroid polaroid">
-                  <div class="resident-image"><span>IMAGE</span></div>
-                  <p>RESIDENT 09</p>
-                </div>
-              </div>
-              <div class="resident-card">
-                <div class="resident-polaroid polaroid">
-                  <div class="resident-image"><span>IMAGE</span></div>
-                  <p>RESIDENT 10</p>
-                </div>
-              </div>
-              <div class="resident-card">
-                <div class="resident-polaroid polaroid">
-                  <div class="resident-image"><span>IMAGE</span></div>
-                  <p>RESIDENT 11</p>
-                </div>
-              </div>
-              <div class="resident-card">
-                <div class="resident-polaroid polaroid">
-                  <div class="resident-image"><span>IMAGE</span></div>
-                  <p>RESIDENT 12</p>
-                </div>
-              </div>
-              <div class="resident-card">
-                <div class="resident-polaroid polaroid">
-                  <div class="resident-image"><span>IMAGE</span></div>
-                  <p>RESIDENT 13</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-
-          <!-- PAGE 7 — MAPS -->
-          <div class="back">
-
-            <h3>Maps</h3>
-
-            <div class="maps-wrap inner-cont">
-
-              <div class="maps-intro">
-                <p>
-                  Add your map images below. Click any map to open it
-                  full screen. In the viewer, use the mouse wheel to
-                  zoom, drag to pan, and the controls to reset or zoom.
-                </p>
-              </div>
-
-
-              <!--
-                MAP TEMPLATE
-
-                To add a map, put an image URL in data-map-src:
-
-                data-map-src="YOUR-MAP-IMAGE-URL"
-
-                Leave it blank to keep the placeholder.
-              -->
-
-              <button class="map-card"
-                      type="button"
-                      data-map-src=""
-                      data-map-title="MAP 01">
-
-                <div class="map-preview">
-                  <span>MAP 01</span>
-                  <small>ADD IMAGE</small>
-                </div>
-
-                <strong>MAP 01</strong>
-
-              </button>
-
-
-              <button class="map-card"
-                      type="button"
-                      data-map-src=""
-                      data-map-title="MAP 02">
-
-                <div class="map-preview">
-                  <span>MAP 02</span>
-                  <small>ADD IMAGE</small>
-                </div>
-
-                <strong>MAP 02</strong>
-
-              </button>
-
-
-              <button class="map-card"
-                      type="button"
-                      data-map-src=""
-                      data-map-title="MAP 03">
-
-                <div class="map-preview">
-                  <span>MAP 03</span>
-                  <small>ADD IMAGE</small>
-                </div>
-
-                <strong>MAP 03</strong>
-
-              </button>
-
-
-              <button class="map-card"
-                      type="button"
-                      data-map-src=""
-                      data-map-title="MAP 04">
-
-                <div class="map-preview">
-                  <span>MAP 04</span>
-                  <small>ADD IMAGE</small>
-                </div>
-
-                <strong>MAP 04</strong>
-
-              </button>
-
-            </div>
-          </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             STATIC PAGE: CLOSING
+             RIGHT STATIC PAGE
+             FRONT = CREATORS
         ====================================================== -->
         <section class="page p-last">
 
@@ -717,21 +497,101 @@
                src="https://ella.janitorai.com/media-approved/3IBk9Rhr74VlmW6QZSzzs.webp"
                alt="">
 
-          <div class="closing-page">
+          <div class="front">
+            <h3>Dreamland Residents</h3>
 
+            <div class="friends-wrap inner-cont residents-wrap">
+
+              <!-- Replace the transparent placeholder src values with your images later. -->
+              <a class="friend" href="#">
+                <div class="polaroid">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+                  <p>01</p>
+                </div>
+              </a>
+              <a class="friend" href="#">
+                <div class="polaroid">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+                  <p>02</p>
+                </div>
+              </a>
+              <a class="friend" href="#">
+                <div class="polaroid">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+                  <p>03</p>
+                </div>
+              </a>
+              <a class="friend" href="#">
+                <div class="polaroid">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+                  <p>04</p>
+                </div>
+              </a>
+              <a class="friend" href="#">
+                <div class="polaroid">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+                  <p>05</p>
+                </div>
+              </a>
+              <a class="friend" href="#">
+                <div class="polaroid">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+                  <p>06</p>
+                </div>
+              </a>
+              <a class="friend" href="#">
+                <div class="polaroid">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+                  <p>07</p>
+                </div>
+              </a>
+              <a class="friend" href="#">
+                <div class="polaroid">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+                  <p>08</p>
+                </div>
+              </a>
+              <a class="friend" href="#">
+                <div class="polaroid">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+                  <p>09</p>
+                </div>
+              </a>
+              <a class="friend" href="#">
+                <div class="polaroid">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+                  <p>10</p>
+                </div>
+              </a>
+              <a class="friend" href="#">
+                <div class="polaroid">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+                  <p>11</p>
+                </div>
+              </a>
+              <a class="friend" href="#">
+                <div class="polaroid">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+                  <p>12</p>
+                </div>
+              </a>
+              <a class="friend" href="#">
+                <div class="polaroid">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+                  <p>13</p>
+                </div>
+              </a>
+
+            </div>
+          </div>
+          </div>
+
+          <!-- Closing page on the unused reverse side / graceful endpoint -->
+          <div class="back closing-page">
             <div class="closing-symbol">✦</div>
-
             <h3>Until the next dream...</h3>
-
-            <p>
-              The journal closes here.
-              The Dreamland does not.
-            </p>
-
-            <a href="#page-1" class="return-index">
-              RETURN TO COVER
-            </a>
-
+            <p>The journal closes here. The Dreamland does not.</p>
+            <a class="return-index" href="#page-1">RETURN TO INDEX</a>
           </div>
 
         </section>
@@ -740,77 +600,31 @@
     </div>
 
 
-    <!-- ========================================================
+    <!-- =======================================================
          NAVIGATION
-    ========================================================= -->
+    ======================================================== -->
     <nav class="page-nav" aria-label="Journal navigation">
 
-      <button type="button" id="previousPage" class="nav-button">
-        ← PREVIOUS
-      </button>
+      <a href="#page-1">01</a>
+      <a href="#page-2">02</a>
+      <a href="#page-3">03</a>
 
-      <span class="page-current">
+      <span class="page-current" aria-hidden="true">
         <span id="page-number">01</span>
         <span>/</span>
-        <span>04</span>
+        <span>06</span>
       </span>
 
-      <button type="button" id="nextPage" class="nav-button">
-        NEXT →
-      </button>
+      <a href="#page-2" class="next-link">NEXT →</a>
+      <a href="#page-1" class="prev-link">← PREVIOUS</a>
 
     </nav>
 
     <div class="journal-hint">
-      CLICK NEXT / PREVIOUS · USE THE INDEX · ARROW KEYS ALSO WORK
+      CLICK THE PAGE EDGES TO TURN · THE INDEX IS CLICKABLE · ARROW KEYS ALSO WORK
     </div>
 
   </main>
-
-
-  <!-- ==========================================================
-       MAP FULLSCREEN VIEWER
-  =========================================================== -->
-  <div id="mapViewer"
-       class="map-viewer"
-       aria-hidden="true">
-
-    <div class="map-toolbar">
-
-      <strong id="mapViewerTitle">
-        MAP
-      </strong>
-
-      <div class="map-toolbar-actions">
-        <button type="button" id="mapZoomOut">−</button>
-        <button type="button" id="mapReset">RESET</button>
-        <button type="button" id="mapZoomIn">+</button>
-        <button type="button" id="mapClose">CLOSE ✕</button>
-      </div>
-
-    </div>
-
-    <div id="mapViewport" class="map-viewport">
-
-      <div id="mapStage" class="map-stage">
-
-        <img id="mapViewerImage"
-             src=""
-             alt="">
-
-      </div>
-
-      <div id="mapViewerPlaceholder" class="map-viewer-placeholder">
-        ADD A MAP IMAGE TO THIS CARD FIRST.
-      </div>
-
-    </div>
-
-    <div class="map-viewer-hint">
-      WHEEL = ZOOM · DRAG = PAN · DOUBLE CLICK = ZOOM
-    </div>
-
-  </div>
 
   <script src="script.js"></script>
 </body>
