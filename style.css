@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Special+Elite&display=swap');
 
+/* =========================================================
+   DREAMLAND ARCHIVES
+   PHYSICAL SCRAPBOOK
+   ========================================================= */
+
 :root {
     --dusty-pink: #D2899D;
     --soft-pink: #F7CACD;
@@ -7,30 +12,38 @@
     --coral-pink: #F29CA3;
 
     --mauve: #C699A5;
-    --deep-mauve: #996b78;
+    --deep-mauve: #996B78;
     --dark-mauve: #795268;
 
     --paper: #FFF8F1;
     --paper-warm: #F9EFE8;
     --paper-white: #FFFDFC;
 
-    --ink: #4d313a;
+    --ink: #4D313A;
     --dark-ink: #311E0F;
 
     --lavender: #EFCFE3;
     --lavender-soft: #F0DDE8;
 
-    --page-flip-time: 950ms;
-
     --book-width: min(1180px, 92vw);
     --book-height: min(760px, 82vh);
+
+    --flip-duration: 950ms;
+
+    --page-shadow:
+        0 10px 24px rgba(49, 30, 15, .13);
+
+    --paper-shadow:
+        0 4px 12px rgba(49, 30, 15, .10);
 }
 
 /* =========================================================
    RESET
    ========================================================= */
 
-* {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
@@ -42,22 +55,28 @@ body {
     margin: 0;
     min-height: 100vh;
 
-    background:
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(255,255,255,.45),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 80% 80%,
-            rgba(210,137,157,.12),
-            transparent 35%
-        ),
-        #e8c5d8;
-
     color: var(--ink);
 
-    font-family: "Cutive Mono", monospace;
+    font-family:
+        "Cutive Mono",
+        monospace;
+
+    background:
+        radial-gradient(
+            circle at 18% 18%,
+            rgba(255,255,255,.7),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 82% 80%,
+            rgba(210,137,157,.16),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #f5e1e7,
+            #f2c6d2
+        );
 
     overflow-x: hidden;
 }
@@ -70,20 +89,18 @@ body::before {
 
     pointer-events: none;
 
-    opacity: .06;
+    z-index: 99999;
+
+    opacity: .035;
 
     background:
         repeating-linear-gradient(
             0deg,
-            rgba(49,30,15,.2) 0,
-            rgba(49,30,15,.2) 1px,
+            rgba(49,30,15,.3) 0,
+            rgba(49,30,15,.3) 1px,
             transparent 1px,
             transparent 4px
         );
-
-    mix-blend-mode: multiply;
-
-    z-index: 9999;
 }
 
 /* =========================================================
@@ -99,15 +116,19 @@ h6,
 .archive-title,
 .page-title,
 .section-title,
-.label,
-.cover-title {
-    font-family: "Special Elite", serif;
+.cover-title,
+.page-label {
+    font-family:
+        "Special Elite",
+        serif;
 }
 
 button,
 a,
 summary {
-    font-family: inherit;
+    font-family:
+        "Cutive Mono",
+        monospace;
 }
 
 /* =========================================================
@@ -115,12 +136,17 @@ summary {
    ========================================================= */
 
 .archive-header {
-    width: min(1180px, 92vw);
+    width: var(--book-width);
 
     margin: 0 auto;
-    padding: 28px 0 18px;
+
+    padding:
+        28px
+        0
+        18px;
 
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
@@ -129,6 +155,7 @@ summary {
 
 .archive-brand {
     display: flex;
+
     flex-direction: column;
 
     gap: 4px;
@@ -137,9 +164,15 @@ summary {
 .archive-title {
     margin: 0;
 
-    color: var(--dark-mauve);
+    color:
+        var(--dark-mauve);
 
-    font-size: clamp(1.7rem, 3vw, 2.8rem);
+    font-size:
+        clamp(
+            1.7rem,
+            3vw,
+            2.8rem
+        );
 
     letter-spacing: .08em;
 }
@@ -147,7 +180,8 @@ summary {
 .archive-subtitle {
     margin: 0;
 
-    color: var(--deep-mauve);
+    color:
+        var(--deep-mauve);
 
     font-size: .8rem;
 
@@ -156,6 +190,7 @@ summary {
 
 .archive-nav {
     display: flex;
+
     align-items: center;
 
     gap: 8px;
@@ -165,32 +200,41 @@ summary {
 .archive-nav a {
     appearance: none;
 
-    border: 1px solid rgba(121,82,104,.28);
+    padding:
+        8px
+        13px;
 
-    background: rgba(255,248,241,.8);
+    border:
+        1px solid
+        rgba(121,82,104,.3);
 
-    color: var(--dark-mauve);
+    background:
+        rgba(255,248,241,.85);
 
-    padding: 8px 13px;
+    color:
+        var(--dark-mauve);
 
     text-decoration: none;
 
     cursor: pointer;
 
     transition:
-        background 180ms ease,
-        transform 180ms ease,
-        box-shadow 180ms ease;
+        transform .18s ease,
+        background .18s ease,
+        box-shadow .18s ease;
 }
 
 .archive-nav button:hover,
 .archive-nav a:hover {
-    background: rgba(255,255,255,.95);
+    background:
+        rgba(255,255,255,.96);
 
-    transform: translateY(-2px);
+    transform:
+        translateY(-2px);
 
     box-shadow:
-        0 5px 12px rgba(49,30,15,.1);
+        0 5px 12px
+        rgba(49,30,15,.1);
 }
 
 /* =========================================================
@@ -201,9 +245,13 @@ summary {
     width: 100%;
 
     display: flex;
+
     justify-content: center;
 
-    padding: 10px 20px 50px;
+    padding:
+        10px
+        20px
+        45px;
 }
 
 /* =========================================================
@@ -232,13 +280,13 @@ summary {
 
     transform-style: preserve-3d;
 
-    perspective: 3000px;
-
     overflow: visible;
+
+    perspective: 3000px;
 }
 
 /* =========================================================
-   BOOK BACK
+   BOOK BACK / COVER BOARD
    ========================================================= */
 
 .book-back {
@@ -246,26 +294,30 @@ summary {
 
     inset: 0;
 
-    border-radius: 9px;
+    z-index: 0;
+
+    border-radius: 7px;
 
     background:
         linear-gradient(
             135deg,
-            #c699a5,
-            #996b78
+            #C699A5,
+            #996B78
         );
 
     box-shadow:
-        0 25px 50px rgba(49,30,15,.25),
-        0 8px 15px rgba(49,30,15,.15);
+        0 25px 50px
+        rgba(49,30,15,.25),
 
-    transform: translateZ(-20px);
+        0 8px 15px
+        rgba(49,30,15,.15);
 
-    z-index: 0;
+    transform:
+        translateZ(-25px);
 }
 
 /* =========================================================
-   ORIGINAL SPREAD WRAPPERS
+   ORIGINAL SPREADS
    ========================================================= */
 
 .book > .spread {
@@ -281,225 +333,275 @@ summary {
 
     inset: 0;
 
-    transform-style: preserve-3d;
+    z-index: 10;
 
     pointer-events: none;
 
-    z-index: 10;
+    transform-style: preserve-3d;
 }
 
 /* =========================================================
-   ALL PHYSICAL PAGE SURFACES
+   STATIC PAGES
    ========================================================= */
 
-/*
-    THIS IS THE IMPORTANT FIX.
+.static-page {
+    position: absolute !important;
 
-    Every physical page gets a real opaque paper surface.
+    top: 0 !important;
+    bottom: 0 !important;
 
-    The previous version allowed the moved page elements
-    to inherit transparency from the old page structure.
-*/
+    width: 50% !important;
+    height: 100% !important;
 
-.static-page,
-.flip-sheet-face {
-    position: absolute;
+    display: block !important;
 
-    overflow: hidden;
+    overflow: hidden !important;
 
-    background-color: var(--paper) !important;
+    /*
+     * FULLY OPAQUE PAPER
+     */
+    background:
+        var(--paper) !important;
 
-    background-image:
-        linear-gradient(
-            90deg,
-            rgba(49,30,15,.025),
-            transparent 12%,
-            transparent 88%,
-            rgba(49,30,15,.035)
-        ) !important;
+    color:
+        var(--ink);
 
-    color: var(--ink);
+    box-shadow:
+        var(--page-shadow);
+
+    transform-style: preserve-3d;
 
     isolation: isolate;
-}
 
-/* =========================================================
-   STATIC LEFT
-   ========================================================= */
+    pointer-events: auto;
+}
 
 .static-left {
-    left: 0;
-
-    top: 0;
-    bottom: 0;
-
-    width: 50%;
+    left: 0 !important;
+    right: auto !important;
 
     border-radius:
-        8px 0 0 8px;
-
-    z-index: 1;
-
-    box-shadow:
-        inset -7px 0 10px rgba(49,30,15,.045),
-        0 10px 25px rgba(49,30,15,.08);
-
-    pointer-events: auto;
+        7px
+        0
+        0
+        7px;
 }
-
-/* =========================================================
-   STATIC RIGHT
-   ========================================================= */
 
 .static-right {
-    right: 0;
-
-    top: 0;
-    bottom: 0;
-
-    width: 50%;
+    right: 0 !important;
+    left: auto !important;
 
     border-radius:
-        0 8px 8px 0;
-
-    z-index: 1;
-
-    box-shadow:
-        inset 7px 0 10px rgba(49,30,15,.045),
-        0 10px 25px rgba(49,30,15,.08);
-
-    pointer-events: auto;
+        0
+        7px
+        7px
+        0;
 }
 
 /* =========================================================
-   PHYSICAL SHEET
+   PHYSICAL SHEETS
+
+   IMPORTANT:
+
+   Each sheet is HALF THE BOOK.
+
+   It starts on the RIGHT side.
+   Its LEFT EDGE is the book spine.
+   It rotates around that left edge.
    ========================================================= */
 
 .flip-sheet {
-    position: absolute;
+    position: absolute !important;
 
-    inset: 0;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    left: auto !important;
 
-    width: 100%;
-    height: 100%;
+    width: 50% !important;
+    height: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+
+    transform-origin:
+        left center !important;
+
+    transform:
+        rotateY(0deg);
 
     transform-style: preserve-3d;
 
-    transform-origin: center center;
-
-    transform: rotateY(0deg);
-
     transition:
-        transform var(--page-flip-time)
-        cubic-bezier(.22,.61,.36,1);
+        transform
+        var(--flip-duration)
+        cubic-bezier(
+            .22,
+            .61,
+            .36,
+            1
+        );
 
-    will-change: transform;
+    will-change:
+        transform;
 
     pointer-events: none;
+
+    /*
+     * IMPORTANT:
+     * This is the sheet itself, NOT the page background.
+     */
+    background:
+        transparent !important;
 }
 
 /* =========================================================
-   SHEET STATES
+   TURNED SHEET
    ========================================================= */
 
 .flip-sheet.is-turned {
-    transform: rotateY(-180deg);
+    transform:
+        rotateY(-180deg);
 }
 
+/* =========================================================
+   ACTIVE TURNING SHEET
+   ========================================================= */
+
 .flip-sheet.is-turning {
-    z-index: 5000 !important;
+    z-index: 9999 !important;
 }
 
 /* =========================================================
    PHYSICAL SHEET FACES
+
+   EVERYTHING BELOW IS HARD-OVERRIDDEN SO THE OLD
+   .page-left / .page-right CSS CANNOT BREAK IT.
    ========================================================= */
 
 .flip-sheet-face {
-    top: 0;
-    bottom: 0;
+    position: absolute !important;
 
-    width: 50%;
+    top: 0 !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    min-width: 0 !important;
+    max-width: none !important;
+
+    min-height: 0 !important;
+    max-height: none !important;
+
+    margin: 0 !important;
+
+    display: block !important;
+
+    overflow: hidden !important;
 
     /*
-        OPAQUE BACKGROUND — DO NOT REMOVE
-    */
-    background-color: var(--paper) !important;
+     * THIS IS THE ACTUAL PAPER.
+     */
+    background:
+        var(--paper) !important;
 
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    background-color:
+        var(--paper) !important;
 
-    transform-style: preserve-3d;
+    color:
+        var(--ink);
 
-    pointer-events: auto;
+    transform-style:
+        preserve-3d;
+
+    backface-visibility:
+        hidden;
+
+    -webkit-backface-visibility:
+        hidden;
 
     box-shadow:
-        0 8px 20px rgba(49,30,15,.08);
+        var(--paper-shadow);
+
+    pointer-events:
+        auto;
 }
 
 /* =========================================================
-   FRONT FACE
+   FRONT OF PHYSICAL SHEET
    ========================================================= */
 
 .flip-sheet-front {
-    right: 0;
-    left: auto;
-
     transform:
         rotateY(0deg)
-        translateZ(.5px);
+        translateZ(.1px) !important;
 
     border-radius:
-        0 8px 8px 0;
+        0
+        7px
+        7px
+        0;
 }
 
 /* =========================================================
-   BACK FACE
+   BACK OF PHYSICAL SHEET
    ========================================================= */
 
 .flip-sheet-back {
-    left: 0;
-    right: auto;
-
     transform:
         rotateY(180deg)
-        translateZ(.5px);
+        translateZ(.1px) !important;
 
     border-radius:
-        8px 0 0 8px;
+        7px
+        0
+        0
+        7px;
 }
 
 /* =========================================================
-   PRESERVE ORIGINAL PAGE CLASSES
+   ABSOLUTELY OVERRIDE ORIGINAL PAGE POSITIONING
+
+   The JS intentionally keeps the original classes:
+   .page
+   .page-left
+   .page-right
+
+   Those classes must NOT be allowed to position the
+   physical faces anymore.
    ========================================================= */
 
+.flip-sheet-face.page,
 .flip-sheet-face.page-left,
 .flip-sheet-face.page-right {
-    /*
-        The JS keeps these original classes.
+    position: absolute !important;
 
-        These rules make sure their old page styling does
-        not accidentally collapse after being moved.
-    */
+    top: 0 !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: 0 !important;
 
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
 
-    background-color: var(--paper) !important;
-}
+    margin: 0 !important;
 
-/* Front is always the original right page. */
-.flip-sheet-front.page-right {
-    left: auto;
-    right: 0;
-}
+    background-color:
+        var(--paper) !important;
 
-/* Back is always the next spread's original left page. */
-.flip-sheet-back.page-left {
-    left: 0;
-    right: auto;
+    background:
+        var(--paper) !important;
 }
 
 /* =========================================================
    PAGE CONTENT
+
+   Content scrolls INSIDE the physical paper.
    ========================================================= */
 
 .page-content {
@@ -508,12 +610,20 @@ summary {
     width: 100%;
     height: 100%;
 
-    padding: 42px 44px;
+    margin: 0;
+
+    padding:
+        42px
+        44px;
 
     overflow-y: auto;
     overflow-x: hidden;
 
-    background: transparent;
+    background:
+        transparent !important;
+
+    color:
+        var(--ink);
 
     scrollbar-width: thin;
 
@@ -531,145 +641,10 @@ summary {
 }
 
 .page-content::-webkit-scrollbar-thumb {
-    background: var(--mauve);
+    background:
+        var(--mauve);
 
     border-radius: 10px;
-}
-
-/* =========================================================
-   PAGE EDGE LIGHTING
-   ========================================================= */
-
-.flip-sheet-front::before,
-.flip-sheet-back::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    bottom: 0;
-
-    width: 35px;
-
-    pointer-events: none;
-
-    z-index: 100;
-}
-
-.flip-sheet-front::before {
-    left: 0;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(49,30,15,.08),
-            transparent
-        );
-}
-
-.flip-sheet-back::before {
-    right: 0;
-
-    background:
-        linear-gradient(
-            270deg,
-            rgba(49,30,15,.08),
-            transparent
-        );
-}
-
-/* =========================================================
-   TURNING SHADOW
-   ========================================================= */
-
-.flip-sheet::after {
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    opacity: 0;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(49,30,15,.20),
-            transparent 25%,
-            transparent 75%,
-            rgba(49,30,15,.20)
-        );
-
-    transition:
-        opacity 300ms ease;
-
-    z-index: 200;
-}
-
-.flip-sheet.is-turning::after {
-    opacity: .42;
-}
-
-/* =========================================================
-   BOOK SPINE
-   ========================================================= */
-
-.book::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    bottom: 0;
-
-    left: 50%;
-
-    width: 5px;
-
-    transform:
-        translateX(-50%)
-        translateZ(4px);
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(49,30,15,.16),
-            rgba(255,255,255,.22),
-            rgba(49,30,15,.12)
-        );
-
-    pointer-events: none;
-
-    z-index: 6;
-}
-
-.book::after {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    bottom: 0;
-
-    left: calc(50% - 9px);
-
-    width: 18px;
-
-    transform: translateZ(3px);
-
-    pointer-events: none;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(49,30,15,.06),
-            transparent
-        );
-
-    z-index: 5;
 }
 
 /* =========================================================
@@ -681,22 +656,26 @@ summary {
 
     margin-bottom: 15px;
 
-    padding: 5px 9px;
+    padding:
+        5px
+        9px;
 
-    background: var(--soft-pink);
+    background:
+        var(--soft-pink);
 
-    color: var(--dark-mauve);
-
-    font-family: "Special Elite", serif;
+    color:
+        var(--dark-mauve);
 
     font-size: .72rem;
 
     letter-spacing: .12em;
 
-    transform: rotate(-1deg);
+    transform:
+        rotate(-1deg);
 
     box-shadow:
-        2px 3px 0 rgba(121,82,104,.12);
+        2px 3px 0
+        rgba(121,82,104,.12);
 }
 
 /* =========================================================
@@ -704,9 +683,13 @@ summary {
    ========================================================= */
 
 .page-title {
-    margin: 0 0 18px;
+    margin:
+        0
+        0
+        18px;
 
-    color: var(--dark-mauve);
+    color:
+        var(--dark-mauve);
 
     font-size:
         clamp(
@@ -721,9 +704,153 @@ summary {
 }
 
 .page-content p {
+    margin-top: 0;
+
     line-height: 1.75;
 
     font-size: .9rem;
+}
+
+/* =========================================================
+   PAGE EDGE SHADOW
+
+   Only the actual spine edge gets this.
+   ========================================================= */
+
+.flip-sheet-front::before,
+.flip-sheet-back::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+
+    width: 18px;
+
+    z-index: 500;
+
+    pointer-events: none;
+}
+
+.flip-sheet-front::before {
+    left: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(49,30,15,.10),
+            transparent
+        );
+}
+
+.flip-sheet-back::before {
+    right: 0;
+
+    background:
+        linear-gradient(
+            270deg,
+            rgba(49,30,15,.10),
+            transparent
+        );
+}
+
+/* =========================================================
+   TURNING PAPER SHADOW
+   ========================================================= */
+
+.flip-sheet::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(49,30,15,.18),
+            transparent 25%,
+            transparent 75%,
+            rgba(49,30,15,.18)
+        );
+
+    transition:
+        opacity .25s ease;
+}
+
+.flip-sheet.is-turning::after {
+    opacity: .45;
+}
+
+/* =========================================================
+   BOOK SPINE
+
+   Behind the active page sheets.
+   ========================================================= */
+
+.book::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+
+    left: 50%;
+
+    width: 5px;
+
+    z-index: 5;
+
+    transform:
+        translateX(-50%)
+        translateZ(3px);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(49,30,15,.18),
+            rgba(255,255,255,.30),
+            rgba(49,30,15,.12)
+        );
+
+    pointer-events: none;
+}
+
+.book::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+
+    left:
+        calc(50% - 10px);
+
+    width: 20px;
+
+    z-index: 4;
+
+    transform:
+        translateZ(2px);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(49,30,15,.07),
+            transparent
+        );
+
+    pointer-events: none;
 }
 
 /* =========================================================
@@ -733,11 +860,16 @@ summary {
 .cover-page {
     position: relative;
 
+    width: 100%;
     height: 100%;
 
-    padding: 55px 45px;
+    margin: 0;
 
-    display: flex;
+    padding:
+        55px
+        45px;
+
+    display: flex !important;
 
     flex-direction: column;
 
@@ -747,20 +879,22 @@ summary {
     text-align: center;
 
     /*
-        COVER MUST ALSO BE OPAQUE
-    */
-
+     * OPAQUE COVER
+     */
     background:
         radial-gradient(
             circle at center,
-            rgba(255,255,255,.45),
+            rgba(255,255,255,.42),
             transparent 55%
         ),
         linear-gradient(
             135deg,
-            #f7cacd,
-            #efcfe3
+            #F7CACD,
+            #EFCFE3
         ) !important;
+
+    color:
+        var(--ink);
 }
 
 .cover-page::before {
@@ -782,9 +916,12 @@ summary {
 .cover-title {
     position: relative;
 
+    z-index: 2;
+
     margin: 0;
 
-    color: var(--dark-mauve);
+    color:
+        var(--dark-mauve);
 
     font-size:
         clamp(
@@ -799,9 +936,12 @@ summary {
 .cover-subtitle {
     position: relative;
 
+    z-index: 2;
+
     margin-top: 12px;
 
-    color: var(--deep-mauve);
+    color:
+        var(--deep-mauve);
 
     font-size: .85rem;
 
@@ -826,9 +966,12 @@ summary {
     align-items: center;
     justify-content: space-between;
 
-    padding: 10px 12px;
+    padding:
+        10px
+        12px;
 
-    color: var(--ink);
+    color:
+        var(--ink);
 
     text-decoration: none;
 
@@ -837,8 +980,8 @@ summary {
         rgba(121,82,104,.35);
 
     transition:
-        padding-left 160ms ease,
-        background 160ms ease;
+        padding-left .16s ease,
+        background .16s ease;
 }
 
 .archive-index a:hover {
@@ -864,11 +1007,14 @@ details {
 }
 
 details summary {
-    padding: 11px 14px;
+    padding:
+        11px
+        14px;
 
     cursor: pointer;
 
-    color: var(--dark-mauve);
+    color:
+        var(--dark-mauve);
 
     font-family:
         "Special Elite",
@@ -884,7 +1030,8 @@ details summary::-webkit-details-marker {
 details summary::before {
     content: "✦ ";
 
-    color: var(--coral-pink);
+    color:
+        var(--coral-pink);
 }
 
 details[open] summary {
@@ -894,7 +1041,9 @@ details[open] summary {
 
 .details-content {
     padding:
-        5px 14px 14px;
+        5px
+        14px
+        14px;
 }
 
 /* =========================================================
@@ -913,7 +1062,9 @@ details[open] summary {
             )
         );
 
-    gap: 24px 18px;
+    gap:
+        24px
+        18px;
 
     align-items: start;
 }
@@ -926,14 +1077,19 @@ details[open] summary {
     border: 0;
 
     padding:
-        10px 10px 16px;
+        10px
+        10px
+        16px;
 
-    background: #fffdfb;
+    background:
+        #FFFDFB;
 
-    color: var(--ink);
+    color:
+        var(--ink);
 
     box-shadow:
-        0 7px 14px rgba(49,30,15,.16);
+        0 7px 14px
+        rgba(49,30,15,.16);
 
     cursor: pointer;
 
@@ -946,8 +1102,8 @@ details[open] summary {
         );
 
     transition:
-        transform 180ms ease,
-        box-shadow 180ms ease;
+        transform .18s ease,
+        box-shadow .18s ease;
 }
 
 .character-polaroid:nth-child(2n) {
@@ -964,13 +1120,15 @@ details[open] summary {
         translateY(-5px);
 
     box-shadow:
-        0 13px 22px rgba(49,30,15,.2);
+        0 13px 22px
+        rgba(49,30,15,.2);
 }
 
 .polaroid-image {
     width: 100%;
 
-    aspect-ratio: 1 / 1.15;
+    aspect-ratio:
+        1 / 1.15;
 
     overflow: hidden;
 
@@ -982,9 +1140,9 @@ details[open] summary {
     width: 100%;
     height: 100%;
 
-    object-fit: cover;
-
     display: block;
+
+    object-fit: cover;
 }
 
 .polaroid-caption {
@@ -1004,23 +1162,26 @@ details[open] summary {
 
     margin-top: 4px;
 
-    font-size: .65rem;
+    color:
+        var(--deep-mauve);
 
-    color: var(--deep-mauve);
+    font-size: .65rem;
 }
 
 /* =========================================================
-   PHOTOS
+   POLAROIDS / PHOTOS
    ========================================================= */
 
 .polaroid,
 .photo {
-    background: #fffdfb;
+    background:
+        #FFFDFB;
 
     padding: 10px;
 
     box-shadow:
-        0 8px 16px rgba(49,30,15,.15);
+        0 8px 16px
+        rgba(49,30,15,.15);
 }
 
 .polaroid img,
@@ -1046,7 +1207,8 @@ details[open] summary {
 
     opacity: .85;
 
-    transform: rotate(-5deg);
+    transform:
+        rotate(-5deg);
 
     pointer-events: none;
 }
@@ -1060,7 +1222,8 @@ details[open] summary {
     top: 12px;
     right: 18px;
 
-    transform: rotate(5deg);
+    transform:
+        rotate(5deg);
 }
 
 /* =========================================================
@@ -1095,9 +1258,11 @@ details[open] summary {
     text-align: center;
 
     box-shadow:
-        0 5px 10px rgba(49,30,15,.12);
+        0 5px 10px
+        rgba(49,30,15,.12);
 
-    transform: rotate(-4deg);
+    transform:
+        rotate(-4deg);
 }
 
 /* =========================================================
@@ -1126,7 +1291,8 @@ details[open] summary {
 
     text-align: center;
 
-    transform: rotate(-10deg);
+    transform:
+        rotate(-10deg);
 }
 
 /* =========================================================
@@ -1150,7 +1316,7 @@ details[open] summary {
     padding: 14px;
 
     background:
-        #311e0f;
+        #311E0F;
 
     border-radius: 3px;
 }
@@ -1158,13 +1324,13 @@ details[open] summary {
 .film-strip img {
     width: 100%;
 
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1;
 
     object-fit: cover;
 
     border:
         4px solid
-        #fff8f1;
+        #FFF8F1;
 }
 
 /* =========================================================
@@ -1177,7 +1343,7 @@ details[open] summary {
     padding: 22px;
 
     background:
-        #f9efe8;
+        #F9EFE8;
 
     border:
         1px solid
@@ -1228,25 +1394,28 @@ details[open] summary {
 
     border:
         6px solid
-        #fffdfb;
+        #FFFDFB;
 
     box-shadow:
-        0 7px 14px rgba(49,30,15,.15);
+        0 7px 14px
+        rgba(49,30,15,.15);
 }
 
 /* =========================================================
-   CONTROLS
+   BOOK CONTROLS
    ========================================================= */
 
 .book-controls {
-    width: var(--book-width);
+    width:
+        var(--book-width);
 
-    margin: 18px auto 0;
+    margin:
+        18px auto 0;
 
     display: flex;
 
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 
     gap: 14px;
 }
@@ -1259,23 +1428,25 @@ details[open] summary {
         rgba(121,82,104,.3);
 
     background:
-        rgba(255,248,241,.85);
+        rgba(255,248,241,.9);
 
     color:
         var(--dark-mauve);
 
     padding:
-        9px 16px;
+        9px
+        16px;
 
     cursor: pointer;
 
     transition:
-        background 160ms ease,
-        transform 160ms ease;
+        background .16s ease,
+        transform .16s ease;
 }
 
 .book-controls button:hover:not(:disabled) {
-    background: #fff;
+    background:
+        #FFF;
 
     transform:
         translateY(-2px);
@@ -1315,11 +1486,12 @@ details[open] summary {
     padding: 25px;
 
     visibility: hidden;
+
     opacity: 0;
 
     transition:
-        opacity 200ms ease,
-        visibility 200ms ease;
+        opacity .2s ease,
+        visibility .2s ease;
 
     z-index: 10000;
 }
@@ -1443,7 +1615,7 @@ details[open] summary {
 }
 
 /* =========================================================
-   ACCESSIBILITY
+   FOCUS
    ========================================================= */
 
 button:focus-visible,
@@ -1462,13 +1634,12 @@ summary:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
     .flip-sheet {
-        transition-duration: 1ms;
+        transition:
+            transform 1ms linear;
     }
 
-    *,
-    *::before,
-    *::after {
-        scroll-behavior: auto !important;
+    html {
+        scroll-behavior: auto;
     }
 }
 
@@ -1497,7 +1668,8 @@ summary:focus-visible {
 
     .page-content {
         padding:
-            30px 28px;
+            30px
+            28px;
     }
 }
 
@@ -1524,14 +1696,16 @@ summary:focus-visible {
     .archive-nav button,
     .archive-nav a {
         padding:
-            7px 9px;
+            7px
+            9px;
 
         font-size: .7rem;
     }
 
     .page-content {
         padding:
-            24px 20px;
+            24px
+            20px;
     }
 
     .page-content p {
@@ -1542,7 +1716,10 @@ summary:focus-visible {
         grid-template-columns:
             repeat(
                 2,
-                minmax(0,1fr)
+                minmax(
+                    0,
+                    1fr
+                )
             );
 
         gap: 14px;
