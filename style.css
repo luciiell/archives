@@ -1,13 +1,16 @@
 /* =========================================================
-   DREAMLAND
-   The page-turning mechanism intentionally follows the
-   supplied Janitor AI CSS: a 50% sheet, transform-origin
-   at its left edge, rotateY(-180deg), and back faces also
-   rotated -180deg.
+   DREAMLAND JOURNAL
+   Based directly on the supplied Janitor AI page-flip model.
+
+   IMPORTANT:
+   - .p-middle rotates from left center
+   - page sheet rotates -180deg
+   - .back rotates -180deg
+   This is deliberately NOT replaced with a different flip model.
 ========================================================= */
 
 :root {
-  --pink-top: #D2899D;
+  --pink-header: #D2899D;
   --pink: #E49CB4;
   --pink-pale: #F7CACD;
   --pink-paper: #F0DDE8;
@@ -21,14 +24,11 @@
   --ink-deep: #311E0F;
 
   --film: #47333a;
-
-  --book-width: calc(100% - 120px);
-  --book-max: 1300px;
 }
 
 
 /* =========================================================
-   RESET / BODY
+   RESET
 ========================================================= */
 
 * {
@@ -37,9 +37,9 @@
 
 html,
 body {
-  min-height: 100%;
   margin: 0;
   padding: 0;
+  min-height: 100%;
 }
 
 body {
@@ -54,7 +54,10 @@ body {
     );
 
   color: var(--ink-deep);
-  font-family: Montserrat, sans-serif;
+
+  font-family:
+    Montserrat,
+    sans-serif;
 }
 
 a {
@@ -65,30 +68,17 @@ img {
   display: block;
 }
 
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
 
 /* =========================================================
-   TARGET ANCHORS
-   They exist for the exact :target mechanism.
+   URL TARGET ANCHORS
 ========================================================= */
 
 .anchors {
   position: fixed;
   width: 1px;
   height: 1px;
-  top: 0;
-  left: 0;
   overflow: hidden;
   pointer-events: none;
-}
-
-.anchors > div {
-  width: 1px;
-  height: 1px;
 }
 
 
@@ -98,7 +88,9 @@ a {
 
 .site-header {
   position: fixed;
-  inset: 0 0 auto 0;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 67px;
 
   display: flex;
@@ -108,6 +100,7 @@ a {
   padding: 0 22px;
 
   background: rgba(210, 137, 157, .94);
+
   border-bottom: 1px solid white;
 
   z-index: 100;
@@ -121,6 +114,7 @@ a {
 
 .site-logo span {
   color: #73405a;
+
   font-family:
     "Segoe Print",
     "Bradley Hand",
@@ -135,10 +129,13 @@ a {
 
 .site-logo strong {
   color: #8f4c6d;
-  font-family: "Special Elite", cursive;
+
+  font-family:
+    "Special Elite",
+    cursive;
+
   font-size: 28px;
   font-weight: 400;
-  letter-spacing: .2px;
 
   text-shadow:
     0 1px 2px rgba(255,255,255,.95),
@@ -151,7 +148,11 @@ a {
   gap: 8px;
 
   color: white;
-  font-family: "Special Elite", cursive;
+
+  font-family:
+    "Special Elite",
+    cursive;
+
   font-size: 9px;
   letter-spacing: 1.4px;
 }
@@ -159,35 +160,42 @@ a {
 .status-dot {
   width: 7px;
   height: 7px;
+
   border-radius: 50%;
+
   background: white;
-  box-shadow: 0 0 8px rgba(255,255,255,.85);
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.85);
 }
 
 
 /* =========================================================
-   MAIN / BOOK
+   BOOK CONTAINER
 ========================================================= */
 
 main {
   min-height: 100vh;
 
   padding-top: 87px;
-  padding-bottom: 28px;
+  padding-bottom: 25px;
 }
 
 .book {
   height: calc(100vh - 170px);
+
   min-height: 680px;
   max-height: 890px;
 
   position: relative;
 
-  width: var(--book-width);
-  max-width: var(--book-max);
+  width: calc(100% - 120px);
+  max-width: 1300px;
 
   left: 50%;
-  transform: translateX(-50%);
+
+  transform:
+    translateX(-50%);
 }
 
 .book-wrapper {
@@ -196,9 +204,9 @@ main {
 
   position: absolute;
 
-  margin: 20px;
-
   perspective: 5000px;
+
+  margin: 20px;
 }
 
 .book-wrapper-back {
@@ -220,12 +228,12 @@ main {
     );
 
   box-shadow:
-    0 12px 30px rgba(49,30,15,.23);
+    0 14px 30px rgba(49,30,15,.20);
 }
 
 
 /* =========================================================
-   BASE PAGE
+   PAGE BASE
 ========================================================= */
 
 .page {
@@ -254,10 +262,20 @@ main {
   position: absolute;
 }
 
+
+/* =========================================================
+   PAGE 1 — COVER
+========================================================= */
+
 .p-first {
   left: 0;
   z-index: 1;
 }
+
+
+/* =========================================================
+   PAGE 6 — RESIDENTS
+========================================================= */
 
 .p-last {
   left: 50%;
@@ -266,20 +284,23 @@ main {
 
 
 /* =========================================================
-   THE IMPORTANT PART:
-   THIS IS THE ORIGINAL WORKING SHEET MODEL.
+   TURNING SHEETS
 ========================================================= */
 
 .p-middle {
   left: 50%;
 
-  transform-origin: left center;
+  transform-origin:
+    left center;
 
-  transform: rotateY(0deg);
+  transform:
+    rotateY(0deg);
 
-  transition: all 1s ease;
+  transition:
+    all 1s ease;
 
-  transform-style: preserve-3d;
+  transform-style:
+    preserve-3d;
 }
 
 .p-middle-1 {
@@ -291,38 +312,43 @@ main {
 }
 
 
-/*
-  When page-2 is targeted:
-  sheet 1 flips left, revealing SOCIALS,
-  while sheet 2 stays right, showing SERIES.
+/* =========================================================
+   THE EXACT SPREAD LOGIC FROM THE SUPPLIED CSS
 
-  When page-3 is targeted:
-  sheet 1 remains left,
-  and sheet 2 flips left, revealing FRIENDS,
-  while CREATORS remains right.
-*/
+   Initial:
+     page 1 | page 2
+       COVER | INDEX
 
-body:has(#page-2:target) .p-middle-1,
-body:has(#page-3:target) .p-middle-1 {
-  transform: rotateY(-180deg);
-  z-index: 2;
+   #page-3:
+     page 3 | page 4
+      SOCIALS | SERIES
+
+   #page-5:
+     page 5 | page 6
+      FRIENDS | RESIDENTS
+========================================================= */
+
+body:has(#page-3:target) .p-middle-1,
+body:has(#page-5:target) .p-middle-1 {
+  transform:
+    rotateY(-180deg);
+
+  z-index:
+    2;
 }
 
-body:has(#page-3:target) .p-middle-2 {
-  transform: rotateY(-180deg);
-  z-index: 3;
+body:has(#page-5:target) .p-middle-2 {
+  transform:
+    rotateY(-180deg);
+
+  z-index:
+    3;
 }
 
 
-/*
-  EXACTLY as supplied:
-  the back face rotates -180deg.
-
-  Do NOT change this to +180deg.
-  The parent sheet is the part that rotates.
-  The two -180deg rotations cancel so the back content
-  reads normally when the sheet is turned.
-*/
+/* =========================================================
+   PAGE FACE
+========================================================= */
 
 .front,
 .back {
@@ -334,18 +360,26 @@ body:has(#page-3:target) .p-middle-2 {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 
-  padding: 20px;
+  padding:
+    20px;
 
-  transform: translateZ(0);
+  transform:
+    translateZ(0);
 }
 
+
+/*
+  This is the same orientation used by the CSS supplied by
+  the user. Do NOT change this to +180deg.
+*/
 .back {
-  transform: rotateY(-180deg);
+  transform:
+    rotateY(-180deg);
 }
 
 
 /* =========================================================
-   INNER CONTENT
+   SCROLLING CONTENT
 ========================================================= */
 
 .inner-cont {
@@ -358,6 +392,7 @@ body:has(#page-3:target) .p-middle-2 {
   padding: 10px 0;
 
   scrollbar-width: thin;
+
   scrollbar-color:
     var(--pink-dark)
     transparent;
@@ -368,55 +403,80 @@ body:has(#page-3:target) .p-middle-2 {
 }
 
 .inner-cont::-webkit-scrollbar-thumb {
-  background: var(--pink-dark);
+  background:
+    var(--pink-dark);
 }
 
 
 /* =========================================================
-   HEADINGS
+   PAGE TITLES
 ========================================================= */
 
 .front h3,
 .back h3 {
   margin: 0;
 
-  padding: 10px 5px 5px;
+  padding:
+    10px 5px 5px;
 
-  color: var(--ink);
+  background:
+    var(--pink);
 
-  background: var(--pink);
+  color:
+    white;
 
-  font-family: "Special Elite", cursive;
-  font-weight: 100;
-  line-height: 1;
-  font-size: 30px;
+  font-family:
+    "Special Elite",
+    cursive;
 
-  position: relative;
+  font-weight:
+    100;
 
-  width: 100%;
+  line-height:
+    1;
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size:
+    30px;
+
+  position:
+    relative;
+
+  width:
+    100%;
+
+  white-space:
+    nowrap;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
 }
 
 .front h4,
 .back h4 {
-  padding: 10px 5px 5px;
+  padding:
+    10px 5px 5px;
 
-  font-family: "Special Elite", cursive;
-  font-weight: 100;
-  line-height: 1;
-  font-size: 20px;
+  font-family:
+    "Special Elite",
+    cursive;
 
-  position: relative;
+  font-weight:
+    100;
 
-  width: 100%;
+  line-height:
+    1;
+
+  font-size:
+    20px;
 }
 
 
 /* =========================================================
-   COVER — EXACT POSITIONING LANGUAGE FROM SUPPLIED CSS
+   COVER
+   Positions follow the original CSS.
 ========================================================= */
 
 .p-first img {
@@ -426,10 +486,14 @@ body:has(#page-3:target) .p-middle-2 {
 }
 
 .p-first .film-strip-wrap {
-  position: absolute;
+  position:
+    absolute;
 
-  left: 70%;
-  top: 50%;
+  left:
+    70%;
+
+  top:
+    50%;
 
   transform:
     translate(-50%, -50%);
@@ -439,259 +503,399 @@ body:has(#page-3:target) .p-middle-2 {
 }
 
 .p-first .main-img {
-  position: absolute;
+  width:
+    300px;
 
-  left: 50%;
-  top: 50%;
+  height:
+    450px;
+
+  position:
+    absolute;
+
+  left:
+    50%;
+
+  top:
+    50%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .back-big {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 350px;
-  height: 200px;
+  width:
+    350px;
 
-  left: 40%;
-  top: 75%;
+  height:
+    200px;
+
+  left:
+    40%;
+
+  top:
+    75%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-mid-1 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 100px;
-  height: 150px;
+  width:
+    100px;
 
-  left: 40%;
-  top: 85%;
+  height:
+    150px;
+
+  left:
+    40%;
+
+  top:
+    85%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-mid-2 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 150px;
-  height: 150px;
+  width:
+    150px;
 
-  left: 80%;
-  top: 56%;
+  height:
+    150px;
+
+  left:
+    80%;
+
+  top:
+    56%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-mid-3 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 100px;
-  height: 180px;
+  width:
+    100px;
 
-  left: 25%;
-  top: 15%;
+  height:
+    180px;
+
+  left:
+    25%;
+
+  top:
+    15%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-sml-1 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 50px;
-  height: 80px;
+  width:
+    50px;
 
-  left: 28%;
-  top: 88%;
+  height:
+    80px;
+
+  left:
+    28%;
+
+  top:
+    88%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-sml-2 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 100px;
-  height: 60px;
+  width:
+    100px;
 
-  left: 55%;
-  top: 89%;
+  height:
+    60px;
+
+  left:
+    55%;
+
+  top:
+    89%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-sml-3 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 80px;
-  height: 80px;
+  width:
+    80px;
 
-  left: 80%;
-  top: 45%;
+  height:
+    80px;
+
+  left:
+    80%;
+
+  top:
+    45%;
 
   transform:
     translate(-50%, -50%);
 
-  border-radius: 50px;
+  border-radius:
+    50px;
 }
 
 .p-first .front-sml-4 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 60px;
-  height: 70px;
+  width:
+    60px;
 
-  left: 85%;
-  top: 30%;
+  height:
+    70px;
+
+  left:
+    85%;
+
+  top:
+    30%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-sml-5 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 80px;
-  height: 80px;
+  width:
+    80px;
 
-  left: 15%;
-  top: 20%;
+  height:
+    80px;
+
+  left:
+    15%;
+
+  top:
+    20%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-strip-1 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: auto;
+  width:
+    auto;
 
-  left: 20%;
-  top: 32%;
+  left:
+    20%;
+
+  top:
+    32%;
 
   transform:
     translate(-50%, -50%);
 
-  padding: 0 5px;
+  padding:
+    0 5px;
 }
 
 .p-first .front-strip-2 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: auto;
+  width:
+    auto;
 
-  left: 30%;
-  top: 40%;
+  left:
+    30%;
+
+  top:
+    40%;
 
   transform:
     translate(-50%, -50%);
 
-  padding: 0 5px;
+  padding:
+    0 5px;
 }
 
 .p-first p {
-  font-family: "Special Elite", cursive;
+  font-family:
+    "Special Elite",
+    cursive;
 }
 
 .p-first .front-strip-3 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 20px;
-  height: 220px;
+  width:
+    20px;
 
-  left: 12%;
-  top: 65%;
+  height:
+    220px;
+
+  left:
+    12%;
+
+  top:
+    65%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-strip-4 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 20px;
-  height: 120px;
+  width:
+    20px;
 
-  left: 5%;
-  top: 50%;
+  height:
+    120px;
+
+  left:
+    5%;
+
+  top:
+    50%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-strip-5 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 15px;
-  height: 120px;
+  width:
+    15px;
 
-  left: 75%;
-  top: 30%;
+  height:
+    120px;
+
+  left:
+    75%;
+
+  top:
+    30%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-strip-6 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 15px;
-  height: 200px;
+  width:
+    15px;
 
-  left: 75%;
-  top: 75%;
+  height:
+    200px;
+
+  left:
+    75%;
+
+  top:
+    75%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-strip-7 {
-  position: absolute;
+  position:
+    absolute;
 
-  width: 15px;
-  height: 150px;
+  width:
+    15px;
 
-  left: 85%;
-  top: 70%;
+  height:
+    150px;
+
+  left:
+    85%;
+
+  top:
+    70%;
 
   transform:
     translate(-50%, -50%);
 }
 
 .p-first .front-username {
-  position: absolute;
+  position:
+    absolute;
 
-  left: 65%;
-  top: 75%;
+  left:
+    65%;
+
+  top:
+    75%;
 
   transform:
     translate(-50%, -50%);
 
-  color: white;
+  color:
+    white;
 
-  background: var(--pink-dark);
+  background:
+    var(--pink-dark);
 
-  padding: 0 5px;
+  padding:
+    0 5px;
 }
 
 .p-first .front-username h2 {
-  margin: 0;
+  margin:
+    0;
 
-  font-family: "Special Elite", cursive;
-  font-weight: 100;
-  letter-spacing: 2px;
-  line-height: 1;
+  font-family:
+    "Special Elite",
+    cursive;
+
+  font-weight:
+    100;
+
+  letter-spacing:
+    2px;
+
+  line-height:
+    1;
 
   transform:
     translateY(7px);
 
-  font-size: 50px;
+  font-size:
+    50px;
 }
 
 
@@ -700,42 +904,63 @@ body:has(#page-3:target) .p-middle-2 {
 ========================================================= */
 
 .film-strip-wrap {
-  border: 1px solid var(--film);
+  border:
+    1px solid
+    var(--film);
 
-  display: grid;
-  grid-auto-flow: column;
+  display:
+    grid;
 
-  width: fit-content;
-  height: 100%;
+  grid-auto-flow:
+    column;
 
-  background: var(--film);
+  width:
+    fit-content;
 
-  padding: 10px 0;
+  height:
+    100%;
+
+  background:
+    var(--film);
+
+  padding:
+    10px 0;
 }
 
 .film-strip-wrap .film-strip-inner {
-  display: grid;
+  display:
+    grid;
 
-  height: 100%;
+  height:
+    100%;
 
-  gap: 15px;
+  gap:
+    15px;
 
-  border: 1px solid var(--film);
+  border:
+    1px solid
+    var(--film);
 
-  width: fit-content;
+  width:
+    fit-content;
 
-  background: var(--film);
+  background:
+    var(--film);
 
   grid-template-rows:
     repeat(4, 1fr);
 
-  min-height: 0;
+  min-height:
+    0;
 }
 
 .film-strip-wrap .film-strip-side {
-  border: 1px solid var(--film);
+  border:
+    1px solid
+    var(--film);
 
-  width: 15px;
+  width:
+    15px;
 
   background:
     repeating-linear-gradient(
@@ -745,76 +970,134 @@ body:has(#page-3:target) .p-middle-2 {
       var(--film) 20px
     );
 
-  margin: 0 5px;
+  margin:
+    0 5px;
 }
 
 .film-strip-wrap .img {
-  width: 10vw;
-  max-width: 130px;
-  min-width: 100px;
-  min-height: 0;
-  overflow: hidden;
+  width:
+    10vw;
+
+  max-width:
+    130px;
+
+  min-width:
+    100px;
+
+  min-height:
+    0;
+
+  overflow:
+    hidden;
 }
 
 .film-strip-wrap .img img {
-  width: 100%;
-  height: 100%;
+  width:
+    100%;
 
-  object-fit: cover;
+  height:
+    100%;
+
+  object-fit:
+    cover;
 }
 
 
 /* =========================================================
-   INDEX — REPLACES THE ORIGINAL OVERVIEW
+   INDEX
 ========================================================= */
 
 .index-wrap {
-  color: var(--ink);
-  font-family: "Cutive Mono", monospace;
-  position: relative;
+  position:
+    relative;
+
+  color:
+    var(--ink);
+
+  font-family:
+    "Cutive Mono",
+    monospace;
 }
 
 .index-intro {
-  min-height: 145px;
+  display:
+    flex;
 
-  display: flex;
-  gap: 12px;
+  align-items:
+    flex-start;
 
-  align-items: flex-start;
+  gap:
+    12px;
 
-  margin-bottom: 14px;
+  min-height:
+    135px;
+
+  margin-bottom:
+    12px;
 }
 
-.index-intro img {
-  width: 145px;
-  height: 145px;
-  object-fit: contain;
+.index-sticker {
+  width:
+    125px;
 
-  flex: 0 0 145px;
+  height:
+    125px;
+
+  flex:
+    0 0 125px;
+}
+
+.index-sticker img {
+  width:
+    100%;
+
+  height:
+    100%;
+
+  object-fit:
+    contain;
 }
 
 .index-intro p {
-  margin: 0 0 12px;
+  margin:
+    0 0 11px;
 
-  font-size: 11px;
-  line-height: 1.45;
+  font-size:
+    10px;
+
+  line-height:
+    1.45;
 }
 
 .index-hand {
-  color: var(--pink-dark);
-  font-family: "Special Elite", cursive !important;
-  font-size: 15px !important;
-  transform: rotate(-2deg);
+  color:
+    var(--pink-dark);
+
+  font-family:
+    "Special Elite",
+    cursive !important;
+
+  font-size:
+    15px !important;
+
+  transform:
+    rotate(-2deg);
 }
 
 .index-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    6px;
 }
 
 .index-entry {
-  display: grid;
+  display:
+    grid;
 
   grid-template-columns:
     25px
@@ -822,20 +1105,24 @@ body:has(#page-3:target) .p-middle-2 {
     1fr
     max-content;
 
-  gap: 7px;
+  gap:
+    7px;
 
-  align-items: center;
+  align-items:
+    center;
 
   padding:
     8px 3px;
 
-  text-decoration: none;
+  text-decoration:
+    none;
 
-  color: var(--ink);
+  color:
+    var(--ink);
 
   border-bottom:
     1px solid
-    rgba(198,153,165,.65);
+    rgba(198,153,165,.60);
 
   font-family:
     "Special Elite",
@@ -847,38 +1134,66 @@ body:has(#page-3:target) .p-middle-2 {
 }
 
 .index-entry:hover {
-  color: var(--pink-dark);
-  padding-left: 8px;
+  color:
+    var(--pink-dark);
+
+  padding-left:
+    8px;
 }
 
-.index-entry > span {
-  color: var(--pink-dark);
-  font-family: "Cutive Mono", monospace;
-  font-size: 10px;
+.index-number {
+  color:
+    var(--pink-dark);
+
+  font-family:
+    "Cutive Mono",
+    monospace;
+
+  font-size:
+    10px;
 }
 
-.index-entry > strong {
-  font-size: 14px;
-  font-weight: 400;
+.index-entry strong {
+  font-size:
+    13px;
+
+  font-weight:
+    400;
+
+  white-space:
+    nowrap;
 }
 
-.index-entry > i {
-  height: 1px;
-  border-bottom: 1px dotted var(--pink-dark);
+.index-entry i {
+  height:
+    1px;
+
+  border-bottom:
+    1px dotted
+    var(--pink-dark);
 }
 
-.index-entry > small {
-  color: var(--pink-dark);
-  font-family: "Cutive Mono", monospace;
-  font-size: 8px;
-  white-space: nowrap;
+.index-entry small {
+  color:
+    var(--pink-dark);
+
+  font-family:
+    "Cutive Mono",
+    monospace;
+
+  font-size:
+    8px;
+
+  white-space:
+    nowrap;
 }
 
 .index-note {
-  margin-top: 17px;
+  margin-top:
+    14px;
 
   padding:
-    11px;
+    10px;
 
   border:
     1px dashed
@@ -887,31 +1202,51 @@ body:has(#page-3:target) .p-middle-2 {
   background:
     rgba(219,180,196,.12);
 
-  text-align: center;
+  text-align:
+    center;
 }
 
 .index-note span {
-  color: var(--pink-dark);
-  font-family: "Special Elite", cursive;
-  font-size: 10px;
+  color:
+    var(--pink-dark);
+
+  font-family:
+    "Special Elite",
+    cursive;
+
+  font-size:
+    10px;
 }
 
 .index-note p {
   margin:
-    7px 0 0;
+    6px 0 0;
 
-  font-size: 9px;
-  line-height: 1.4;
+  font-size:
+    9px;
+
+  line-height:
+    1.4;
 }
 
 .index-sticker-small {
-  position: absolute;
+  position:
+    absolute;
 
-  right: 5px;
-  bottom: 0;
+  right:
+    2px;
 
-  width: 72px !important;
-  height: 72px !important;
+  bottom:
+    -2px;
+
+  width:
+    65px !important;
+
+  height:
+    65px !important;
+
+  object-fit:
+    contain !important;
 }
 
 
@@ -920,18 +1255,28 @@ body:has(#page-3:target) .p-middle-2 {
 ========================================================= */
 
 .socials-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    10px;
 }
 
 .social-link {
-  display: flex;
-  align-items: center;
+  display:
+    flex;
 
-  gap: 10px;
+  align-items:
+    center;
 
-  text-decoration: none;
+  gap:
+    10px;
+
+  text-decoration:
+    none;
 
   padding:
     8px 12px;
@@ -944,87 +1289,123 @@ body:has(#page-3:target) .p-middle-2 {
     rgba(173,128,154,.15);
 
   transition:
-    background .3s ease,
-    transform .3s ease;
+    background .3s ease;
 }
 
 .social-link:hover {
   background:
     rgba(173,128,154,.35);
-
-  transform:
-    translateX(4px);
 }
 
 .social-icon {
-  width: 28px;
-  height: 28px;
+  width:
+    28px;
 
-  background: beige;
+  height:
+    28px;
+
+  background:
+    beige;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex-shrink:
+    0;
+
+  color:
+    var(--pink-dark);
 
   box-shadow:
     inset
     0 0 0 3px
     var(--pink-dark);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  flex-shrink: 0;
-
-  color: var(--pink-dark);
 }
 
 .social-platform {
-  color: var(--ink-deep);
+  color:
+    var(--ink-deep);
 
   font-family:
     "Special Elite",
     cursive;
 
-  font-size: 14px;
-  line-height: 1;
+  font-size:
+    14px;
 
-  display: block;
+  line-height:
+    1;
+
+  display:
+    block;
 }
 
 .social-handle {
-  color: #543943;
+  color:
+    #543943;
 
   font-family:
     "Cutive Mono",
     monospace;
 
-  font-size: 10px;
+  font-size:
+    10px;
 
-  display: block;
+  display:
+    block;
 
-  margin-top: 2px;
+  margin-top:
+    2px;
 }
 
 .p1-deco-strip {
-  height: 15px;
-  margin: 12px 0;
+  height:
+    15px;
 
-  background: var(--pink-mid);
+  margin:
+    12px 0;
+
+  background:
+    var(--pink-mid);
 }
 
 .polaroid-gallery-wrap {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display:
+    flex;
 
-  justify-content: center;
+  flex-direction:
+    row;
+
+  flex-wrap:
+    wrap;
+
+  justify-content:
+    center;
 }
 
+
+/* =========================================================
+   POLAROID BASE
+========================================================= */
+
 .polaroid {
-  width: 170px;
-  height: 270px;
+  width:
+    170px;
 
-  padding: 15px;
+  height:
+    270px;
 
-  margin: 5px;
+  padding:
+    15px;
+
+  margin:
+    5px;
 
   background:
     var(--pink-paper);
@@ -1042,13 +1423,14 @@ body:has(#page-3:target) .p-middle-2 {
 }
 
 .polaroid img {
-  width: 100%;
-  height: auto;
+  width:
+    100%;
 
   aspect-ratio:
     23 / 31;
 
-  object-fit: cover;
+  object-fit:
+    cover;
 
   border:
     2px solid
@@ -1056,41 +1438,37 @@ body:has(#page-3:target) .p-middle-2 {
 }
 
 .polaroid p {
-  margin:
-    5px 0 0;
-
   color:
     var(--ink-deep);
 
-  text-align: center;
+  text-align:
+    center;
 
   font-family:
     "Special Elite",
     cursive;
-}
 
-.polaroid:hover {
-  transform:
-    rotate(-3deg)
-    translateY(-4px);
-
-  z-index: 4;
+  margin:
+    5px 0 0;
 }
 
 
 /* =========================================================
-   SERIES / POSTCARD FLIP
-   Again matching the supplied working CSS.
+   SERIES
 ========================================================= */
 
 .series-wrap {
-  display: flex;
+  display:
+    flex;
 
-  flex-wrap: wrap;
+  flex-wrap:
+    wrap;
 
-  justify-content: center;
+  justify-content:
+    center;
 
-  gap: 20px;
+  gap:
+    20px;
 }
 
 .postcard-wrap {
@@ -1100,8 +1478,11 @@ body:has(#page-3:target) .p-middle-2 {
   height:
     calc(50% - 10px);
 
-  max-height: 350px;
-  min-height: 250px;
+  max-height:
+    350px;
+
+  min-height:
+    250px;
 
   perspective:
     5000px;
@@ -1111,10 +1492,14 @@ body:has(#page-3:target) .p-middle-2 {
 }
 
 .flip-card {
-  width: 100%;
-  height: 100%;
+  width:
+    100%;
 
-  position: relative;
+  height:
+    100%;
+
+  position:
+    relative;
 
   transform-style:
     preserve-3d;
@@ -1123,12 +1508,22 @@ body:has(#page-3:target) .p-middle-2 {
     transform .7s ease;
 
   animation:
-    postcard-unflip .5s ease-in-out forwards;
+    postcard-unflip
+    .5s ease-in-out
+    forwards;
 }
 
 .postcard-wrap:hover .flip-card {
   animation:
-    postcard-flip .5s ease forwards;
+    postcard-flip
+    .5s
+    ease
+    forwards;
+}
+
+.flip-card.keyboard-flipped {
+  transform:
+    rotateY(180deg);
 }
 
 @keyframes postcard-flip {
@@ -1184,33 +1579,43 @@ body:has(#page-3:target) .p-middle-2 {
 }
 
 .face {
-  position: absolute;
+  position:
+    absolute;
 
-  inset: 0;
+  inset:
+    0;
 
   border:
     2px solid
     var(--pink-mid);
 
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  backface-visibility:
+    hidden;
 
-  overflow: hidden;
+  -webkit-backface-visibility:
+    hidden;
+
+  overflow:
+    hidden;
 }
 
 .face-front img {
-  width: 100%;
-  height: 100%;
+  width:
+    100%;
 
-  object-fit: cover;
+  height:
+    100%;
 
-  display: block;
+  object-fit:
+    cover;
 }
 
 .face-front .postcard-overlay {
-  position: absolute;
+  position:
+    absolute;
 
-  inset: 0;
+  inset:
+    0;
 
   background:
     linear-gradient(
@@ -1219,11 +1624,14 @@ body:has(#page-3:target) .p-middle-2 {
       rgba(49,30,15,.10) 55%
     );
 
-  display: flex;
+  display:
+    flex;
 
-  flex-direction: column;
+  flex-direction:
+    column;
 
-  justify-content: flex-end;
+  justify-content:
+    flex-end;
 
   padding:
     28px 32px;
@@ -1234,7 +1642,8 @@ body:has(#page-3:target) .p-middle-2 {
     "Alegreya Sans",
     sans-serif;
 
-  font-size: 10px;
+  font-size:
+    10px;
 
   letter-spacing:
     2.5px;
@@ -1250,8 +1659,6 @@ body:has(#page-3:target) .p-middle-2 {
 }
 
 .face-front h1 {
-  margin: 0;
-
   font-family:
     "Special Elite",
     cursive;
@@ -1268,20 +1675,22 @@ body:has(#page-3:target) .p-middle-2 {
   line-height:
     1.15;
 
-  letter-spacing:
-    -.5px;
+  margin:
+    0;
 }
 
 .face-back {
   transform:
     rotateY(180deg);
 
-  display: flex;
+  display:
+    flex;
 
   background:
     #faf7f0;
 
-  text-decoration: none;
+  text-decoration:
+    none;
 }
 
 .pc-left {
@@ -1289,14 +1698,13 @@ body:has(#page-3:target) .p-middle-2 {
     1.3;
 
   padding:
-    20px
-    20px
-    16px
     20px;
 
-  display: flex;
+  display:
+    flex;
 
-  flex-direction: column;
+  flex-direction:
+    column;
 
   justify-content:
     space-between;
@@ -1317,20 +1725,14 @@ body:has(#page-3:target) .p-middle-2 {
   font-size:
     20px;
 
-  font-weight:
-    400;
-
-  letter-spacing:
-    -.5px;
-
-  line-height:
-    1.2;
-
   margin:
     0 0 10px;
 }
 
 .pc-body {
+  color:
+    var(--ink-deep);
+
   font-size:
     11px;
 
@@ -1340,18 +1742,9 @@ body:has(#page-3:target) .p-middle-2 {
   flex:
     1;
 
-  padding-top:
-    4px;
-
   font-family:
     "Cutive Mono",
     monospace;
-
-  height:
-    100%;
-
-  color:
-    var(--ink-deep);
 }
 
 .pc-from-label {
@@ -1393,7 +1786,8 @@ body:has(#page-3:target) .p-middle-2 {
   padding:
     18px 20px;
 
-  display: flex;
+  display:
+    flex;
 
   flex-direction:
     column;
@@ -1403,7 +1797,8 @@ body:has(#page-3:target) .p-middle-2 {
 }
 
 .pc-stamp-row {
-  display: flex;
+  display:
+    flex;
 
   justify-content:
     flex-end;
@@ -1422,9 +1817,6 @@ body:has(#page-3:target) .p-middle-2 {
   height:
     64px;
 
-  border-radius:
-    2px;
-
   display:
     flex;
 
@@ -1433,12 +1825,6 @@ body:has(#page-3:target) .p-middle-2 {
 
   justify-content:
     center;
-
-  position:
-    relative;
-
-  flex-shrink:
-    0;
 
   background:
     #d1b0cf;
@@ -1454,9 +1840,6 @@ body:has(#page-3:target) .p-middle-2 {
 
   font-size:
     20px;
-
-  z-index:
-    1;
 }
 
 .postmark {
@@ -1465,9 +1848,6 @@ body:has(#page-3:target) .p-middle-2 {
 
   height:
     56px;
-
-  border-radius:
-    50%;
 
   display:
     flex;
@@ -1478,6 +1858,13 @@ body:has(#page-3:target) .p-middle-2 {
   justify-content:
     center;
 
+  border:
+    1.5px solid
+    #916e86;
+
+  border-radius:
+    50%;
+
   transform:
     rotate(-12deg);
 
@@ -1486,10 +1873,6 @@ body:has(#page-3:target) .p-middle-2 {
 
   margin-top:
     4px;
-
-  border:
-    1.5px solid
-    #916e86;
 }
 
 .postmark span {
@@ -1502,12 +1885,6 @@ body:has(#page-3:target) .p-middle-2 {
 
   font-size:
     8px;
-
-  text-transform:
-    uppercase;
-
-  letter-spacing:
-    .4px;
 
   line-height:
     1.5;
@@ -1529,9 +1906,6 @@ body:has(#page-3:target) .p-middle-2 {
 
 .address-line {
   height:
-    1px;
-
-  border-radius:
     1px;
 
   background:
@@ -1589,12 +1963,13 @@ body:has(#page-3:target) .p-middle-2 {
     rotate(-1deg);
 }
 
-.friends-wrap .polaroid {
-  width:
-    170px;
-}
-
 .friends-wrap a:hover .polaroid {
+  transform:
+    rotate(-3deg);
+
+  z-index:
+    1;
+
   box-shadow:
     5px 5px 5px
     var(--ink-deep);
@@ -1602,243 +1977,211 @@ body:has(#page-3:target) .p-middle-2 {
 
 
 /* =========================================================
-   CREATORS
+   DREAMLAND RESIDENTS
+   Same polaroid system, plus editable information panel.
 ========================================================= */
 
-.film-strip-wrap-wrap {
+.resident-wrap {
   display:
-    flex;
+    grid;
 
-  flex-direction:
-    row;
+  grid-template-columns:
+    1fr 1fr;
 
-  justify-content:
-    space-evenly;
+  gap:
+    14px;
 
-  position:
-    relative;
-
-  min-height:
-    100%;
+  padding:
+    6px 0;
 }
 
-.p-last .film-strip-wrap .img {
-  height:
-    100px;
-}
-
-.p-last .film-strip-wrap .img {
-  filter:
-    grayscale(50%);
-}
-
-.p-last .film-strip-wrap p {
-  text-align:
-    center;
-
-  font-family:
-    "Special Elite",
-    cursive;
-
-  opacity:
-    0;
-
-  position:
-    absolute;
-
-  width:
-    100%;
-
-  text-shadow:
-    0 0 3px white;
-
-  font-weight:
-    600;
-
-  color:
-    var(--ink-deep);
-
-  background:
-    rgba(115,87,96,.60);
-
-  z-index:
-    2;
-}
-
-.p-last .film-strip-wrap .img:hover {
-  filter:
-    grayscale(0);
-}
-
-.p-last .film-strip-wrap .img:hover p {
-  opacity:
-    1;
-}
-
-.film-strip-wrap-wrap [class*="sticker-"] {
-  position:
-    absolute;
-}
-
-.film-strip-wrap-wrap [class*="sticker-"] img {
-  object-fit:
-    contain;
-
-  width:
-    100px;
-
-  height:
-    100px;
-}
-
-.film-strip-wrap-wrap .sticker-1 {
-  left:
-    calc((100% - 2*175px + 5px)/3);
-
-  transform:
-    translateX(-50%);
-
-  top:
-    25%;
-}
-
-.film-strip-wrap-wrap .sticker-2 {
-  left:
-    calc((100% - 2*175px + 5px)/3 + 175px);
-
-  transform:
-    translateX(-50%);
-
-  bottom:
-    10%;
-}
-
-.film-strip-wrap-wrap .sticker-3 {
-  right:
-    calc((100% - 2*175px + 5px)/3 + 175px);
-
-  transform:
-    translateX(50%);
-
-  top:
-    60%;
-}
-
-.film-strip-wrap-wrap .sticker-4 {
-  right:
-    calc((100% - 2*175px + 5px)/3);
-
-  transform:
-    translateX(50%);
-
-  top:
-    20%;
-}
-
-
-/* =========================================================
-   CLOSING
-========================================================= */
-
-.closing-page {
+.resident-card {
   display:
-    flex;
+    grid;
+
+  grid-template-columns:
+    120px
+    1fr;
+
+  gap:
+    12px;
 
   align-items:
-    center;
+    start;
 
-  justify-content:
-    center;
+  padding:
+    7px;
 
-  flex-direction:
-    column;
+  border:
+    1px solid
+    var(--pink-dark);
 
-  text-align:
-    center;
+  background:
+    rgba(255,255,255,.22);
 
-  color:
-    var(--ink);
+  box-shadow:
+    1px 2px 5px
+    rgba(77,49,58,.12);
 }
 
-.closing-page h3 {
-  background:
-    transparent;
+.resident-polaroid {
+  display:
+    block;
+
+  text-decoration:
+    none;
+}
+
+.resident-card .polaroid {
+  width:
+    120px;
+
+  height:
+    192px;
+
+  padding:
+    9px;
 
   margin:
     0;
-
-  padding:
-    0;
-
-  white-space:
-    normal;
 }
 
-.closing-page p {
-  max-width:
-    300px;
+.resident-card .polaroid img {
+  aspect-ratio:
+    23 / 31;
+}
+
+.resident-card .polaroid p {
+  font-size:
+    11px;
+
+  margin-top:
+    5px;
+}
+
+.resident-info {
+  min-width:
+    0;
+
+  padding:
+    4px 2px;
+}
+
+.resident-number {
+  display:
+    block;
+
+  color:
+    var(--pink-dark);
 
   font-family:
     "Cutive Mono",
     monospace;
 
   font-size:
-    11px;
+    8px;
 
-  line-height:
-    1.5;
+  letter-spacing:
+    .7px;
 }
 
-.closing-symbol {
-  width:
-    60px;
-
-  height:
-    60px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  border:
-    1px solid
-    var(--pink-dark);
-
-  border-radius:
-    50%;
-
-  color:
-    var(--pink-dark);
-
-  margin-bottom:
-    16px;
-}
-
-.return-index {
-  display:
-    inline-block;
-
-  margin-top:
-    12px;
+.resident-info h4 {
+  margin:
+    4px 0 4px;
 
   padding:
-    8px 11px;
+    0;
 
-  border:
-    1px solid
-    var(--pink-dark);
+  background:
+    transparent;
 
-  text-decoration:
-    none;
+  color:
+    var(--ink);
 
   font-family:
     "Special Elite",
     cursive;
 
   font-size:
-    10px;
+    17px;
+
+  line-height:
+    1.1;
+}
+
+.resident-role {
+  display:
+    block;
+
+  margin-bottom:
+    8px;
+
+  color:
+    var(--pink-dark);
+
+  font-family:
+    "Alegreya Sans",
+    sans-serif;
+
+  font-size:
+    8px;
+
+  letter-spacing:
+    .8px;
+}
+
+.resident-info p {
+  margin:
+    0;
+
+  color:
+    var(--ink-deep);
+
+  font-family:
+    "Cutive Mono",
+    monospace;
+
+  font-size:
+    9px;
+
+  line-height:
+    1.38;
+}
+
+.resident-tags {
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    4px;
+
+  margin-top:
+    9px;
+}
+
+.resident-tags span {
+  padding:
+    3px 5px;
+
+  border:
+    1px solid
+    var(--pink-mid);
+
+  color:
+    var(--pink-dark);
+
+  background:
+    rgba(255,255,255,.36);
+
+  font-family:
+    "Montserrat",
+    sans-serif;
+
+  font-size:
+    7px;
 }
 
 
@@ -1851,7 +2194,7 @@ body:has(#page-3:target) .p-middle-2 {
     30px;
 
   margin:
-    10px 0 0;
+    10px 0;
 
   display:
     flex;
@@ -1863,11 +2206,11 @@ body:has(#page-3:target) .p-middle-2 {
     center;
 
   gap:
-    10px;
+    13px;
 }
 
 .page-nav a,
-.page-nav .page-current {
+.page-current {
   display:
     inline-flex;
 
@@ -1881,7 +2224,7 @@ body:has(#page-3:target) .p-middle-2 {
     25px;
 
   padding:
-    0 7px;
+    0 5px;
 
   font-family:
     "Special Elite",
@@ -1890,11 +2233,11 @@ body:has(#page-3:target) .p-middle-2 {
   font-size:
     10px;
 
-  border-radius:
-    5px;
-
   text-decoration:
     none;
+
+  border-radius:
+    5px;
 }
 
 .page-nav a {
@@ -1919,94 +2262,64 @@ body:has(#page-3:target) .p-middle-2 {
     var(--pink-dark);
 }
 
-.next-link,
-.prev-link {
-  min-width:
-    85px;
+.journal-hint {
+  display:
+    flex;
+
+  justify-content:
+    center;
+
+  color:
+    rgba(77,49,58,.55);
+
+  font-family:
+    "Alegreya Sans",
+    sans-serif;
+
+  font-size:
+    8px;
+
+  letter-spacing:
+    1.4px;
 }
 
 
 /* =========================================================
-   DESKTOP NAV VISIBILITY
+   RESPONSIVE
 ========================================================= */
 
-@media (min-width: 768px) {
+@media (max-width: 1100px) {
 
-  .page-nav > a:nth-child(1),
-  .page-nav > a:nth-child(2),
-  .page-nav > a:nth-child(3) {
-    display:
-      inline-flex;
+  .resident-wrap {
+    grid-template-columns:
+      1fr;
   }
 
-  .next-link,
-  .prev-link {
-    display:
-      inline-flex;
+  .resident-card {
+    grid-template-columns:
+      105px
+      1fr;
+  }
+
+  .resident-card .polaroid {
+    width:
+      105px;
+
+    height:
+      175px;
   }
 }
 
-
-/* =========================================================
-   CLICKABLE EDGES
-========================================================= */
-
-.book-wrapper::before,
-.book-wrapper::after {
-  content:
-    "";
-
-  position:
-    absolute;
-
-  top:
-    0;
-
-  width:
-    8%;
-
-  height:
-    100%;
-
-  z-index:
-    50;
-
-  pointer-events:
-    none;
-}
-
-.book-wrapper::before {
-  left:
-    0;
-}
-
-.book-wrapper::after {
-  right:
-    0;
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
 
 @media (max-width: 768px) {
 
-  main {
-    padding-top:
-      76px;
-  }
+  /*
+     Same responsive movement used by the supplied CSS:
+     the book becomes two pages wide so the user can move
+     between the left and right halves.
+  */
 
   .book {
-    height:
-      calc(100vh - 128px);
-
-    min-height:
-      620px;
-
-    max-height:
-      none;
-
     transition:
       all 1s ease;
 
@@ -2020,23 +2333,27 @@ body:has(#page-3:target) .p-middle-2 {
       translateX(0);
   }
 
-  /*
-    EXACTLY following the supplied mobile positioning logic.
-  */
-
   body:has(#page-1:target) .book,
-  body:has(#page-3:target) .book,
-  body:has(#page-5:target) .book {
+  body:has(#page-2:target) .book {
     transform:
       translateX(0);
   }
 
-  body:has(#page-2:target) .book,
-  body:has(#page-4:target) .book,
+  body:has(#page-3:target) .book,
+  body:has(#page-4:target) .book {
+    transform:
+      translateX(-25%);
+  }
+
+  body:has(#page-5:target) .book,
   body:has(#page-6:target) .book {
     transform:
       translateX(-50%);
   }
+
+  /*
+     Sheets still turn using the same left-center model.
+  */
 
   body:has(#page-3:target) .p-middle-1,
   body:has(#page-4:target) .p-middle-1,
@@ -2058,34 +2375,6 @@ body:has(#page-3:target) .p-middle-2 {
       3;
   }
 
-  .page {
-    width:
-      50%;
-  }
-
-  .p-first {
-    width:
-      50%;
-  }
-
-  .p-last {
-    width:
-      50%;
-  }
-
-  .front,
-  .back {
-    padding:
-      20px;
-  }
-
-  .page-nav > a:nth-child(1),
-  .page-nav > a:nth-child(2),
-  .page-nav > a:nth-child(3) {
-    display:
-      none;
-  }
-
   .site-header-right {
     display:
       none;
@@ -2096,9 +2385,14 @@ body:has(#page-3:target) .p-middle-2 {
       0 14px;
   }
 
-  .postcard-wrap {
-    width:
-      calc(100% - 20px);
+  .page-nav {
+    gap:
+      9px;
+  }
+
+  .resident-wrap {
+    grid-template-columns:
+      1fr;
   }
 
   .friends-wrap .polaroid {
@@ -2114,16 +2408,7 @@ body:has(#page-3:target) .p-middle-2 {
 }
 
 
-/* =========================================================
-   SMALLER
-========================================================= */
-
 @media (max-width: 543px) {
-
-  .book {
-    min-height:
-      560px;
-  }
 
   .front h3,
   .back h3 {
@@ -2133,67 +2418,73 @@ body:has(#page-3:target) .p-middle-2 {
 
   .index-intro {
     min-height:
-      120px;
+      110px;
   }
 
-  .index-intro img {
+  .index-sticker {
     width:
-      105px;
+      95px;
 
     height:
-      105px;
+      95px;
 
     flex-basis:
-      105px;
+      95px;
   }
 
   .index-intro p {
     font-size:
-      9px;
+      8px;
   }
 
-  .index-entry > strong {
+  .index-entry strong {
     font-size:
-      12px;
-  }
+      11px;
+    }
 
-  .index-entry > small {
-    font-size:
-      7px;
-  }
+    .postcard-wrap {
+      width:
+        calc(100% - 20px);
+    }
 
-  .polaroid {
-    width:
-      140px;
+    .pc-body {
+      font-size:
+        9px;
+    }
 
-    height:
-      220px;
-  }
+    .resident-card {
+      grid-template-columns:
+        90px
+        1fr;
+    }
 
-  .pc-body {
-    display:
-      none;
-  }
+    .resident-card .polaroid {
+      width:
+        90px;
 
-  .pc-left {
-    padding:
-      15px;
-  }
+      height:
+        150px;
+    }
 
-  .p-first [class*=front-strip] {
-    display:
-      none;
-  }
+    .resident-info h4 {
+      font-size:
+        14px;
+    }
 
-  .p-last [class*=sticker] {
-    display:
-      none;
-  }
+    .resident-info p {
+      font-size:
+        8px;
+    }
 
-  .site-logo strong {
-    font-size:
-      24px;
-  }
+    .journal-hint {
+      display:
+        none;
+    }
+
+    .p-first [class*=front-strip] {
+      display:
+        none;
+    }
 }
 
 

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#D2899D">
   <title>Luc's Dreamland</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +15,22 @@
 
 <body>
 
-  <!-- Hash targets intentionally mirror the working Janitor AI page system. -->
+  <!-- ==========================================================
+       NAVIGATION TARGETS
+
+       PAGE 1 = COVER
+       PAGE 2 = INDEX
+       PAGE 3 = SOCIALS
+       PAGE 4 = SERIES
+       PAGE 5 = FRIENDS
+       PAGE 6 = DREAMLAND RESIDENTS
+
+       The original Janitor AI logic advances one spread at a
+       time on desktop:
+          #page-1 => 1 / 2
+          #page-3 => 3 / 4
+          #page-5 => 5 / 6
+  =========================================================== -->
   <div class="anchors" aria-hidden="true">
     <div id="page-1"></div>
     <div id="page-2"></div>
@@ -23,6 +39,7 @@
     <div id="page-5"></div>
     <div id="page-6"></div>
   </div>
+
 
   <header class="site-header">
     <div class="site-logo">
@@ -45,10 +62,10 @@
 
       <div class="book-wrapper">
 
-        <!-- =====================================================
-             LEFT STATIC COVER
-        ====================================================== -->
-        <section class="page p-first">
+        <!-- ======================================================
+             PAGE 1 — COVER
+        ======================================================= -->
+        <section class="page p-first" data-page="1">
 
           <img class="background"
                src="https://ella.janitorai.com/media-approved/3IBk9Rhr74VlmW6QZSzzs.webp"
@@ -115,8 +132,14 @@
             <img src="https://ella.janitorai.com/media-approved/Dzfc-iX7_5lZ_dRj_wLRD.webp" alt="">
           </div>
 
-          <div class="front-strip-1"><p>welcome to the dreamland...</p></div>
-          <div class="front-strip-2"><p>don't get lost</p></div>
+          <div class="front-strip-1">
+            <p>welcome to the dreamland...</p>
+          </div>
+
+          <div class="front-strip-2">
+            <p>don't get lost</p>
+          </div>
+
           <div class="front-strip-3"></div>
           <div class="front-strip-4"></div>
           <div class="front-strip-5"></div>
@@ -130,87 +153,103 @@
         </section>
 
 
-        <!-- =====================================================
+        <!-- ======================================================
              SHEET 1
-             FRONT = INDEX
-             BACK  = SOCIALS
-        ====================================================== -->
-        <section class="page p-middle p-middle-1">
+             PAGE 2 = INDEX
+             PAGE 3 = SOCIALS
+
+             THIS IS INTENTIONALLY THE SAME PHYSICAL SHEET MODEL
+             AS .p-middle-1 IN THE ORIGINAL CSS.
+        ======================================================= -->
+        <section class="page p-middle p-middle-1" data-sheet="1">
 
           <img class="background"
                src="https://ella.janitorai.com/media-approved/3IBk9Rhr74VlmW6QZSzzs.webp"
                alt="">
 
+          <!-- PAGE 2 — INDEX -->
           <div class="front">
+
             <h3>Index</h3>
 
             <div class="index-wrap inner-cont">
 
               <div class="index-intro">
-                <img class="index-sticker-main"
-                     src="https://ella.janitorai.com/media-approved/HPWBISU6L64M7k3DWwLRq.webp"
-                     alt="">
+                <div class="index-sticker">
+                  <img src="https://ella.janitorai.com/media-approved/HPWBISU6L64M7k3DWwLRq.webp" alt="">
+                </div>
 
                 <div>
                   <p class="index-hand">welcome, dreamer.</p>
+
                   <p>
-                    The Dreamland is divided by doors. Choose one and turn directly
-                    to the spread where that dream belongs.
+                    The Dreamland is divided between doors.
+                    Each entry below opens the physical journal spread
+                    where that section belongs.
                   </p>
                 </div>
               </div>
 
+
+              <!-- =================================================
+                   MANUAL INDEX
+                   Change the label text freely.
+                   The href values are the connecting pages.
+              ================================================== -->
+
               <div class="index-list">
 
-                <a href="#page-1" class="index-entry">
-                  <span>01</span>
-                  <strong>COVER</strong>
+                <a class="index-entry" href="#page-1">
+                  <span class="index-number">01</span>
+                  <strong>THE COVER</strong>
                   <i></i>
-                  <small>opening</small>
+                  <small>page 1</small>
                 </a>
 
-                <a href="#page-2" class="index-entry">
-                  <span>02</span>
+                <a class="index-entry" href="#page-1">
+                  <span class="index-number">02</span>
+                  <strong>INDEX</strong>
+                  <i></i>
+                  <small>page 2</small>
+                </a>
+
+                <a class="index-entry" href="#page-3">
+                  <span class="index-number">03</span>
                   <strong>SOCIALS</strong>
                   <i></i>
-                  <small>door 1</small>
+                  <small>page 3</small>
                 </a>
 
-                <a href="#page-2" class="index-entry">
-                  <span>03</span>
+                <a class="index-entry" href="#page-3">
+                  <span class="index-number">04</span>
                   <strong>SERIES</strong>
                   <i></i>
-                  <small>door 1–2</small>
+                  <small>page 4</small>
                 </a>
 
-                <a href="#page-3" class="index-entry">
-                  <span>04</span>
+                <a class="index-entry" href="#page-5">
+                  <span class="index-number">05</span>
                   <strong>FRIENDS</strong>
                   <i></i>
-                  <small>connections</small>
+                  <small>page 5</small>
                 </a>
 
-                <a href="#page-3" class="index-entry">
-                  <span>05</span>
-                  <strong>CREATORS</strong>
+                <a class="index-entry" href="#page-5">
+                  <span class="index-number">06</span>
+                  <strong>DREAMLAND RESIDENTS</strong>
                   <i></i>
-                  <small>dream makers</small>
-                </a>
-
-                <a href="#page-3" class="index-entry">
-                  <span>06</span>
-                  <strong>ARCHIVES</strong>
-                  <i></i>
-                  <small>coming soon</small>
+                  <small>page 6</small>
                 </a>
 
               </div>
 
+
               <div class="index-note">
-                <span>✦ NOTE FROM DIUS ✦</span>
+                <span>✦ DIUS NOTE ✦</span>
+
                 <p>
-                  Every entry on this page points to the physical spread containing it.
-                  No dead-end buttons. No separate web pages.
+                  Click an entry to open the spread containing that page.
+                  The journal itself remains one continuous book.
                 </p>
               </div>
 
@@ -222,7 +261,9 @@
           </div>
 
 
+          <!-- PAGE 3 — SOCIALS -->
           <div class="back">
+
             <h3>Socials</h3>
 
             <div class="inner-cont">
@@ -231,28 +272,40 @@
 
               <div class="socials-list">
 
-                <a class="social-link" href="https://amuradius.carrd.co/" target="_blank" rel="noopener">
+                <a class="social-link"
+                   href="https://amuradius.carrd.co/"
+                   target="_blank"
+                   rel="noopener">
+
                   <div class="social-icon">✦</div>
+
                   <div class="social-text">
                     <span class="social-platform">CARRD</span>
                     <span class="social-handle">https://amuradius.carrd.co/</span>
                   </div>
+
                 </a>
 
-                <a class="social-link" href="#page-3">
+                <a class="social-link" href="#page-5">
+
                   <div class="social-icon">✦</div>
+
                   <div class="social-text">
                     <span class="social-platform">ARCHIVES</span>
                     <span class="social-handle">COMING SOON...</span>
                   </div>
+
                 </a>
 
-                <a class="social-link" href="#">
+                <a class="social-link" href="#page-5">
+
                   <div class="social-icon">✦</div>
+
                   <div class="social-text">
                     <span class="social-platform">DISCORD</span>
                     <span class="social-handle">COMING SOON...</span>
                   </div>
+
                 </a>
 
               </div>
@@ -260,36 +313,43 @@
               <div class="p1-deco-strip"></div>
 
               <div class="polaroid-gallery-wrap">
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/O_s3I_pjRicyVr8A-3VME.webp" alt="">
                 </div>
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/xROr0DCMoD8Awaq2F3h3Z.webp" alt="">
                 </div>
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/J2usjnLgNFXw4DYWOZOF-.webp" alt="">
                 </div>
+
               </div>
 
               <div class="p1-deco-strip"></div>
+
             </div>
           </div>
 
         </section>
 
 
-        <!-- =====================================================
+        <!-- ======================================================
              SHEET 2
-             FRONT = SERIES
-             BACK  = FRIENDS
-        ====================================================== -->
-        <section class="page p-middle p-middle-2">
+             PAGE 4 = SERIES
+             PAGE 5 = FRIENDS
+        ======================================================= -->
+        <section class="page p-middle p-middle-2" data-sheet="2">
 
           <img class="background"
                src="https://ella.janitorai.com/media-approved/3IBk9Rhr74VlmW6QZSzzs.webp"
                alt="">
 
+          <!-- PAGE 4 — SERIES -->
           <div class="front">
+
             <h3>Series</h3>
 
             <div class="inner-cont series-wrap">
@@ -298,36 +358,56 @@
                 <div class="flip-card" tabindex="0">
 
                   <div class="face face-front">
-                    <img src="https://ella.janitorai.com/media-approved/ATo_4WHCEj04YXbzevQYq.webp" alt="Crimmshaw Heights">
+
+                    <img src="https://ella.janitorai.com/media-approved/ATo_4WHCEj04YXbzevQYq.webp"
+                         alt="Crimmshaw Heights">
 
                     <div class="postcard-overlay">
                       <p class="eyebrow">for those who are different.</p>
                       <h1>Crimmshaw Heights.</h1>
                     </div>
+
                   </div>
 
-                  <a class="face face-back postcard-link" href="#">
+
+                  <div class="face face-back">
+
                     <div class="pc-left">
+
                       <div>
                         <p class="pc-greeting">Crimmshaw Heights.</p>
+
                         <p class="pc-body">
-                          Crimmshaw Heights, a small town in Tennessee, home to those
-                          who go against societal norms and are part of diverse groups.
-                          Most well known for its nightlife and Westvale University,
-                          the home of the seals.
+                          Crimmshaw Heights, a small town in Tennessee,
+                          home to those who go against societal norms and
+                          are part of diverse groups. Most well known for
+                          its nightlife and Westvale University, the home
+                          of the seals.
                         </p>
                       </div>
 
                       <div>
                         <p class="pc-from-label">DOOR 1</p>
-                        <p class="pc-sender">— World and inhabitants brought to you by Dius</p>
+                        <p class="pc-sender">
+                          — World and inhabitants brought to you by Dius
+                        </p>
                       </div>
+
                     </div>
 
+
                     <div class="pc-right">
+
                       <div class="pc-stamp-row">
-                        <div class="postmark"><span>ERROR<br>202X<br>DIUS</span></div>
-                        <div class="stamp"><span>✦</span></div>
+
+                        <div class="postmark">
+                          <span>ERROR<br>202X<br>DIUS</span>
+                        </div>
+
+                        <div class="stamp">
+                          <span>✦</span>
+                        </div>
+
                       </div>
 
                       <div class="address-lines">
@@ -335,8 +415,10 @@
                         <div class="address-line"></div>
                         <div class="address-line"></div>
                       </div>
+
                     </div>
-                  </a>
+
+                  </div>
 
                 </div>
               </div>
@@ -346,18 +428,25 @@
                 <div class="flip-card" tabindex="0">
 
                   <div class="face face-front">
-                    <img src="https://ella.janitorai.com/media-approved/iuGW6FirRwdqGSDAVoATB.webp" alt="Veravinyth">
+
+                    <img src="https://ella.janitorai.com/media-approved/iuGW6FirRwdqGSDAVoATB.webp"
+                         alt="Veravinyth">
 
                     <div class="postcard-overlay">
                       <p class="eyebrow">the universe exists, we do not know why</p>
                       <h1>Veravinyth.</h1>
                     </div>
+
                   </div>
 
-                  <a class="face face-back postcard-link" href="#">
+
+                  <div class="face face-back">
+
                     <div class="pc-left">
+
                       <div>
                         <p class="pc-greeting">Veravinyth.</p>
+
                         <p class="pc-body">
                           A world that was created but no one truly understands why.
                           Home to all, created to be a land of peace for every species
@@ -367,14 +456,26 @@
 
                       <div>
                         <p class="pc-from-label">DOOR 2</p>
-                        <p class="pc-sender">— World and inhabitants brought to you by Dius</p>
+                        <p class="pc-sender">
+                          — World and inhabitants brought to you by Dius
+                        </p>
                       </div>
+
                     </div>
 
+
                     <div class="pc-right">
+
                       <div class="pc-stamp-row">
-                        <div class="postmark"><span>ERROR<br>10XX<br>DIUS</span></div>
-                        <div class="stamp"><span>✦</span></div>
+
+                        <div class="postmark">
+                          <span>ERROR<br>10XX<br>DIUS</span>
+                        </div>
+
+                        <div class="stamp">
+                          <span>✦</span>
+                        </div>
+
                       </div>
 
                       <div class="address-lines">
@@ -382,8 +483,10 @@
                         <div class="address-line"></div>
                         <div class="address-line"></div>
                       </div>
+
                     </div>
-                  </a>
+
+                  </div>
 
                 </div>
               </div>
@@ -392,93 +495,168 @@
           </div>
 
 
+          <!-- PAGE 5 — FRIENDS -->
           <div class="back">
+
             <h3>Friends</h3>
 
             <div class="friends-wrap inner-cont">
 
-              <a class="friend" href="https://janitorai.com/profiles/c4d0a913-97a0-43b9-b776-9e644bd909f0_profile-of-quillyu" target="_blank" rel="noopener">
+              <!-- Friend cards: edit href, image, and name directly. -->
+
+              <a class="friend"
+                 href="https://janitorai.com/profiles/c4d0a913-97a0-43b9-b776-9e644bd909f0_profile-of-quillyu"
+                 target="_blank"
+                 rel="noopener">
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/IhFkSY81B_-EyYvL2hOvL.webp" alt="">
                   <p>Quill</p>
                 </div>
+
               </a>
 
-              <a class="friend" href="https://janitorai.com/profiles/1e5aba9f-dbe6-49eb-ac1f-9483788487ed_profile-of-kireven" target="_blank" rel="noopener">
+
+              <a class="friend"
+                 href="https://janitorai.com/profiles/1e5aba9f-dbe6-49eb-ac1f-9483788487ed_profile-of-kireven"
+                 target="_blank"
+                 rel="noopener">
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/OjdTI_L4TGA-M1o4mT1IW.webp" alt="">
                   <p>Kire</p>
                 </div>
+
               </a>
 
-              <a class="friend" href="https://janitorai.com/profiles/8d3711bf-d888-4313-80aa-1111e7a9a5cb_profile-of-aurora-slaughter" target="_blank" rel="noopener">
+
+              <a class="friend"
+                 href="https://janitorai.com/profiles/8d3711bf-d888-4313-80aa-1111e7a9a5cb_profile-of-aurora-slaughter"
+                 target="_blank"
+                 rel="noopener">
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/Yq5HghfipDiEdf5CUzFO0.webp" alt="">
                   <p>Kyo</p>
                 </div>
+
               </a>
 
-              <a class="friend" href="https://janitorai.com/profiles/06a8f46d-395a-4256-94b3-df1af6277ba5_profile-of-envyy" target="_blank" rel="noopener">
+
+              <a class="friend"
+                 href="https://janitorai.com/profiles/06a8f46d-395a-4256-94b3-df1af6277ba5_profile-of-envyy"
+                 target="_blank"
+                 rel="noopener">
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/-hoT_dksiZ7CQ-ENc-UCc.webp" alt="">
                   <p>Envy</p>
                 </div>
+
               </a>
 
-              <a class="friend" href="https://janitorai.com/profiles/5d6df38d-636b-40e3-9825-3f3b9edb9eab_profile-of-miloish" target="_blank" rel="noopener">
+
+              <a class="friend"
+                 href="https://janitorai.com/profiles/5d6df38d-636b-40e3-9825-3f3b9edb9eab_profile-of-miloish"
+                 target="_blank"
+                 rel="noopener">
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/zZLfQsvXAEhBk7BrST5fl.webp" alt="">
                   <p>Milo</p>
                 </div>
+
               </a>
 
-              <a class="friend" href="https://janitorai.com/profiles/d52539ef-cb31-4827-9355-f3ddea22ba94_profile-of-incy" target="_blank" rel="noopener">
+
+              <a class="friend"
+                 href="https://janitorai.com/profiles/d52539ef-cb31-4827-9355-f3ddea22ba94_profile-of-incy"
+                 target="_blank"
+                 rel="noopener">
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/8RRaNmJNcpmnMLD9n-WoS.webp" alt="">
                   <p>Incy</p>
                 </div>
+
               </a>
 
-              <a class="friend" href="https://janitorai.com/profiles/777c21b9-a4d3-473a-824f-3c1067edc05e_profile-of-jazzkie" target="_blank" rel="noopener">
+
+              <a class="friend"
+                 href="https://janitorai.com/profiles/777c21b9-a4d3-473a-824f-3c1067edc05e_profile-of-jazzkie"
+                 target="_blank"
+                 rel="noopener">
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/zGj_Sz25_3TcflOf5IJJ-.webp" alt="">
                   <p>Jaz</p>
                 </div>
+
               </a>
 
-              <a class="friend" href="https://janitorai.com/profiles/6f42c66f-1c20-4c26-99ce-a4633ba8d418_profile-of-havenishiding" target="_blank" rel="noopener">
+
+              <a class="friend"
+                 href="https://janitorai.com/profiles/6f42c66f-1c20-4c26-99ce-a4633ba8d418_profile-of-havenishiding"
+                 target="_blank"
+                 rel="noopener">
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/Fi_-6GDdPqPXvJVU3ykCJ.webp" alt="">
                   <p>Haven</p>
                 </div>
+
               </a>
 
-              <a class="friend" href="https://janitorai.com/profiles/935b90dc-d835-42d9-ae18-da7d49b0fe33_profile-of-xoxohni" target="_blank" rel="noopener">
+
+              <a class="friend"
+                 href="https://janitorai.com/profiles/935b90dc-d835-42d9-ae18-da7d49b0fe33_profile-of-xoxohni"
+                 target="_blank"
+                 rel="noopener">
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/8PmZG4MZXANxGbBIU4KYf.webp" alt="">
                   <p>Harper</p>
                 </div>
+
               </a>
 
-              <a class="friend" href="https://janitorai.com/profiles/186b36d9-73f3-4512-9dab-c2e9b49950e9_profile-of-petmeplz" target="_blank" rel="noopener">
+
+              <a class="friend"
+                 href="https://janitorai.com/profiles/186b36d9-73f3-4512-9dab-c2e9b49950e9_profile-of-petmeplz"
+                 target="_blank"
+                 rel="noopener">
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/dRAPVdYYceMvPKcmUUa7c.webp" alt="">
                   <p>Mickey</p>
                 </div>
+
               </a>
 
-              <a class="friend" href="https://janitorai.com/profiles/715f6db3-9ea6-4ef6-8caa-1521f85a7d00_profile-of-cyanoide" target="_blank" rel="noopener">
+
+              <a class="friend"
+                 href="https://janitorai.com/profiles/715f6db3-9ea6-4ef6-8caa-1521f85a7d00_profile-of-cyanoide"
+                 target="_blank"
+                 rel="noopener">
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/S9-pupXbaq3LGI7SKK5mO.webp" alt="">
                   <p>Cyan</p>
                 </div>
+
               </a>
 
-              <a class="friend" href="https://janitorai.com/profiles/7d7a6353-5165-49c1-80e2-ee6bdb5f43ce_profile-of-izzydraws" target="_blank" rel="noopener">
+
+              <a class="friend"
+                 href="https://janitorai.com/profiles/7d7a6353-5165-49c1-80e2-ee6bdb5f43ce_profile-of-izzydraws"
+                 target="_blank"
+                 rel="noopener">
+
                 <div class="polaroid">
                   <img src="https://ella.janitorai.com/media-approved/2AOFUW458P32CgjG4NlpR.webp" alt="">
                   <p>Izzy</p>
                 </div>
+
               </a>
 
             </div>
@@ -487,100 +665,231 @@
         </section>
 
 
-        <!-- =====================================================
-             RIGHT STATIC PAGE
-             FRONT = CREATORS
-        ====================================================== -->
-        <section class="page p-last">
+        <!-- ======================================================
+             PAGE 6 — DREAMLAND RESIDENTS
+             STATIC RIGHT PAGE
+
+             Every card uses the same basic polaroid system as
+             Friends. Each resident card is deliberately simple
+             to edit by hand:
+                  image
+                  name
+                  role
+                  information
+                  href
+
+             Add another .resident-card whenever needed.
+        ======================================================= -->
+        <section class="page p-last" data-page="6">
 
           <img class="background"
                src="https://ella.janitorai.com/media-approved/3IBk9Rhr74VlmW6QZSzzs.webp"
                alt="">
 
           <div class="front">
-            <h3>Creators</h3>
 
-            <div class="inner-cont">
+            <h3>Dreamland Residents</h3>
 
-              <div class="film-strip-wrap-wrap">
+            <div class="resident-wrap inner-cont">
 
-                <div class="film-strip-wrap">
-                  <div class="film-strip-side"></div>
+              <!-- =================================================
+                   RESIDENT 01
+                   CHANGE IMAGE / NAME / ROLE / INFO / LINK HERE
+              ================================================== -->
+              <article class="resident-card">
 
-                  <div class="film-strip-inner">
-                    <a href="https://janitorai.com/profiles/c4d0a913-97a0-43b9-b776-9e644bd909f0_profile-of-quillyu" target="_blank" rel="noopener">
-                      <div class="img"><p>quillyu</p><img src="https://ella.janitorai.com/media-approved/_ylJAvqCXlVEMNSwjEb6v.webp" alt=""></div>
-                    </a>
-                    <a href="https://janitorai.com/profiles/1e5aba9f-dbe6-49eb-ac1f-9483788487ed_profile-of-kireven" target="_blank" rel="noopener">
-                      <div class="img"><p>kirevan</p><img src="https://ella.janitorai.com/media-approved/WNDfXmb74t4GXE2BkUOag.webp" alt=""></div>
-                    </a>
-                    <a href="https://janitorai.com/profiles/8d3711bf-d888-4313-80aa-1111e7a9a5cb_profile-of-aurora-slaughter" target="_blank" rel="noopener">
-                      <div class="img"><p>aurora slaughter</p><img src="https://ella.janitorai.com/media-approved/oktP4g2VfCzSwD-xVpjhl.webp" alt=""></div>
-                    </a>
-                    <a href="https://janitorai.com/profiles/06a8f46d-395a-4256-94b3-df1af6277ba5_profile-of-envyy" target="_blank" rel="noopener">
-                      <div class="img"><p>envyy_</p><img src="https://ella.janitorai.com/media-approved/qTODNlHL_CMRaLKz2TiHC.webp" alt=""></div>
-                    </a>
-                    <a href="https://janitorai.com/profiles/5d6df38d-636b-40e3-9825-3f3b9edb9eab_profile-of-miloish" target="_blank" rel="noopener">
-                      <div class="img"><p>miloish</p><img src="https://ella.janitorai.com/media-approved/UXKanWNZJpgvvi6LTfc1t.webp" alt=""></div>
-                    </a>
+                <a class="resident-polaroid"
+                   href="#"
+                   aria-label="Axel Blackwood">
+
+                  <div class="polaroid">
+
+                    <img src="https://ella.janitorai.com/media-approved/HPWBISU6L64M7k3DWwLRq.webp"
+                         alt="Axel Blackwood">
+
+                    <p>Axel</p>
+
                   </div>
 
-                  <div class="film-strip-side"></div>
-                </div>
+                </a>
 
 
-                <div class="film-strip-wrap">
-                  <div class="film-strip-side"></div>
+                <div class="resident-info">
 
-                  <div class="film-strip-inner">
-                    <a href="https://janitorai.com/profiles/d52539ef-cb31-4827-9355-f3ddea22ba94_profile-of-incy" target="_blank" rel="noopener">
-                      <div class="img"><p>incy_</p><img src="https://ella.janitorai.com/media-approved/lHYJb80pVfzK_6hHWsiPg.webp" alt=""></div>
-                    </a>
-                    <a href="https://janitorai.com/profiles/777c21b9-a4d3-473a-824f-3c1067edc05e_profile-of-jazzkie" target="_blank" rel="noopener">
-                      <div class="img"><p>jazzkie</p><img src="https://ella.janitorai.com/media-approved/s7yG9YstUhIXwVz_CkP_8.webp" alt=""></div>
-                    </a>
-                    <a href="https://janitorai.com/profiles/6f42c66f-1c20-4c26-99ce-a4633ba8d418_profile-of-havenishiding" target="_blank" rel="noopener">
-                      <div class="img"><p>havenishiding</p><img src="https://ella.janitorai.com/media-approved/tLG5LxwqWM6iDoVI3rS7b.webp" alt=""></div>
-                    </a>
-                    <a href="https://janitorai.com/profiles/935b90dc-d835-42d9-ae18-da7d49b0fe33_profile-of-xoxohni" target="_blank" rel="noopener">
-                      <div class="img"><p>harper</p><img src="https://ella.janitorai.com/media-approved/04jtGgnxibEcCNvvf7EAD.webp" alt=""></div>
-                    </a>
-                    <a href="https://janitorai.com/profiles/186b36d9-73f3-4512-9dab-c2e9b49950e9_profile-of-petmeplz" target="_blank" rel="noopener">
-                      <div class="img"><p>petmeplz</p><img src="https://ella.janitorai.com/media-approved/FbgNlxJN-cgdvqATIfqOi.webp" alt=""></div>
-                    </a>
+                  <span class="resident-number">RESIDENT 01</span>
+
+                  <h4>Axel Blackwood</h4>
+
+                  <span class="resident-role">
+                    FORENSIC SCIENCE · WESTVALE UNIVERSITY
+                  </span>
+
+                  <p>
+                    Gruff, guarded, independent, and protective.
+                    This area is intentionally plain so you can manually
+                    replace the text with whatever information belongs
+                    to this resident.
+                  </p>
+
+                  <div class="resident-tags">
+                    <span>Crimmshaw Heights</span>
+                    <span>Westvale</span>
                   </div>
 
-                  <div class="film-strip-side"></div>
                 </div>
 
+              </article>
 
-                <div class="sticker-1">
-                  <img src="https://ella.janitorai.com/media-approved/RfIEq97eiQ4l8U-DbSpJM.webp" alt="">
+
+              <!-- =================================================
+                   RESIDENT 02
+              ================================================== -->
+              <article class="resident-card">
+
+                <a class="resident-polaroid"
+                   href="#"
+                   aria-label="Milo Axford">
+
+                  <div class="polaroid">
+
+                    <img src="https://ella.janitorai.com/media-approved/rAb5aHv9eabswTMHM0-yn.webp"
+                         alt="Milo Axford">
+
+                    <p>Milo</p>
+
+                  </div>
+
+                </a>
+
+
+                <div class="resident-info">
+
+                  <span class="resident-number">RESIDENT 02</span>
+
+                  <h4>Milo Axford</h4>
+
+                  <span class="resident-role">
+                    CRIMINOLOGY · FRESHMAN
+                  </span>
+
+                  <p>
+                    Replace this paragraph with Milo's complete
+                    character information, relationship notes,
+                    personality, or whatever you want displayed.
+                  </p>
+
+                  <div class="resident-tags">
+                    <span>Crimmshaw Heights</span>
+                    <span>Criminology</span>
+                  </div>
+
                 </div>
 
-                <div class="sticker-2">
-                  <img src="https://ella.janitorai.com/media-approved/insAY-ijUcDVT2Bl7pNFj.webp" alt="">
+              </article>
+
+
+              <!-- =================================================
+                   RESIDENT 03
+              ================================================== -->
+              <article class="resident-card">
+
+                <a class="resident-polaroid"
+                   href="#"
+                   aria-label="Cam Blackwood">
+
+                  <div class="polaroid">
+
+                    <img src="https://ella.janitorai.com/media-approved/eu8jaA_mPlfOYNyTYLJD2.webp"
+                         alt="Cam Blackwood">
+
+                    <p>Cam</p>
+
+                  </div>
+
+                </a>
+
+
+                <div class="resident-info">
+
+                  <span class="resident-number">RESIDENT 03</span>
+
+                  <h4>Cam Blackwood</h4>
+
+                  <span class="resident-role">
+                    KINESIOLOGY · SOCCER
+                  </span>
+
+                  <p>
+                    Replace this with Cam's resident profile,
+                    background, personality, and any world-specific
+                    information you want to keep on this page.
+                  </p>
+
+                  <div class="resident-tags">
+                    <span>Westvale University</span>
+                    <span>Athletics</span>
+                  </div>
+
                 </div>
 
-                <div class="sticker-3">
-                  <img src="https://ella.janitorai.com/media-approved/OWy8R8R-0jAXrsjdFtnx3.webp" alt="">
+              </article>
+
+
+              <!-- =================================================
+                   RESIDENT 04
+              ================================================== -->
+              <article class="resident-card">
+
+                <a class="resident-polaroid"
+                   href="#"
+                   aria-label="Juno Choi">
+
+                  <div class="polaroid">
+
+                    <img src="https://ella.janitorai.com/media-approved/-mUGN_oli4-KBNE7IUy2f.webp"
+                         alt="Juno Choi">
+
+                    <p>Juno</p>
+
+                  </div>
+
+                </a>
+
+
+                <div class="resident-info">
+
+                  <span class="resident-number">RESIDENT 04</span>
+
+                  <h4>Juno Choi</h4>
+
+                  <span class="resident-role">
+                    GRAPHIC DESIGN · ARTS
+                  </span>
+
+                  <p>
+                    Replace this with Juno's information, visual
+                    notes, connections, lore, or anything else you
+                    want visitors to know.
+                  </p>
+
+                  <div class="resident-tags">
+                    <span>Arts</span>
+                    <span>Industrial Goth</span>
+                  </div>
+
                 </div>
 
-                <div class="sticker-4">
-                  <img src="https://ella.janitorai.com/media-approved/Jj1UxXYK7iTd5yYdOQ1od.webp" alt="">
-                </div>
+              </article>
 
-              </div>
+
+              <!--
+                COPY one .resident-card above to add more residents.
+                The CSS automatically keeps the same journal / polaroid
+                appearance.
+              -->
 
             </div>
-          </div>
 
-          <!-- Closing page on the unused reverse side / graceful endpoint -->
-          <div class="back closing-page">
-            <div class="closing-symbol">✦</div>
-            <h3>Until the next dream...</h3>
-            <p>The journal closes here. The Dreamland does not.</p>
-            <a class="return-index" href="#page-1">RETURN TO INDEX</a>
           </div>
 
         </section>
@@ -589,32 +898,36 @@
     </div>
 
 
-    <!-- =======================================================
-         NAVIGATION
-    ======================================================== -->
+    <!-- ========================================================
+         PAGE NAVIGATION
+
+         Direct hash navigation is intentionally used here.
+         This makes the page-turning state belong to the URL,
+         just like the supplied Janitor AI CSS.
+    ========================================================= -->
     <nav class="page-nav" aria-label="Journal navigation">
 
-      <a href="#page-1">01</a>
-      <a href="#page-2">02</a>
-      <a href="#page-3">03</a>
+      <a class="nav-prev" href="#page-1">← PREVIOUS</a>
 
-      <span class="page-current" aria-hidden="true">
+      <span class="page-current">
         <span id="page-number">01</span>
         <span>/</span>
         <span>06</span>
       </span>
 
-      <a href="#page-2" class="next-link">NEXT →</a>
-      <a href="#page-1" class="prev-link">← PREVIOUS</a>
+      <a class="nav-next" href="#page-3">NEXT →</a>
 
     </nav>
 
+
     <div class="journal-hint">
-      CLICK THE PAGE EDGES TO TURN · THE INDEX IS CLICKABLE · ARROW KEYS ALSO WORK
+      CLICK NEXT/PREVIOUS · USE THE INDEX · ARROW KEYS ALSO WORK
     </div>
 
   </main>
 
+
   <script src="script.js"></script>
+
 </body>
 </html>
