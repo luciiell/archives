@@ -1,398 +1,241 @@
-/* =========================================================
-   DREAMLAND BOOK ENGINE
-========================================================= */
+/*
+  DREAMLAND SCRIPT
 
-document.addEventListener("DOMContentLoaded", () => {
+  Page turning itself is controlled by CSS :target, deliberately
+  matching the original Janitor AI implementation.
 
-    const sheets = [...document.querySelectorAll(".page-turn")];
-    const previousButton = document.getElementById("previousPage");
-    const nextButton = document.getElementById("nextPage");
-    const currentPageLabel = document.getElementById("currentPage");
-    const restartButton = document.getElementById("restartBook");
+  JS only handles:
+  - current page label
+  - previous / next controls
+  - arrow keys
+  - clickable outer page edges
+  - postcard keyboard accessibility
+*/
 
-    const totalPages = sheets.length * 2;
+(() => {
+  "use strict";
+
+  const PAGE_TOTAL = 6;
+
+  const pageNumber =
+    document.getElementById("page-number");
+
+  const previousLink =
+    document.querySelector(".prev-link");
+
+  const nextLink =
+    document.querySelector(".next-link");
+
+  function getTargetNumber() {
+    const match =
+      window.location.hash.match(/^#page-(\d+)$/);
+
+    if (!match) {
+      return 1;
+    }
+
+    const n = Number(match[1]);
+
+    if (!Number.isFinite(n)) {
+      return 1;
+    }
+
+    return Math.min(
+      PAGE_TOTAL,
+      Math.max(1, n)
+    );
+  }
+
+  function updateNavigation() {
+    const current = getTargetNumber();
+
+    if (pageNumber) {
+      pageNumber.textContent =
+        String(current).padStart(2, "0");
+    }
 
     /*
-       0 = cover + index
-       1 = socials + series
-       2 = friends + creators
-       3 = archives + back cover
+      These URLs intentionally match the same desktop spread
+      model as the original CSS:
+
+      page 1 -> cover + index
+      page 2 -> socials + series
+      page 3 -> friends + creators
     */
-    let spread = 0;
 
-
-    /* =====================================================
-       LAYER ORDER
-    ====================================================== */
-
-    function updateZIndexes() {
-
-        sheets.forEach((sheet, index) => {
-
-            /*
-               The page currently turning should sit above
-               untouched pages. Once flipped, it sits below
-               later sheets but above the static cover.
-            */
-
-            if (index < spread) {
-                sheet.style.zIndex = String(10 + index);
-            } else {
-                sheet.style.zIndex = String(30 - index);
-            }
-
-        });
-
+    if (previousLink) {
+      previousLink.href =
+        current <= 1
+          ? "#page-1"
+          : `#page-${current - 1}`;
     }
 
-
-    /* =====================================================
-       LABEL
-    ====================================================== */
-
-    function updateLabel() {
-
-        const visiblePage = [1, 2, 4, 6][spread] ?? 6;
-
-        currentPageLabel.textContent =
-            String(visiblePage).padStart(2, "0");
-
-        previousButton.disabled = spread === 0;
-        nextButton.disabled = spread === sheets.length;
-
+    if (nextLink) {
+      nextLink.href =
+        current >= 3
+          ? "#page-3"
+          : `#page-${current + 1}`;
     }
+  }
 
+  window.addEventListener(
+    "hashchange",
+    updateNavigation
+  );
 
-    /* =====================================================
-       RENDER
-    ====================================================== */
+  /*
+    Arrow keys use the same hash system, so browser history,
+    direct links, and the clickable index all remain synchronized.
+  */
+  document.addEventListener(
+    "keydown",
+    (event) => {
 
-    function renderBook() {
+      const tag =
+        event.target?.tagName?.toLowerCase();
 
-        sheets.forEach((sheet, index) => {
+      if (
+        tag === "input" ||
+        tag === "textarea" ||
+        tag === "select"
+      ) {
+        return;
+      }
 
-            sheet.classList.toggle(
-                "flipped",
-                index < spread
-            );
+      const current =
+        getTargetNumber();
 
-        });
+      if (
+        event.key === "ArrowRight"
+      ) {
+        event.preventDefault();
 
-        updateZIndexes();
-        updateLabel();
+        if (current < 3) {
+          window.location.hash =
+            `page-${current + 1}`;
+        }
+      }
 
+      if (
+        event.key === "ArrowLeft"
+      ) {
+        event.preventDefault();
+
+        if (current > 1) {
+          window.location.hash =
+            `page-${current - 1}`;
+        } else {
+          window.location.hash =
+            "page-1";
+        }
+      }
     }
+  );
 
 
-    /* =====================================================
-       TURN FORWARD
-    ====================================================== */
+  /*
+    Clicking the physical far left / far right book edges
+    changes spreads, but clicking actual page content does not.
+  */
+  const book =
+    document.querySelector(".book");
 
-    function nextSpread() {
+  if (book) {
 
-        if (spread >= sheets.length) {
-            return;
+    book.addEventListener(
+      "click",
+      (event) => {
+
+        if (
+          event.target.closest("a") ||
+          event.target.closest(".flip-card") ||
+          event.target.closest("button")
+        ) {
+          return;
         }
 
-        spread += 1;
-        renderBook();
+        const rect =
+          book.getBoundingClientRect();
 
-    }
+        const x =
+          event.clientX - rect.left;
 
+        const ratio =
+          x / rect.width;
 
-    /* =====================================================
-       TURN BACK
-    ====================================================== */
+        const current =
+          getTargetNumber();
 
-    function previousSpread() {
+        if (
+          ratio <= .075 &&
+          current > 1
+        ) {
+          window.location.hash =
+            `page-${current - 1}`;
 
-        if (spread <= 0) {
-            return;
+          return;
         }
 
-        spread -= 1;
-        renderBook();
-
-    }
-
-
-    /* =====================================================
-       BUTTONS
-    ====================================================== */
-
-    nextButton.addEventListener(
-        "click",
-        nextSpread
+        if (
+          ratio >= .925 &&
+          current < 3
+        ) {
+          window.location.hash =
+            `page-${current + 1}`;
+        }
+      }
     );
-
-    previousButton.addEventListener(
-        "click",
-        previousSpread
-    );
+  }
 
 
-    /* =====================================================
-       KEYBOARD
-    ====================================================== */
+  /*
+    Make postcard flips usable by keyboard as well as hover.
+  */
+  document
+    .querySelectorAll(".flip-card")
+    .forEach((card) => {
 
-    document.addEventListener(
+      card.addEventListener(
         "keydown",
         (event) => {
 
-            const tag =
-                event.target.tagName.toLowerCase();
+          if (
+            event.key !== "Enter" &&
+            event.key !== " "
+          ) {
+            return;
+          }
 
-            if (
-                tag === "input" ||
-                tag === "textarea" ||
-                tag === "select"
-            ) {
-                return;
-            }
+          event.preventDefault();
 
-
-            if (event.key === "ArrowRight") {
-                nextSpread();
-            }
-
-            if (event.key === "ArrowLeft") {
-                previousSpread();
-            }
-
-            if (event.key === "Home") {
-                spread = 0;
-                renderBook();
-            }
-
-            if (event.key === "End") {
-                spread = sheets.length;
-                renderBook();
-            }
-
+          card.classList.toggle(
+            "keyboard-flipped"
+          );
         }
-    );
+      );
+
+    });
 
 
-    /* =====================================================
-       BOOK EDGE CLICK
-    ====================================================== */
+  /*
+    Because the supplied CSS uses hover animations rather than
+    a persistent flipped class, keyboard users get a small CSS
+    hook without affecting the original hover behavior.
+  */
+  const keyboardStyle =
+    document.createElement("style");
 
-    document
-        .querySelector(".book")
-        .addEventListener(
-            "click",
-            (event) => {
+  keyboardStyle.textContent = `
+    .flip-card.keyboard-flipped {
+      transform: rotateY(180deg);
+    }
+  `;
 
-                /*
-                   Do not hijack actual links, buttons,
-                   postcards or polaroids.
-                */
-
-                if (
-                    event.target.closest("a") ||
-                    event.target.closest("button") ||
-                    event.target.closest(".postcard") ||
-                    event.target.closest(".friend")
-                ) {
-                    return;
-                }
+  document.head.appendChild(
+    keyboardStyle
+  );
 
 
-                const book =
-                    event.currentTarget;
+  updateNavigation();
 
-                const rect =
-                    book.getBoundingClientRect();
-
-                const x =
-                    event.clientX - rect.left;
-
-
-                /*
-                   Generous dead-zone in the middle so
-                   clicking normal content doesn't turn pages.
-                */
-
-                if (x <= rect.width * .12) {
-                    previousSpread();
-                    return;
-                }
-
-                if (x >= rect.width * .88) {
-                    nextSpread();
-                }
-
-            }
-        );
-
-
-    /* =====================================================
-       SWIPE
-    ====================================================== */
-
-    let touchStartX = null;
-
-    document.addEventListener(
-        "touchstart",
-        (event) => {
-
-            if (event.touches.length !== 1) {
-                return;
-            }
-
-            touchStartX =
-                event.touches[0].clientX;
-
-        },
-        {
-            passive: true
-        }
-    );
-
-
-    document.addEventListener(
-        "touchend",
-        (event) => {
-
-            if (touchStartX === null) {
-                return;
-            }
-
-            const touchEndX =
-                event.changedTouches[0].clientX;
-
-            const distance =
-                touchEndX - touchStartX;
-
-            touchStartX = null;
-
-            if (Math.abs(distance) < 65) {
-                return;
-            }
-
-            if (distance < 0) {
-                nextSpread();
-            } else {
-                previousSpread();
-            }
-
-        },
-        {
-            passive: true
-        }
-    );
-
-
-    /* =====================================================
-       POSTCARD FLIPS
-    ====================================================== */
-
-    document
-        .querySelectorAll(".postcard")
-        .forEach((postcard) => {
-
-            const flip = () => {
-                postcard.classList.toggle("is-flipped");
-            };
-
-            postcard.addEventListener(
-                "click",
-                (event) => {
-                    event.stopPropagation();
-                    flip();
-                }
-            );
-
-            postcard.addEventListener(
-                "keydown",
-                (event) => {
-
-                    if (
-                        event.key === "Enter" ||
-                        event.key === " "
-                    ) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        flip();
-                    }
-
-                }
-            );
-
-        });
-
-
-    /* =====================================================
-       INDEX ENTRIES
-    ====================================================== */
-
-    document
-        .querySelectorAll(".index-entry")
-        .forEach((entry) => {
-
-            entry.addEventListener(
-                "click",
-                (event) => {
-
-                    event.preventDefault();
-
-                    const target =
-                        Number(
-                            entry.dataset.pageTarget
-                        );
-
-                    if (!Number.isInteger(target)) {
-                        return;
-                    }
-
-                    /*
-                       Index entry targets are page numbers.
-                       Convert them to spreads:
-                       0/1 -> spread 0
-                       2/3 -> spread 1
-                       4/5 -> spread 2
-                    */
-
-                    const targetSpread =
-                        Math.min(
-                            sheets.length,
-                            Math.ceil(target / 2)
-                        );
-
-                    spread = targetSpread;
-                    renderBook();
-
-                }
-            );
-
-        });
-
-
-    /* =====================================================
-       RETURN TO INDEX
-    ====================================================== */
-
-    restartButton.addEventListener(
-        "click",
-        (event) => {
-
-            event.stopPropagation();
-
-            /*
-               Index is the first right-hand page.
-            */
-
-            spread = 0;
-            renderBook();
-
-        }
-    );
-
-
-    /* =====================================================
-       INITIALISE
-    ====================================================== */
-
-    renderBook();
-
-});
+})();
