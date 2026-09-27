@@ -2,20 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Luc's Dreamland</title>
 
-    <meta
-        name="description"
-        content="Dreamland Archives"
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <title>Dreamland Archives</title>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500&family=Cardo:wght@400;700&family=Cutive+Mono&family=Montserrat:wght@300;400;500;600&family=Special+Elite&display=swap" rel="stylesheet">
 
-    <!-- Main stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -23,1683 +18,872 @@
 
     <!-- =========================================================
          SITE HEADER
-         Small header outside of the scrapbook itself.
     ========================================================== -->
 
     <header class="site-header">
 
-        <div class="site-title">
-            <span class="site-title-main">Dreamland Archive</span>
-            <span class="site-title-sub">what's behind the doors?</span>
+        <div class="site-brand">
+            <span class="brand-small">Luc's</span>
+            <span class="brand-large">Dreamland</span>
         </div>
 
-        <nav class="site-nav" aria-label="Main navigation">
-            <button
-                type="button"
-                class="nav-button"
-                data-action="previous"
-                aria-label="Previous spread"
-            >
-                ←
-            </button>
-
-            <button
-                type="button"
-                class="nav-button"
-                data-action="home"
-            >
-                Home
-            </button>
-
-            <button
-                type="button"
-                class="nav-button"
-                data-action="index"
-            >
-                Index
-            </button>
-
-            <button
-                type="button"
-                class="nav-button"
-                data-action="next"
-                aria-label="Next spread"
-            >
-                →
-            </button>
-        </nav>
+        <div class="site-status">
+            <span class="status-dot"></span>
+            <span>THE DREAM JOURNAL</span>
+        </div>
 
     </header>
 
 
     <!-- =========================================================
-         SCRAPBOOK AREA
+         MAIN BOOK AREA
     ========================================================== -->
 
-    <main class="archive">
+    <main class="site-main">
 
-        <div class="book-wrapper">
+        <section class="book-scene" aria-label="Luc's Dreamland journal">
 
-            <!-- =================================================
-                 THE BOOK
-            ================================================== -->
+            <div class="book-shadow"></div>
 
-            <section
-                class="book"
-                id="scrapbook"
-                aria-label="Scrapbook archive"
-            >
+            <div class="book">
 
-                <!-- Decorative backing behind the pages -->
-                <div class="book-back" aria-hidden="true"></div>
+                <!-- BACK COVER -->
+                <div class="book-cover-back"></div>
 
 
                 <!-- =================================================
-                     SPREAD 01 — FRONT MATTER
-                ================================================== -->
+                     LEFT STATIC PAGE
+                     ================================================= -->
 
-                <section
-                    class="spread active"
-                    id="spread-front"
-                    data-spread="0"
-                    data-section="front"
-                    aria-label="Front matter"
-                >
+                <div class="page page-left">
 
-                    <!-- LEFT PAGE -->
-                    <article
-                        class="page page-left page-front-inside"
-                        id="page-front-left"
-                        data-page="front-left"
-                    >
+                    <div class="paper-texture"></div>
 
-                        <div class="page-content">
+                    <!-- COVER -->
+                    <section class="page-content cover-page">
 
-                            <div class="page-label">
-                                DIUS WELCOMES YOU
-                            </div>
+                        <div class="cover-decoration cover-decoration-one"></div>
+                        <div class="cover-decoration cover-decoration-two"></div>
+                        <div class="cover-decoration cover-decoration-three"></div>
 
-                            <h1 class="page-title">
-                                "Welcome to the Dreamland"
-                            </h1>
+                        <div class="cover-film-strip">
 
-                            <p class="page-intro">
-                                A little collection of all of
-                                the dreams, worlds, and inhabitants
-                                from Luc's subconscious, all brought
-                                to you by Dius the robot assistant.
-                            </p>
+                            <div class="film-edge"></div>
 
-
-                            <!-- Decorative photograph area -->
-                            <div class="scrapbook-photo photo-small">
-                                <img
-                                    src="assets/images/placeholder.jpg"
-                                    alt="Decorative scrapbook photograph"
-                                >
-                            </div>
-
-
-                            <div class="handwritten-note">
-                                <p>
-                                    dreamed up, organized,
-                                    and released timely for you.
-                                </p>
-                            </div>
-
-
-                            <div class="tape tape-top-left" aria-hidden="true"></div>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- RIGHT PAGE -->
-                    <article
-                        class="page page-right page-cover"
-                        id="page-cover"
-                        data-page="cover"
-                    >
-
-                        <div class="page-content cover-content">
-
-                            <div class="cover-decoration cover-stamp">
-                                ARCHIVE
-                            </div>
-
-                            <div class="cover-title">
-
-                                <span class="cover-small">
-                                    DIUS'
-                                </span>
-
-                                <h1>
-                                    guide
-                                </h1>
-
-                                <span class="cover-small">
-                                    to the dreamland
-                                </span>
-
-                            </div>
-
-
-                            <div class="cover-image">
-                                <img
-                                    src="assets/images/cover.jpg"
-                                    alt="Scrapbook cover artwork"
-                                >
-                            </div>
-
-
-                            <div class="cover-footer">
-                                EST. ????
-                            </div>
-
-                            <div
-                                class="cover-sticker"
-                                aria-hidden="true"
-                            >
-                                ✦
-                            </div>
-
-                        </div>
-
-                    </article>
-
-                </section>
-
-
-
-                <!-- =================================================
-                     SPREAD 02 — INDEX
-                ================================================== -->
-
-                <section
-                    class="spread"
-                    id="spread-index"
-                    data-spread="1"
-                    data-section="index"
-                    aria-label="Archive index"
-                >
-
-                    <!-- LEFT PAGE -->
-                    <article
-                        class="page page-left index-page"
-                        id="page-index-left"
-                        data-page="index-left"
-                    >
-
-                        <div class="page-content">
-
-                            <div class="page-label">
-                                TABLE OF CONTENTS
-                            </div>
-
-                            <h2 class="page-title">
-                                Index
-                            </h2>
-
-                            <p class="page-note">
-                                Find your way through the dreamlands guide.
-                            </p>
-
-
-                            <nav
-                                class="scrapbook-index"
-                                aria-label="Archive index"
-                            >
-
-                                <a
-                                    href="#characters"
-                                    data-go-to="characters"
-                                    class="index-link"
-                                >
-                                    <span>01</span>
-                                    <span>Characters</span>
-                                    <span>→</span>
-                                </a>
-
-                                <a
-                                    href="#worlds"
-                                    data-go-to="worlds"
-                                    class="index-link"
-                                >
-                                    <span>02</span>
-                                    <span>Worlds &amp; Lore</span>
-                                    <span>→</span>
-                                </a>
-
-                                <a
-                                    href="#writing"
-                                    data-go-to="writing"
-                                    class="index-link"
-                                >
-                                    <span>03</span>
-                                    <span>Writing</span>
-                                    <span>→</span>
-                                </a>
-
-                                <a
-                                    href="#art"
-                                    data-go-to="art"
-                                    class="index-link"
-                                >
-                                    <span>04</span>
-                                    <span>Art Archive</span>
-                                    <span>→</span>
-                                </a>
-
-                                <a
-                                    href="#misc"
-                                    data-go-to="misc"
-                                    class="index-link"
-                                >
-                                    <span>05</span>
-                                    <span>Miscellaneous</span>
-                                    <span>→</span>
-                                </a>
-
-                            </nav>
-
-
-                            <div class="index-sticker">
-                                <span>flip<br>through</span>
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- RIGHT PAGE -->
-                    <article
-                        class="page page-right index-page"
-                        id="page-index-right"
-                        data-page="index-right"
-                    >
-
-                        <div class="page-content">
-
-                            <div class="page-label">
-                                QUICK ACCESS
-                            </div>
-
-                            <h2 class="page-title">
-                                Sections
-                            </h2>
-
-
-                            <div class="index-notes">
-
-                                <div class="index-note">
-                                    <strong>Characters</strong>
-                                    <p>
-                                        Character profiles,
-                                        relationships, references,
-                                        and collected notes.
-                                    </p>
-                                </div>
-
-                                <div class="index-note">
-                                    <strong>Worlds &amp; Lore</strong>
-                                    <p>
-                                        Locations, settings,
-                                        timelines, and worldbuilding.
-                                    </p>
-                                </div>
-
-                                <div class="index-note">
-                                    <strong>Writing</strong>
-                                    <p>
-                                        Stories, concepts,
-                                        scenes, and all that is dreamed.
-                                    </p>
-                                </div>
-
-                                <div class="index-note">
-                                    <strong>Art Archive</strong>
-                                    <p>
-                                        Gens, images, and extras
-                                        of the dreamland brought by Luc 
-                                        and fellow dreamers.
-                                    </p>
-                                </div>
-
-                            </div>
-
-
-                            <div class="postmark">
-                                ARCHIVE<br>
-                                COLLECTION
-                            </div>
-
-                        </div>
-
-                    </article>
-
-                </section>
-
-
-
-                <!-- =================================================
-                     SPREAD 03 — CHARACTERS
-                ================================================== -->
-
-                <section
-                    class="spread"
-                    id="spread-characters"
-                    data-spread="2"
-                    data-section="characters"
-                    aria-label="Characters"
-                >
-
-                    <!-- LEFT PAGE -->
-                    <article
-                        class="page page-left"
-                        id="page-characters"
-                        data-page="characters"
-                    >
-
-                        <div class="page-content">
-
-                            <div class="page-label">
-                                ARCHIVE / 01
-                            </div>
-
-                            <h2 class="page-title">
-                                Characters
-                            </h2>
-
-                            <p class="page-note">
-                                A collection of characters,
-                                references, and associated notes.
-                            </p>
-
-
-                            <!-- Expandable character sections -->
-
-                            <div class="accordion-list">
-
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        <span>01</span>
-                                        01
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Character information,
-                                            personality notes,
-                                            appearance references,
-                                            relationships, and lore.
-                                        </p>
-
-                                        <a href="#axel">
-                                            Open character →
-                                        </a>
-
-                                    </div>
-
-                                </details>
-
-
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        <span>02</span>
-                                        02
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Character notes and
-                                            associated archive material.
-                                        </p>
-
-                                        <a href="#milo">
-                                            Open character →
-                                        </a>
-
-                                    </div>
-
-                                </details>
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        <span>03</span>
-                                        03
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Character information,
-                                            personality notes,
-                                            appearance references,
-                                            relationships, and lore.
-                                        </p>
-
-                                        <a href="#axel">
-                                            Open character →
-                                        </a>
-
-                                    </div>
-
-                                </details>
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        <span>04</span>
-                                        04
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Character information,
-                                            personality notes,
-                                            appearance references,
-                                            relationships, and lore.
-                                        </p>
-
-                                        <a href="#axel">
-                                            Open character →
-                                        </a>
-
-                                    </div>
-
-                                </details>
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        <span>05</span>
-                                        05
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Character information,
-                                            personality notes,
-                                            appearance references,
-                                            relationships, and lore.
-                                        </p>
-
-                                        <a href="#axel">
-                                            Open character →
-                                        </a>
-
-                                    </div>
-
-                                </details>
-
-                               <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        <span>06</span>
-                                        06
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Character information,
-                                            personality notes,
-                                            appearance references,
-                                            relationships, and lore.
-                                        </p>
-
-                                        <a href="#axel">
-                                            Open character →
-                                        </a>
-
-                                    </div>
-
-                                </details>
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        <span>07</span>
-                                        07
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Character information,
-                                            personality notes,
-                                            appearance references,
-                                            relationships, and lore.
-                                        </p>
-
-                                        <a href="#axel">
-                                            Open character →
-                                        </a>
-
-                                    </div>
-
-                                </details>
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        <span>08</span>
-                                        08
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Character information,
-                                            personality notes,
-                                            appearance references,
-                                            relationships, and lore.
-                                        </p>
-
-                                        <a href="#axel">
-                                            Open character →
-                                        </a>
-
-                                    </div>
-
-                                </details>
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        <span>09</span>
-                                        09
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Character information,
-                                            personality notes,
-                                            appearance references,
-                                            relationships, and lore.
-                                        </p>
-
-                                        <a href="#axel">
-                                            Open character →
-                                        </a>
-
-                                    </div>
-
-                                </details>
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        <span>10</span>
-                                        10
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Character information,
-                                            personality notes,
-                                            appearance references,
-                                            relationships, and lore.
-                                        </p>
-
-                                        <a href="#axel">
-                                            Open character →
-                                        </a>
-
-                                    </div>
-
-                                </details>
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        <span>11</span>
-                                        11
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Character information,
-                                            personality notes,
-                                            appearance references,
-                                            relationships, and lore.
-                                        </p>
-
-                                        <a href="#axel">
-                                            Open character →
-                                        </a>
-
-                                    </div>
-
-                                </details>
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        <span>12</span>
-                                        12
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Character information,
-                                            personality notes,
-                                            appearance references,
-                                            relationships, and lore.
-                                        </p>
-
-                                        <a href="#axel">
-                                            Open character →
-                                        </a>
-
-                                    </div>
-
-                                </details>
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        <span>13</span>
-                                        13
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Character information,
-                                            personality notes,
-                                            appearance references,
-                                            relationships, and lore.
-                                        </p>
-
-                                        <a href="#axel">
-                                            Open character →
-                                        </a>
-
-                                    </div>
-
-                                </details>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- RIGHT PAGE -->
-                    <article
-                        class="page page-right"
-                        id="page-character-notes"
-                        data-page="character-notes"
-                    >
-
-                        <div class="page-content">
-
-                            <div class="page-label">
-                                CHARACTER NOTES
-                            </div>
-
-                            <div class="character-gallery">
-
-    <!-- CHARACTER 01 -->
-    <button
-        type="button"
-        class="character-polaroid"
-        data-character="axel"
-        aria-label="Open Axel's character archive"
-    >
-        <span class="polaroid-image">
-            <img
-                src="assets/images/character-01.jpg"
-                alt="Axel character reference"
-            >
-        </span>
-
-        <span class="polaroid-caption">
-            Axel Blackwood
-        </span>
-
-        <span class="polaroid-number">
-            01
-        </span>
-    </button>
-
-
-    <!-- CHARACTER 02 -->
-    <button
-        type="button"
-        class="character-polaroid"
-        data-character="milo"
-        aria-label="Open Milo's character archive"
-    >
-        <span class="polaroid-image">
-            <img
-                src="assets/images/character-02.jpg"
-                alt="Milo character reference"
-            >
-        </span>
-
-        <span class="polaroid-caption">
-            Milo Axford
-        </span>
-
-        <span class="polaroid-number">
-            02
-        </span>
-    </button>
-
-
-    <!-- CHARACTER 03 -->
-    <button
-        type="button"
-        class="character-polaroid"
-        data-character="character-03"
-        aria-label="Open character 03"
-    >
-        <span class="polaroid-image">
-            <img
-                src="assets/images/character-03.jpg"
-                alt="Character reference"
-            >
-        </span>
-
-        <span class="polaroid-caption">
-            Character 03
-        </span>
-
-        <span class="polaroid-number">
-            03
-        </span>
-    </button>
-
-
-    <!-- CHARACTER 04 -->
-    <button
-        type="button"
-        class="character-polaroid"
-        data-character="character-04"
-        aria-label="Open character 04"
-    >
-        <span class="polaroid-image">
-            <img
-                src="assets/images/character-04.jpg"
-                alt="Character reference"
-            >
-        </span>
-
-        <span class="polaroid-caption">
-            Character 04
-        </span>
-
-        <span class="polaroid-number">
-            04
-        </span>
-    </button>
-
-
-    <!-- CHARACTER 05 -->
-    <button
-        type="button"
-        class="character-polaroid"
-        data-character="character-05"
-        aria-label="Open character 05"
-    >
-        <span class="polaroid-image">
-            <img
-                src="assets/images/character-05.jpg"
-                alt="Character reference"
-            >
-        </span>
-
-        <span class="polaroid-caption">
-            Character 05
-        </span>
-
-        <span class="polaroid-number">
-            05
-        </span>
-    </button>
-
-
-    <!-- CHARACTER 06 -->
-    <button
-        type="button"
-        class="character-polaroid"
-        data-character="character-06"
-        aria-label="Open character 06"
-    >
-        <span class="polaroid-image">
-            <img
-                src="assets/images/character-06.jpg"
-                alt="Character reference"
-            >
-        </span>
-
-        <span class="polaroid-caption">
-            Character 06
-        </span>
-
-        <span class="polaroid-number">
-            06
-        </span>
-    </button>
-
-
-    <!-- CHARACTER 07 -->
-    <button
-        type="button"
-        class="character-polaroid"
-        data-character="character-07"
-        aria-label="Open character 07"
-    >
-        <span class="polaroid-image">
-            <img
-                src="assets/images/character-07.jpg"
-                alt="Character reference"
-            >
-        </span>
-
-        <span class="polaroid-caption">
-            Character 07
-        </span>
-
-        <span class="polaroid-number">
-            07
-        </span>
-    </button>
-
-
-    <!-- CHARACTER 08 -->
-    <button
-        type="button"
-        class="character-polaroid"
-        data-character="character-08"
-        aria-label="Open character 08"
-    >
-        <span class="polaroid-image">
-            <img
-                src="assets/images/character-08.jpg"
-                alt="Character reference"
-            >
-        </span>
-
-        <span class="polaroid-caption">
-            Character 08
-        </span>
-
-        <span class="polaroid-number">
-            08
-        </span>
-    </button>
-
-
-    <!-- CHARACTER 09 -->
-    <button
-        type="button"
-        class="character-polaroid"
-        data-character="character-09"
-        aria-label="Open character 09"
-    >
-        <span class="polaroid-image">
-            <img
-                src="assets/images/character-09.jpg"
-                alt="Character reference"
-            >
-        </span>
-
-        <span class="polaroid-caption">
-            Character 09
-        </span>
-
-        <span class="polaroid-number">
-            09
-        </span>
-    </button>
-
-
-    <!-- CHARACTER 10 -->
-    <button
-        type="button"
-        class="character-polaroid"
-        data-character="character-10"
-        aria-label="Open character 10"
-    >
-        <span class="polaroid-image">
-            <img
-                src="assets/images/character-10.jpg"
-                alt="Character reference"
-            >
-        </span>
-
-        <span class="polaroid-caption">
-            Character 10
-        </span>
-
-        <span class="polaroid-number">
-            10
-        </span>
-    </button>
-
-
-    <!-- CHARACTER 11 -->
-    <button
-        type="button"
-        class="character-polaroid"
-        data-character="character-11"
-        aria-label="Open character 11"
-    >
-        <span class="polaroid-image">
-            <img
-                src="assets/images/character-11.jpg"
-                alt="Character reference"
-            >
-        </span>
-
-        <span class="polaroid-caption">
-            Character 11
-        </span>
-
-        <span class="polaroid-number">
-            11
-        </span>
-    </button>
-
-
-    <!-- CHARACTER 12 -->
-    <button
-        type="button"
-        class="character-polaroid"
-        data-character="character-12"
-        aria-label="Open character 12"
-    >
-        <span class="polaroid-image">
-            <img
-                src="assets/images/character-12.jpg"
-                alt="Character reference"
-            >
-        </span>
-
-        <span class="polaroid-caption">
-            Character 12
-        </span>
-
-        <span class="polaroid-number">
-            12
-        </span>
-    </button>
-
-
-    <!-- CHARACTER 13 -->
-    <button
-        type="button"
-        class="character-polaroid"
-        data-character="character-13"
-        aria-label="Open character 13"
-    >
-        <span class="polaroid-image">
-            <img
-                src="assets/images/character-13.jpg"
-                alt="Character reference"
-            >
-        </span>
-
-        <span class="polaroid-caption">
-            Character 13
-        </span>
-
-        <span class="polaroid-number">
-            13
-        </span>
-    </button>
-
-</div>
-
-                        </div>
-
-                    </article>
-
-                </section>
-
-
-
-                <!-- =================================================
-                     SPREAD 04 — WORLDS & LORE
-                ================================================== -->
-
-                <section
-                    class="spread"
-                    id="spread-worlds"
-                    data-spread="3"
-                    data-section="worlds"
-                    aria-label="Worlds and lore"
-                >
-
-                    <!-- LEFT PAGE -->
-                    <article
-                        class="page page-left"
-                        id="page-worlds"
-                        data-page="worlds"
-                    >
-
-                        <div class="page-content">
-
-                            <div class="page-label">
-                                ARCHIVE / 02
-                            </div>
-
-                            <h2 class="page-title">
-                                Worlds &amp; Lore
-                            </h2>
-
-                            <p class="page-note">
-                                Places, settings, timelines,
-                                and little pieces of
-                                history.
-                            </p>
-
-
-                            <div class="accordion-list">
-
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        Crimmshaw Heights
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Town information,
-                                            locations, atmosphere,
-                                            landmarks, and local lore.
-                                        </p>
-
-                                    </div>
-
-                                </details>
-
-
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        Westvale University
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Campus information,
-                                            departments, facilities,
-                                            student life, and lore.
-                                        </p>
-
-                                    </div>
-
-                                </details>
-
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        Veravinyth
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Continents, regions,
-                                            races, species, gods
-                                            interactive map link and more.
-                                        </p>
-
-                                    </div>
-
-                                </details>
-
-
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        Other Worlds
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Coming soon....
-                                            Luc is still dreaming this.
-                                        </p>
-
-                                    </div>
-
-                                </details>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- RIGHT PAGE -->
-                    <article
-                        class="page page-right"
-                        id="page-world-notes"
-                        data-page="world-notes"
-                    >
-
-                        <div class="page-content">
-
-                            <div class="postcard">
-
-                                <div class="postcard-header">
-                                    POSTCARD
-                                </div>
-
-                                <div class="postcard-body">
-
-                                    <div class="postcard-message">
-
-                                        <p>
-                                            Dear awake Luc,
-                                        </p>
-
-                                        <p>
-                                            Do try not to have such
-                                            an overactive imagination,
-                                            you'll become overwhelmed.
-                                        </p>
-
-                                        <p>
-                                            — Dius
-                                        </p>
-
-                                    </div>
-
-
-                                    <div class="postcard-stamp">
-                                        ✦
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="tape tape-bottom-right"
-                                 aria-hidden="true">
-                            </div>
-
-                        </div>
-
-                    </article>
-
-                </section>
-
-
-
-                <!-- =================================================
-                     SPREAD 05 — WRITING
-                ================================================== -->
-
-                <section
-                    class="spread"
-                    id="spread-writing"
-                    data-spread="4"
-                    data-section="writing"
-                    aria-label="Writing archive"
-                >
-
-                    <!-- LEFT PAGE -->
-                    <article
-                        class="page page-left"
-                        id="page-writing"
-                        data-page="writing"
-                    >
-
-                        <div class="page-content">
-
-                            <div class="page-label">
-                                ARCHIVE / 03
-                            </div>
-
-                            <h2 class="page-title">
-                                Writing
-                            </h2>
-
-                            <p class="page-note">
-                                Stories, scenes, concepts,
-                                scenarios, and unfinished ideas.
-                            </p>
-
-
-                            <div class="writing-list">
-
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        Story Concepts
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Story ideas and
-                                            larger concepts.
-                                        </p>
-
-                                    </div>
-
-                                </details>
-
-
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        Scenes
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Individual scenes,
-                                            snippets, and moments.
-                                        </p>
-
-                                    </div>
-
-                                </details>
-
-
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        Unfinished
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Things that aren't finished
-                                            yet but deserve to stay.
-                                        </p>
-
-                                    </div>
-
-                                </details>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- RIGHT PAGE -->
-                    <article
-                        class="page page-right"
-                        id="page-writing-notes"
-                        data-page="writing-notes"
-                    >
-
-                        <div class="page-content">
-
-                            <div class="paper-note large-note">
-
-                                <h3>
-                                    Writing Desk
-                                </h3>
-
-                                <p>
-                                    Currently I've invested myself into far
-                                    too many side quests, but I'm organized
-                                    enough for the time being lol. - Luc
-                                </p>
-
-                                <p>
-                                    Too many ideas, but they will eventually
-                                    make it out of here and be released.
-                                    Wish Dius some luck, they'll need it.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-                </section>
-
-
-
-                <!-- =================================================
-                     SPREAD 06 — ART
-                ================================================== -->
-
-                <section
-                    class="spread"
-                    id="spread-art"
-                    data-spread="5"
-                    data-section="art"
-                    aria-label="Art archive"
-                >
-
-                    <!-- LEFT PAGE -->
-                    <article
-                        class="page page-left"
-                        id="page-art"
-                        data-page="art"
-                    >
-
-                        <div class="page-content">
-
-                            <div class="page-label">
-                                ARCHIVE / 04
-                            </div>
-
-                            <h2 class="page-title">
-                                Art Archive
-                            </h2>
-
-                            <p class="page-note">
-                                Main gens, extra gens, other
-                                stuff, and things my friends make!
-                            </p>
-
-
-                            <div class="art-grid">
-
-                                <figure class="scrapbook-photo">
-
-                                    <img
-                                        src="assets/images/art-01.jpg"
-                                        alt="Artwork"
-                                    >
-
-                                    <figcaption>
-                                        archive 01
-                                    </figcaption>
-
-                                </figure>
-
-
-                                <figure class="scrapbook-photo">
-
-                                    <img
-                                        src="assets/images/art-02.jpg"
-                                        alt="Artwork"
-                                    >
-
-                                    <figcaption>
-                                        archive 02
-                                    </figcaption>
-
-                                </figure>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- RIGHT PAGE -->
-                    <article
-                        class="page page-right"
-                        id="page-art-notes"
-                        data-page="art-notes"
-                    >
-
-                        <div class="page-content">
-
-                            <div class="film-strip">
+                            <div class="film-images">
 
                                 <div class="film-frame">
-                                    <img
-                                        src="assets/images/art-03.jpg"
-                                        alt="Artwork"
-                                    >
+                                    <img src="assets/images/cover-1.jpg" alt="">
                                 </div>
 
                                 <div class="film-frame">
-                                    <img
-                                        src="assets/images/art-04.jpg"
-                                        alt="Artwork"
-                                    >
+                                    <img src="assets/images/cover-2.jpg" alt="">
                                 </div>
 
                                 <div class="film-frame">
-                                    <img
-                                        src="assets/images/art-05.jpg"
-                                        alt="Artwork"
-                                    >
+                                    <img src="assets/images/cover-3.jpg" alt="">
+                                </div>
+
+                                <div class="film-frame">
+                                    <img src="assets/images/cover-4.jpg" alt="">
+                                </div>
+
+                            </div>
+
+                            <div class="film-edge"></div>
+
+                        </div>
+
+
+                        <div class="cover-main-image">
+                            <img src="assets/images/cover-main.jpg" alt="">
+
+                            <div class="image-tape tape-one"></div>
+                            <div class="image-tape tape-two"></div>
+                        </div>
+
+
+                        <div class="cover-small-image cover-image-one">
+                            <img src="assets/images/cover-small-1.jpg" alt="">
+                        </div>
+
+                        <div class="cover-small-image cover-image-two">
+                            <img src="assets/images/cover-small-2.jpg" alt="">
+                        </div>
+
+                        <div class="cover-small-image cover-image-three">
+                            <img src="assets/images/cover-small-3.jpg" alt="">
+                        </div>
+
+
+                        <div class="cover-label label-one">
+                            welcome to the dreamland...
+                        </div>
+
+                        <div class="cover-label label-two">
+                            don't get lost
+                        </div>
+
+
+                        <div class="cover-name">
+                            <span>Luc</span>
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+                <!-- =================================================
+                     TURNING PAGE ONE
+                     ================================================= -->
+
+                <div class="page page-turn page-one" data-page="1">
+
+                    <div class="page-face page-front">
+
+                        <div class="paper-texture"></div>
+
+                        <div class="page-content">
+
+                            <div class="page-heading">
+                                <span>01</span>
+                                <h1>Overview</h1>
+                            </div>
+
+                            <div class="overview-layout">
+
+                                <article class="journal-section">
+
+                                    <div class="section-title">
+                                        ABOUT THE DREAMER
+                                    </div>
+
+                                    <div class="section-body">
+
+                                        <div class="sticker-cluster sticker-right">
+
+                                            <img
+                                                src="assets/images/sticker-1.png"
+                                                alt=""
+                                            >
+
+                                            <img
+                                                src="assets/images/sticker-2.png"
+                                                alt=""
+                                            >
+
+                                        </div>
+
+                                        <p>
+                                            Welcome... the dreamer whose subconscious I reside in
+                                            is known as Luc.
+                                        </p>
+
+                                        <p>
+                                            I am Dius, a robot assistant that handles Luc's
+                                            subconscious.
+                                        </p>
+
+                                        <p>
+                                            I handle making sure each dream is released so that
+                                            a leak doesn't happen, as that would be rather
+                                            catastrophic and would lead to not so pleasant dreams
+                                            flowing about.
+                                        </p>
+
+                                        <p>
+                                            Luc is 23 years old, an Aries and INFJ.
+                                            This is the method of releasing the overflowing
+                                            subconscious so it does not become overwhelming.
+                                        </p>
+
+                                        <p>
+                                            The goal is to share the dreams so that others may
+                                            partake if they wish.
+                                        </p>
+
+                                    </div>
+
+                                </article>
+
+
+                                <article class="journal-section">
+
+                                    <div class="section-title">
+                                        ABOUT THE DREAMLAND
+                                    </div>
+
+                                    <div class="section-body">
+
+                                        <p>
+                                            Each dream exists behind a door somewhere within
+                                            Luc's subconscious.
+                                        </p>
+
+                                        <p>
+                                            The residents are available to communicate with,
+                                            but are unaware that they exist within a dream.
+                                        </p>
+
+                                        <p>
+                                            From time to time, if I am unable to release a dream
+                                            in time, one may become corrupted and escape on its
+                                            own.
+                                        </p>
+
+                                        <p>
+                                            That occasionally leads to themes unusual for Luc's
+                                            subconscious.
+                                        </p>
+
+                                        <div class="journal-note">
+                                            <span>NOTE FROM DIUS</span>
+
+                                            <p>
+                                                If you wish to inspire a dream,
+                                                you are more than welcome.
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                </article>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="page-face page-back">
+
+                        <div class="paper-texture"></div>
+
+                        <div class="page-content">
+
+                            <div class="page-heading">
+                                <span>02</span>
+                                <h1>Socials</h1>
+                            </div>
+
+
+                            <div class="social-list">
+
+                                <a href="#" class="social-entry">
+
+                                    <div class="social-icon">✦</div>
+
+                                    <div>
+                                        <strong>CARRD</strong>
+                                        <span>amuradius.carrd.co</span>
+                                    </div>
+
+                                </a>
+
+
+                                <a href="#" class="social-entry">
+
+                                    <div class="social-icon">✦</div>
+
+                                    <div>
+                                        <strong>ARCHIVES</strong>
+                                        <span>COMING SOON...</span>
+                                    </div>
+
+                                </a>
+
+
+                                <a href="#" class="social-entry">
+
+                                    <div class="social-icon">✦</div>
+
+                                    <div>
+                                        <strong>DISCORD</strong>
+                                        <span>COMING SOON...</span>
+                                    </div>
+
+                                </a>
+
+                            </div>
+
+
+                            <div class="deco-strip"></div>
+
+
+                            <div class="polaroid-gallery">
+
+                                <div class="polaroid rotate-left">
+                                    <img src="assets/images/social-1.jpg" alt="">
+                                    <span>dream fragment</span>
+                                </div>
+
+                                <div class="polaroid rotate-right">
+                                    <img src="assets/images/social-2.jpg" alt="">
+                                    <span>another dream</span>
+                                </div>
+
+                                <div class="polaroid rotate-small">
+                                    <img src="assets/images/social-3.jpg" alt="">
+                                    <span>memory</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     TURNING PAGE TWO
+                     ================================================= -->
+
+                <div class="page page-turn page-two" data-page="2">
+
+                    <div class="page-face page-front">
+
+                        <div class="paper-texture"></div>
+
+                        <div class="page-content">
+
+                            <div class="page-heading">
+                                <span>03</span>
+                                <h1>Series</h1>
+                            </div>
+
+
+                            <div class="postcard-grid">
+
+                                <article class="postcard">
+
+                                    <div class="postcard-inner">
+
+                                        <div class="postcard-face postcard-front">
+
+                                            <img
+                                                src="assets/images/crimmshaw.jpg"
+                                                alt="Crimmshaw Heights"
+                                            >
+
+                                            <div class="postcard-overlay">
+
+                                                <small>
+                                                    FOR THOSE WHO ARE DIFFERENT.
+                                                </small>
+
+                                                <h2>
+                                                    Crimmshaw Heights.
+                                                </h2>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="postcard-face postcard-back">
+
+                                            <div class="postcard-copy">
+
+                                                <h3>
+                                                    Crimmshaw Heights.
+                                                </h3>
+
+                                                <p>
+                                                    A small town in Tennessee, home to those who
+                                                    go against societal norms and are part of
+                                                    diverse groups.
+                                                </p>
+
+                                                <p>
+                                                    Most well known for its nightlife and
+                                                    Westvale University, the home of the seals.
+                                                </p>
+
+                                                <small>
+                                                    DOOR 1
+                                                </small>
+
+                                            </div>
+
+
+                                            <div class="postcard-stamp">
+
+                                                <div class="postmark">
+                                                    ERROR<br>
+                                                    202X<br>
+                                                    DIUS
+                                                </div>
+
+                                                <div class="stamp">
+                                                    ✦
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </article>
+
+
+                                <article class="postcard">
+
+                                    <div class="postcard-inner">
+
+                                        <div class="postcard-face postcard-front">
+
+                                            <img
+                                                src="assets/images/veravinyth.jpg"
+                                                alt="Veravinyth"
+                                            >
+
+                                            <div class="postcard-overlay">
+
+                                                <small>
+                                                    THE UNIVERSE EXISTS.
+                                                </small>
+
+                                                <h2>
+                                                    Veravinyth.
+                                                </h2>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="postcard-face postcard-back">
+
+                                            <div class="postcard-copy">
+
+                                                <h3>
+                                                    Veravinyth.
+                                                </h3>
+
+                                                <p>
+                                                    A world that was created but no one truly
+                                                    understands why.
+                                                </p>
+
+                                                <p>
+                                                    Home to all, created to be a land of peace
+                                                    for every species and race, though mortal
+                                                    conflict will still arise.
+                                                </p>
+
+                                                <small>
+                                                    DOOR 2
+                                                </small>
+
+                                            </div>
+
+
+                                            <div class="postcard-stamp">
+
+                                                <div class="postmark">
+                                                    ERROR<br>
+                                                    10XX<br>
+                                                    DIUS
+                                                </div>
+
+                                                <div class="stamp">
+                                                    ✦
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </article>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="page-face page-back">
+
+                        <div class="paper-texture"></div>
+
+                        <div class="page-content">
+
+                            <div class="page-heading">
+                                <span>04</span>
+                                <h1>Friends</h1>
+                            </div>
+
+
+                            <div class="friends-grid">
+
+                                <a href="#" class="friend-card">
+                                    <div class="polaroid">
+                                        <img src="assets/images/friend-1.jpg" alt="">
+                                        <span>Quill</span>
+                                    </div>
+                                </a>
+
+                                <a href="#" class="friend-card">
+                                    <div class="polaroid">
+                                        <img src="assets/images/friend-2.jpg" alt="">
+                                        <span>Kire</span>
+                                    </div>
+                                </a>
+
+                                <a href="#" class="friend-card">
+                                    <div class="polaroid">
+                                        <img src="assets/images/friend-3.jpg" alt="">
+                                        <span>Kyo</span>
+                                    </div>
+                                </a>
+
+                                <a href="#" class="friend-card">
+                                    <div class="polaroid">
+                                        <img src="assets/images/friend-4.jpg" alt="">
+                                        <span>Envy</span>
+                                    </div>
+                                </a>
+
+                                <a href="#" class="friend-card">
+                                    <div class="polaroid">
+                                        <img src="assets/images/friend-5.jpg" alt="">
+                                        <span>Milo</span>
+                                    </div>
+                                </a>
+
+                                <a href="#" class="friend-card">
+                                    <div class="polaroid">
+                                        <img src="assets/images/friend-6.jpg" alt="">
+                                        <span>Incy</span>
+                                    </div>
+                                </a>
+
+                                <a href="#" class="friend-card">
+                                    <div class="polaroid">
+                                        <img src="assets/images/friend-7.jpg" alt="">
+                                        <span>Jaz</span>
+                                    </div>
+                                </a>
+
+                                <a href="#" class="friend-card">
+                                    <div class="polaroid">
+                                        <img src="assets/images/friend-8.jpg" alt="">
+                                        <span>Haven</span>
+                                    </div>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     TURNING PAGE THREE
+                     ================================================= -->
+
+                <div class="page page-turn page-three" data-page="3">
+
+                    <div class="page-face page-front">
+
+                        <div class="paper-texture"></div>
+
+                        <div class="page-content">
+
+                            <div class="page-heading">
+                                <span>05</span>
+                                <h1>Dream Residents</h1>
+                            </div>
+
+
+                            <div class="resident-intro">
+
+                                <p>
+                                    Every dream has its own inhabitants.
+                                    Some are familiar. Some are strange.
+                                    Some seem to remember things that never happened.
+                                </p>
+
+                            </div>
+
+
+                            <div class="resident-grid">
+
+                                <article class="resident-card">
+
+                                    <div class="resident-image">
+                                        <img src="assets/images/resident-1.jpg" alt="">
+                                    </div>
+
+                                    <div class="resident-info">
+                                        <h3>Axel Blackwood</h3>
+
+                                        <span class="resident-role">
+                                            FORensic Science
+                                        </span>
+
+                                        <p>
+                                            Gruff, guarded and fiercely independent.
+                                            A resident of Crimmshaw Heights.
+                                        </p>
+                                    </div>
+
+                                </article>
+
+
+                                <article class="resident-card">
+
+                                    <div class="resident-image">
+                                        <img src="assets/images/resident-2.jpg" alt="">
+                                    </div>
+
+                                    <div class="resident-info">
+                                        <h3>Milo Axford</h3>
+
+                                        <span class="resident-role">
+                                            Criminology
+                                        </span>
+
+                                        <p>
+                                            An alternative freshman with a complicated
+                                            relationship with the dreamland.
+                                        </p>
+                                    </div>
+
+                                </article>
+
+
+                                <article class="resident-card">
+
+                                    <div class="resident-image">
+                                        <img src="assets/images/resident-3.jpg" alt="">
+                                    </div>
+
+                                    <div class="resident-info">
+                                        <h3>Cam Blackwood</h3>
+
+                                        <span class="resident-role">
+                                            Kinesiology
+                                        </span>
+
+                                        <p>
+                                            A laid-back athlete and one of Westvale's
+                                            familiar faces.
+                                        </p>
+                                    </div>
+
+                                </article>
+
+
+                                <article class="resident-card">
+
+                                    <div class="resident-image">
+                                        <img src="assets/images/resident-4.jpg" alt="">
+                                    </div>
+
+                                    <div class="resident-info">
+                                        <h3>Juno Choi</h3>
+
+                                        <span class="resident-role">
+                                            Graphic Design
+                                        </span>
+
+                                        <p>
+                                            Industrial goth, cyberpunk aesthetics,
+                                            and an artistic eye.
+                                        </p>
+                                    </div>
+
+                                </article>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="page-face page-back">
+
+                        <div class="paper-texture"></div>
+
+                        <div class="page-content">
+
+                            <div class="page-heading">
+                                <span>06</span>
+                                <h1>Creators</h1>
+                            </div>
+
+
+                            <div class="creator-film-gallery">
+
+                                <div class="creator-film">
+
+                                    <div class="film-side"></div>
+
+                                    <div class="creator-film-images">
+
+                                        <a href="#">
+                                            <img src="assets/images/creator-1.jpg" alt="">
+                                            <span>quillyu</span>
+                                        </a>
+
+                                        <a href="#">
+                                            <img src="assets/images/creator-2.jpg" alt="">
+                                            <span>kirevan</span>
+                                        </a>
+
+                                        <a href="#">
+                                            <img src="assets/images/creator-3.jpg" alt="">
+                                            <span>aurora</span>
+                                        </a>
+
+                                        <a href="#">
+                                            <img src="assets/images/creator-4.jpg" alt="">
+                                            <span>envyy_</span>
+                                        </a>
+
+                                        <a href="#">
+                                            <img src="assets/images/creator-5.jpg" alt="">
+                                            <span>miloish</span>
+                                        </a>
+
+                                    </div>
+
+                                    <div class="film-side"></div>
+
+                                </div>
+
+
+                                <div class="creator-film">
+
+                                    <div class="film-side"></div>
+
+                                    <div class="creator-film-images">
+
+                                        <a href="#">
+                                            <img src="assets/images/creator-6.jpg" alt="">
+                                            <span>incy_</span>
+                                        </a>
+
+                                        <a href="#">
+                                            <img src="assets/images/creator-7.jpg" alt="">
+                                            <span>jazzkie</span>
+                                        </a>
+
+                                        <a href="#">
+                                            <img src="assets/images/creator-8.jpg" alt="">
+                                            <span>haven</span>
+                                        </a>
+
+                                        <a href="#">
+                                            <img src="assets/images/creator-9.jpg" alt="">
+                                            <span>harper</span>
+                                        </a>
+
+                                        <a href="#">
+                                            <img src="assets/images/creator-10.jpg" alt="">
+                                            <span>petmeplz</span>
+                                        </a>
+
+                                    </div>
+
+                                    <div class="film-side"></div>
+
                                 </div>
 
                             </div>
 
 
-                            <div class="handwritten-note">
+                            <div class="creator-note">
+                                <span>✦</span>
                                 <p>
-                                    little snapshots
+                                    Dreams are better when they are shared.
                                 </p>
+                                <span>✦</span>
                             </div>
 
                         </div>
 
-                    </article>
+                    </div>
 
-                </section>
-
-
-
-                <!-- =================================================
-                     SPREAD 07 — MISCELLANEOUS
-                ================================================== -->
-
-                <section
-                    class="spread"
-                    id="spread-misc"
-                    data-spread="6"
-                    data-section="misc"
-                    aria-label="Miscellaneous archive"
-                >
-
-                    <!-- LEFT PAGE -->
-                    <article
-                        class="page page-left"
-                        id="page-misc"
-                        data-page="misc"
-                    >
-
-                        <div class="page-content">
-
-                            <div class="page-label">
-                                ARCHIVE / 05
-                            </div>
-
-                            <h2 class="page-title">
-                                Extra links and other stuff
-                            </h2>
-
-                            <p class="page-note">
-                                Everything that doesn't quite
-                                fit anywhere else.
-                            </p>
+                </div>
 
 
-                            <div class="accordion-list">
+                <!-- RIGHT STATIC PAGE / BACK COVER -->
+                <div class="page page-right">
 
-                                <details class="scrapbook-dropdown">
+                    <div class="paper-texture"></div>
 
-                                    <summary>
-                                        Links
-                                        <span>+</span>
-                                    </summary>
+                    <div class="closing-page">
 
-                                    <div class="dropdown-content">
+                        <div class="closing-symbol">✦</div>
 
-                                        <p>
-                                            JAI Profile
-                                            Requests Form
-                                            Discord
-                                        </p>
+                        <h2>
+                            Until the next dream...
+                        </h2>
 
-                                    </div>
+                        <p>
+                            Turn the pages again whenever you're ready.
+                        </p>
 
-                                </details>
+                        <button id="restartBook" class="restart-button">
+                            RETURN TO COVER
+                        </button>
 
+                    </div>
 
-                                <details class="scrapbook-dropdown">
+                </div>
 
-                                    <summary>
-                                        Random Notes
-                                        <span>+</span>
-                                    </summary>
+            </div>
 
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Completely miscellaneous
-                                            thoughts and notes.
-                                        </p>
-
-                                    </div>
-
-                                </details>
-
-
-                                <details class="scrapbook-dropdown">
-
-                                    <summary>
-                                        Future Projects
-                                        <span>+</span>
-                                    </summary>
-
-                                    <div class="dropdown-content">
-
-                                        <p>
-                                            Working on Veravinyth and
-                                            a collab that will start into Oct.
-                                            Keep an eye out and I'll put more
-                                            here once I have stuff to put down.
-                                        </p>
-
-                                    </div>
-
-                                </details>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- RIGHT PAGE -->
-                    <article
-                        class="page page-right"
-                        id="page-misc-notes"
-                        data-page="misc-notes"
-                    >
-
-                        <div class="page-content">
-
-                            <div class="sticky-note pink-note">
-
-                                <h3>
-                                    Note to the dreamer
-                                </h3>
-
-                                <p>
-                                    Keep dreaming, I can handle it!
-                                    - Dius
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-                </section>
-
-            </section>
-
-        </div>
+        </section>
 
 
         <!-- =========================================================
-             BOOK CONTROLS
+             BOOK NAVIGATION
         ========================================================== -->
 
-        <div class="book-controls">
+        <nav class="book-navigation" aria-label="Journal navigation">
 
-            <button
-                type="button"
-                class="book-control"
-                data-action="previous"
-                aria-label="Go to previous spread"
-            >
-                ← Previous
+            <button class="nav-button" id="previousPage">
+                ←
+                <span>PREVIOUS</span>
             </button>
 
-
-            <div
-                class="page-counter"
-                aria-live="polite"
-            >
-                <span id="current-page">1</span>
-                /
-                <span id="total-pages">7</span>
+            <div class="page-indicator">
+                <span id="currentPage">01</span>
+                <span class="indicator-divider">/</span>
+                <span>06</span>
             </div>
 
-
-            <button
-                type="button"
-                class="book-control"
-                data-action="next"
-                aria-label="Go to next spread"
-            >
-                Next →
+            <button class="nav-button" id="nextPage">
+                <span>NEXT</span>
+                →
             </button>
 
+        </nav>
+
+
+        <div class="book-hint">
+            <span>CLICK THE PAGE EDGES TO TURN</span>
+            <span>·</span>
+            <span>ARROW KEYS ALSO WORK</span>
         </div>
-
-
-        <!-- Small keyboard hint -->
-        <p class="keyboard-hint">
-            Use ← → to turn pages
-        </p>
 
     </main>
 
-
-    <!-- =========================================================
-         JAVASCRIPT
-    ========================================================== -->
 
     <script src="script.js"></script>
 
