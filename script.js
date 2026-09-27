@@ -1,17 +1,21 @@
-/* ============================================================
-   LUC'S SCRAPBOOK ARCHIVE
-   Book navigation
-   ============================================================ */
-
 document.addEventListener("DOMContentLoaded", () => {
 
     /* ========================================================
-       01. ELEMENTS
+       BOOK ELEMENTS
     ======================================================== */
 
-    const spreads = Array.from(
-        document.querySelectorAll(".spread")
-    );
+    const book =
+        document.getElementById("scrapbook");
+
+    const spreads =
+        Array.from(
+            document.querySelectorAll(".spread")
+        );
+
+    const pages =
+        Array.from(
+            document.querySelectorAll(".page")
+        );
 
     const currentPageElement =
         document.getElementById("current-page");
@@ -21,27 +25,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ========================================================
-       02. SETTINGS
+       BOOK STATE
     ======================================================== */
 
     let currentSpread = 0;
 
-    const totalSpreads = spreads.length;
+    let isAnimating = false;
+
+    const totalSpreads =
+        spreads.length;
 
 
-    /*
-       Each section name corresponds to a spread.
+    totalPagesElement.textContent =
+        totalSpreads;
 
-       This allows links such as:
 
-           #characters
-           #worlds
-           #writing
-           #art
-           #misc
-
-       to jump directly to the correct spread.
-    */
+    /* ========================================================
+       SECTION MAP
+    ======================================================== */
 
     const sectionMap = {};
 
@@ -51,191 +52,389 @@ document.addEventListener("DOMContentLoaded", () => {
             spread.dataset.section;
 
         if (section) {
-            sectionMap[section] = index;
+
+            sectionMap[section] =
+                index;
+
         }
 
     });
 
 
     /* ========================================================
-       03. INITIALIZE
+       INITIAL BOOK STATE
     ======================================================== */
 
-    totalPagesElement.textContent =
-        totalSpreads;
+    setupPages();
 
-    /*
-       Make sure the first spread is visible
-       immediately when the website loads.
-    */
+    updateCounter();
 
-    showSpread(0, false);
-
-
-    /*
-       If someone visits a direct URL such as:
-
-           index.html#characters
-
-       automatically jump to that spread.
-    */
-
-    handleHash();
+    updateButtons();
 
 
     /* ========================================================
-       04. SHOW SPREAD
+       SET UP PHYSICAL PAGE STACK
     ======================================================== */
 
-    function showSpread(index, updateURL = true) {
+    function setupPages() {
 
-        /*
-           Prevent going outside the book.
-        */
-
-        if (index < 0) {
-            index = 0;
-        }
-
-        if (index >= totalSpreads) {
-            index = totalSpreads - 1;
-        }
-
-
-        currentSpread = index;
-
-
-        /*
-           Hide every spread.
-        */
-
-        spreads.forEach((spread, spreadIndex) => {
-
-            const isActive =
-                spreadIndex === currentSpread;
-
-            spread.classList.toggle(
-                "active",
-                isActive
-            );
+        pages.forEach((page, index) => {
 
             /*
-               Accessibility:
-               inactive spreads are hidden from
-               screen readers.
+               Every page starts visible in its natural
+               location.
             */
 
-            spread.setAttribute(
-                "aria-hidden",
-                isActive ? "false" : "true"
+            page.classList.remove(
+                "turned",
+                "flipping-forward",
+                "flipping-backward"
             );
 
+
+            /*
+               Put later pages above earlier pages.
+            */
+
+            page.style.zIndex =
+                index + 1;
+
         });
-
-
-        /*
-           Update the page counter.
-        */
-
-        currentPageElement.textContent =
-            currentSpread + 1;
-
-
-        /*
-           Update button states.
-        */
-
-        updateNavigationButtons();
-
-
-        /*
-           Update the URL hash.
-
-           This means the current section can be
-           bookmarked or linked to directly.
-        */
-
-        if (updateURL) {
-
-            const section =
-                spreads[currentSpread].dataset.section;
-
-            if (section) {
-
-                history.replaceState(
-                    null,
-                    "",
-                    `#${section}`
-                );
-
-            }
-
-        }
 
     }
 
 
     /* ========================================================
-       05. NEXT SPREAD
+       NEXT PAGE / SPREAD
     ======================================================== */
 
     function nextSpread() {
 
-        if (currentSpread < totalSpreads - 1) {
-
-            showSpread(
-                currentSpread + 1
-            );
-
-        }
-
-    }
-
-
-    /* ========================================================
-       06. PREVIOUS SPREAD
-    ======================================================== */
-
-    function previousSpread() {
-
-        if (currentSpread > 0) {
-
-            showSpread(
-                currentSpread - 1
-            );
-
-        }
-
-    }
-
-
-    /* ========================================================
-       07. GO TO SPREAD
-    ======================================================== */
-
-    function goToSpread(index) {
-
         if (
-            typeof index !== "number" ||
-            index < 0 ||
-            index >= totalSpreads
+            isAnimating ||
+            currentSpread >= totalSpreads - 1
         ) {
             return;
         }
 
-        showSpread(index);
+
+        isAnimating = true;
+
+
+        /*
+           The current spread consists of:
+
+           left page
+           right page
+
+           We want the RIGHT page to turn first.
+        */
+
+        const current =
+            spreads[currentSpread];
+
+        const rightPage =
+            current.querySelector(
+                ".page-right"
+            );
+
+
+        if (!rightPage) {
+
+            isAnimating = false;
+
+            return;
+
+        }
+
+
+        rightPage.classList.add(
+            "flipping-forward"
+        );
+
+
+        /*
+           Wait for the physical page animation
+           to finish before revealing the next spread.
+        */
+
+        setTimeout(() => {
+
+            rightPage.classList.add(
+                "turned"
+            );
+
+            rightPage.classList.remove(
+                "flipping-forward"
+            );
+
+
+            currentSpread++;
+
+
+            showNewSpread();
+
+
+            isAnimating = false;
+
+        }, 1000);
 
     }
 
 
     /* ========================================================
-       08. GO TO SECTION
+       PREVIOUS PAGE / SPREAD
     ======================================================== */
+
+    function previousSpread() {
+
+        if (
+            isAnimating ||
+            currentSpread <= 0
+        ) {
+            return;
+        }
+
+
+        isAnimating = true;
+
+
+        /*
+           Find the previous spread's right page.
+           That is the sheet that needs to flip back.
+        */
+
+        const previous =
+            spreads[currentSpread - 1];
+
+        const rightPage =
+            previous.querySelector(
+                ".page-right"
+            );
+
+
+        if (!rightPage) {
+
+            isAnimating = false;
+
+            return;
+
+        }
+
+
+        /*
+           Remove the turned state and rotate
+           the page back into position.
+        */
+
+        rightPage.classList.add(
+            "flipping-backward"
+        );
+
+
+        setTimeout(() => {
+
+            rightPage.classList.remove(
+                "flipping-backward",
+                "turned"
+            );
+
+
+            currentSpread--;
+
+
+            showNewSpread();
+
+
+            isAnimating = false;
+
+        }, 1000);
+
+    }
+
+
+    /* ========================================================
+       SHOW CURRENT SPREAD
+       ======================================================== */
+
+    function showNewSpread() {
+
+        spreads.forEach(
+            (spread, index) => {
+
+                /*
+                   The spread itself is still used for
+                   identifying which pages belong together.
+                */
+
+                spread.classList.toggle(
+                    "active",
+                    index === currentSpread
+                );
+
+            }
+        );
+
+
+        updateCounter();
+
+        updateButtons();
+
+    }
+
+
+    /* ========================================================
+       COUNTER
+       ======================================================== */
+
+    function updateCounter() {
+
+        currentPageElement.textContent =
+            currentSpread + 1;
+
+    }
+
+
+    /* ========================================================
+       BUTTON STATES
+       ======================================================== */
+
+    function updateButtons() {
+
+        document
+            .querySelectorAll(
+                '[data-action="previous"]'
+            )
+            .forEach(button => {
+
+                button.disabled =
+                    currentSpread === 0;
+
+            });
+
+
+        document
+            .querySelectorAll(
+                '[data-action="next"]'
+            )
+            .forEach(button => {
+
+                button.disabled =
+                    currentSpread === totalSpreads - 1;
+
+            });
+
+    }
+
+
+    /* ========================================================
+       HOME
+       ======================================================== */
+
+    function goHome() {
+
+        if (isAnimating) {
+            return;
+        }
+
+
+        /*
+           If we're already home, nothing to do.
+        */
+
+        if (currentSpread === 0) {
+            return;
+        }
+
+
+        /*
+           Return one spread at a time so the book
+           actually flips backwards.
+        */
+
+        const returnHome =
+            () => {
+
+                if (currentSpread === 0) {
+                    return;
+                }
+
+
+                previousSpread();
+
+
+                setTimeout(
+                    returnHome,
+                    1050
+                );
+
+            };
+
+
+        returnHome();
+
+    }
+
+
+    /* ========================================================
+       GO TO SPREAD
+       ======================================================== */
+
+    function goToSpread(index) {
+
+        if (
+            isAnimating ||
+            index < 0 ||
+            index >= totalSpreads ||
+            index === currentSpread
+        ) {
+            return;
+        }
+
+
+        /*
+           Move through the book physically rather than
+           instantly teleporting.
+        */
+
+        if (index > currentSpread) {
+
+            nextSpread();
+
+            setTimeout(() => {
+
+                if (currentSpread < index) {
+                    goToSpread(index);
+                }
+
+            }, 1050);
+
+        }
+
+        else {
+
+            previousSpread();
+
+            setTimeout(() => {
+
+                if (currentSpread > index) {
+                    goToSpread(index);
+                }
+
+            }, 1050);
+
+        }
+
+    }
+
+
+    /* ========================================================
+       GO TO SECTION
+       ======================================================== */
 
     function goToSection(section) {
 
         if (
-            !section ||
             !Object.prototype.hasOwnProperty.call(
                 sectionMap,
                 section
@@ -243,6 +442,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ) {
             return;
         }
+
 
         goToSpread(
             sectionMap[section]
@@ -252,64 +452,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ========================================================
-       09. HOME
-    ======================================================== */
-
-    function goHome() {
-
-        goToSpread(0);
-
-    }
-
-
-    /* ========================================================
-       10. UPDATE NAVIGATION BUTTONS
-    ======================================================== */
-
-    function updateNavigationButtons() {
-
-        const previousButtons =
-            document.querySelectorAll(
-                '[data-action="previous"]'
-            );
-
-        const nextButtons =
-            document.querySelectorAll(
-                '[data-action="next"]'
-            );
-
-
-        previousButtons.forEach(button => {
-
-            button.disabled =
-                currentSpread === 0;
-
-            button.setAttribute(
-                "aria-disabled",
-                currentSpread === 0
-            );
-
-        });
-
-
-        nextButtons.forEach(button => {
-
-            button.disabled =
-                currentSpread === totalSpreads - 1;
-
-            button.setAttribute(
-                "aria-disabled",
-                currentSpread === totalSpreads - 1
-            );
-
-        });
-
-    }
-
-
-    /* ========================================================
-       11. BUTTON CONTROLS
-    ======================================================== */
+       BUTTON HANDLING
+       ======================================================== */
 
     document.addEventListener(
         "click",
@@ -321,21 +465,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-            /*
-               Nothing to do if the clicked
-               element isn't a navigation button.
-            */
-
             if (!button) {
                 return;
             }
 
 
-            const action =
-                button.dataset.action;
-
-
-            switch (action) {
+            switch (
+                button.dataset.action
+            ) {
 
                 case "next":
                     nextSpread();
@@ -360,8 +497,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ========================================================
-       12. INDEX / INTERNAL LINKS
-    ======================================================== */
+       INDEX LINKS
+       ======================================================== */
 
     document.addEventListener(
         "click",
@@ -381,31 +518,25 @@ document.addEventListener("DOMContentLoaded", () => {
             event.preventDefault();
 
 
-            const section =
-                link.dataset.goTo;
-
-
-            goToSection(section);
+            goToSection(
+                link.dataset.goTo
+            );
 
         }
     );
 
 
     /* ========================================================
-       13. KEYBOARD NAVIGATION
-    ======================================================== */
+       KEYBOARD
+       ======================================================== */
 
     document.addEventListener(
         "keydown",
         event => {
 
-            /*
-               Don't hijack keyboard navigation while
-               someone is typing in a form field.
-            */
-
             const tag =
                 event.target.tagName.toLowerCase();
+
 
             if (
                 tag === "input" ||
@@ -416,22 +547,29 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            switch (event.key) {
+            if (event.key === "ArrowRight") {
 
-                case "ArrowRight":
-                    event.preventDefault();
-                    nextSpread();
-                    break;
+                event.preventDefault();
 
-                case "ArrowLeft":
-                    event.preventDefault();
-                    previousSpread();
-                    break;
+                nextSpread();
 
-                case "Home":
-                    event.preventDefault();
-                    goHome();
-                    break;
+            }
+
+
+            if (event.key === "ArrowLeft") {
+
+                event.preventDefault();
+
+                previousSpread();
+
+            }
+
+
+            if (event.key === "Home") {
+
+                event.preventDefault();
+
+                goHome();
 
             }
 
@@ -440,8 +578,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ========================================================
-       14. URL HASH NAVIGATION
-    ======================================================== */
+       URL HASHES
+       ======================================================== */
 
     function handleHash() {
 
@@ -451,20 +589,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 .trim();
 
 
-        /*
-           No hash means start at the beginning.
-        */
-
         if (!hash) {
-            showSpread(0, false);
             return;
         }
 
-
-        /*
-           Check whether the hash corresponds
-           to a known section.
-        */
 
         if (
             Object.prototype.hasOwnProperty.call(
@@ -473,55 +601,23 @@ document.addEventListener("DOMContentLoaded", () => {
             )
         ) {
 
+            /*
+               Start at the front and physically
+               turn toward the requested section.
+            */
+
+            currentSpread = 0;
+
+            setupPages();
+
             goToSpread(
                 sectionMap[hash]
             );
-
-            return;
-        }
-
-
-        /*
-           Otherwise, look for an element with
-           that ID.
-
-           This makes future direct links possible.
-        */
-
-        const target =
-            document.getElementById(hash);
-
-
-        if (target) {
-
-            const spread =
-                target.closest(".spread");
-
-
-            if (spread) {
-
-                const spreadIndex =
-                    spreads.indexOf(spread);
-
-
-                if (spreadIndex !== -1) {
-
-                    goToSpread(
-                        spreadIndex
-                    );
-
-                }
-
-            }
 
         }
 
     }
 
-
-    /* ========================================================
-       15. BROWSER BACK / FORWARD
-    ======================================================== */
 
     window.addEventListener(
         "hashchange",
@@ -530,48 +626,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ========================================================
-       16. PREVENT BROKEN IMAGE ICONS
+       PUBLIC API
        ======================================================== */
-
-    /*
-       For now, missing placeholder images won't
-       completely wreck the scrapbook layout.
-
-       Later, once your actual images are added,
-       this can simply remain harmlessly in place.
-    */
-
-    document
-        .querySelectorAll(".page img")
-        .forEach(image => {
-
-            image.addEventListener(
-                "error",
-                () => {
-
-                    image.classList.add(
-                        "image-missing"
-                    );
-
-                }
-            );
-
-        });
-
-
-    /* ========================================================
-       17. EXPOSE OPTIONAL NAVIGATION
-       ======================================================== */
-
-    /*
-       These are available globally if you eventually
-       want buttons, stickers, or other scrapbook
-       elements to call them directly.
-
-       Example:
-
-           onclick="Scrapbook.goTo('characters')"
-    */
 
     window.Scrapbook = {
 
@@ -586,15 +642,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         goTo: goToSection,
 
-        goToSpread: goToSpread,
-
-        getCurrentSpread: () =>
-            currentSpread,
-
-        getTotalSpreads: () =>
-            totalSpreads
+        goToSpread: goToSpread
 
     };
-
 
 });
