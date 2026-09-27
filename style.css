@@ -19,7 +19,10 @@
 
 :root {
 
-    /* Scrapbook palette */
+    /* --------------------------------------------------------
+       Scrapbook palette
+       -------------------------------------------------------- */
+
     --pink: #D2899D;
     --light-pink: #F7CACD;
     --soft-pink: #FDD8D8;
@@ -43,16 +46,35 @@
     --soft-shadow: rgba(49, 30, 15, 0.18);
     --deep-shadow: rgba(49, 30, 15, 0.30);
 
-    /* Typography */
-    --heading-font: "Special Elite", "Courier New", monospace;
-    --body-font: "Cutive Mono", "Courier New", monospace;
 
-    /* Book */
+    /* --------------------------------------------------------
+       Typography
+       -------------------------------------------------------- */
+
+    --heading-font:
+        "Special Elite",
+        "Courier New",
+        monospace;
+
+    --body-font:
+        "Cutive Mono",
+        "Courier New",
+        monospace;
+
+
+    /* --------------------------------------------------------
+       Book
+       -------------------------------------------------------- */
+
     --book-width: min(1400px, 92vw);
     --book-height: min(820px, 78vh);
 
-    /* Page turning */
-    --page-flip-time: 1s;
+
+    /* --------------------------------------------------------
+       Page turning
+       -------------------------------------------------------- */
+
+    --page-flip-time: 0.95s;
 
 }
 
@@ -326,6 +348,8 @@ body::before {
 
     perspective: 3000px;
 
+    overflow: visible;
+
     filter:
         drop-shadow(
             0 20px 25px
@@ -366,68 +390,170 @@ body::before {
 
 
 /* ============================================================
-   11. THE SPREAD STACK
+   11. OLD SPREADS
    ============================================================ */
 
 /*
-   THIS IS THE IMPORTANT PART.
+   JavaScript takes the original .spread elements and
+   converts their pages into physical .flip-sheet elements.
 
-   Every spread exists physically inside the book.
-
-   We do NOT fade spreads in/out anymore.
-
-   Instead, JavaScript controls which right-hand page
-   is currently flipped.
-
-   That means the page underneath can actually be seen
-   during the rotation.
+   Once converted, the original spread containers are hidden.
 */
 
-.spread {
+.book > .spread {
 
-    position: absolute;
-
-    inset: 0;
-
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    transform-style: preserve-3d;
-
-    pointer-events: none;
-
-    visibility: visible;
-
-    opacity: 1;
-
-}
-
-
-/*
-   Remove the old .spread.active behavior.
-*/
-
-.spread.active {
-
-    pointer-events: auto;
+    display: none !important;
 
 }
 
 
 /* ============================================================
-   12. PHYSICAL PAGES
+   12. PHYSICAL FLIPBOOK LAYER
    ============================================================ */
 
-.page {
+.flipbook-layer {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    transform-style: preserve-3d;
+
+    pointer-events: none;
+
+    z-index: 10;
+
+}
+
+
+/* ============================================================
+   13. STATIC END PAGES
+   ============================================================ */
+
+/*
+   The first left page remains underneath the physical sheets.
+
+   The final right page sits underneath everything on the
+   right side once all sheets have been turned.
+*/
+
+.static-page {
 
     position: absolute;
 
     top: 0;
 
-    bottom: 0;
+    width: 50%;
+
+    height: 100%;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(49, 30, 15, 0.035),
+            transparent 7%,
+            transparent 93%,
+            rgba(49, 30, 15, 0.035)
+        ),
+        var(--paper);
+
+    border-top:
+        1px solid rgba(77, 49, 58, 0.30);
+
+    border-bottom:
+        1px solid rgba(77, 49, 58, 0.30);
+
+    box-shadow:
+        inset 0 0 18px rgba(77, 49, 58, 0.06);
+
+    backface-visibility: hidden;
+
+    -webkit-backface-visibility: hidden;
+
+}
+
+
+.static-left {
+
+    left: 0;
+
+    z-index: 1;
+
+}
+
+
+.static-right {
+
+    right: 0;
+
+    z-index: 0;
+
+}
+
+
+/* ============================================================
+   14. PHYSICAL SHEETS
+   ============================================================ */
+
+/*
+   Every .flip-sheet represents one actual sheet of paper.
+
+   FRONT:
+       The right page of the current spread.
+
+   BACK:
+       The left page of the following spread.
+
+   When the sheet rotates -180deg, the back becomes the
+   visible left-hand page.
+*/
+
+.flip-sheet {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    transform-style: preserve-3d;
+
+    transform-origin: left center;
+
+    transition:
+        transform var(--page-flip-time)
+        cubic-bezier(.22, .61, .36, 1);
+
+    pointer-events: none;
+
+    will-change: transform;
+
+}
+
+
+/*
+   The sheet's paper face.
+
+   Width is exactly half the book.
+*/
+
+.flip-sheet-face {
+
+    position: absolute;
+
+    top: 0;
 
     width: 50%;
+
+    height: 100%;
 
     overflow: hidden;
 
@@ -456,28 +582,221 @@ body::before {
 
     -webkit-backface-visibility: hidden;
 
-    will-change: transform;
+}
+
+
+/* ============================================================
+   15. PHYSICAL SHEET FRONT
+   ============================================================ */
+
+.flip-sheet-front {
+
+    right: 0;
+
+    transform:
+        rotateY(0deg);
+
+    transform-origin:
+        left center;
+
+    z-index: 2;
 
 }
 
 
 /* ============================================================
-   13. LEFT PAGES
+   16. PHYSICAL SHEET BACK
    ============================================================ */
 
-.page-left {
+.flip-sheet-back {
 
     left: 0;
 
-    border-left:
-        1px solid rgba(77, 49, 58, 0.30);
+    transform:
+        rotateY(180deg);
 
-    border-right:
-        1px solid rgba(77, 49, 58, 0.12);
+    transform-origin:
+        right center;
 
-    /*
-       A left page is attached to the spine on its RIGHT edge.
-    */
+    z-index: 1;
+
+}
+
+
+/* ============================================================
+   17. TURNED STATE
+   ============================================================ */
+
+.flip-sheet.is-turned {
+
+    transform:
+        rotateY(-180deg);
+
+}
+
+
+/* ============================================================
+   18. SHEET SHADOW
+   ============================================================ */
+
+/*
+   The shadow belongs to the physical sheet rather than
+   individual .page elements.
+
+   This prevents multiple competing flip shadows.
+*/
+
+.flip-sheet::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 30;
+
+    opacity: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            transparent 38%,
+            rgba(49, 30, 15, 0.06) 50%,
+            rgba(49, 30, 15, 0.20) 67%,
+            rgba(49, 30, 15, 0.06) 82%,
+            transparent 100%
+        );
+
+    transition:
+        opacity 0.25s ease;
+
+}
+
+
+/*
+   JavaScript adds this while a navigation operation
+   begins, giving the sheet a subtle moving shadow.
+*/
+
+.flip-sheet.is-turning::after {
+
+    opacity: 1;
+
+}
+
+
+/* ============================================================
+   19. PAGE FACE EDGE
+   ============================================================ */
+
+.flip-sheet-front::before,
+.flip-sheet-back::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    bottom: 0;
+
+    width: 5px;
+
+    pointer-events: none;
+
+    opacity: 0.45;
+
+    z-index: 40;
+
+}
+
+
+.flip-sheet-front::before {
+
+    left: 0;
+
+    background:
+        linear-gradient(
+            to right,
+            rgba(49, 30, 15, 0.18),
+            rgba(255, 255, 255, 0)
+        );
+
+}
+
+
+.flip-sheet-back::before {
+
+    right: 0;
+
+    background:
+        linear-gradient(
+            to left,
+            rgba(49, 30, 15, 0.18),
+            rgba(255, 255, 255, 0)
+        );
+
+}
+
+
+/* ============================================================
+   20. ORIGINAL PAGE CLASS COMPATIBILITY
+   ============================================================ */
+
+/*
+   JavaScript moves the original .page elements into
+   .flip-sheet-face elements.
+
+   These rules preserve the page appearance without
+   allowing the old page positioning system to interfere
+   with the physical sheet.
+*/
+
+.flip-sheet-face.page {
+
+    position: absolute;
+
+    top: 0;
+
+    bottom: auto;
+
+    width: 50%;
+
+    height: 100%;
+
+    margin: 0;
+
+    transform-style: preserve-3d;
+
+}
+
+
+/*
+   Reset the old left/right positioning rules.
+
+   The physical-sheet classes now control positioning.
+*/
+
+.flip-sheet-front.page {
+
+    left: auto;
+
+    right: 0;
+
+    transform-origin: left center;
+
+}
+
+
+.flip-sheet-back.page {
+
+    left: 0;
+
+    right: auto;
 
     transform-origin: right center;
 
@@ -485,274 +804,14 @@ body::before {
 
 
 /* ============================================================
-   14. RIGHT PAGES
-   ============================================================ */
-
-.page-right {
-
-    right: 0;
-
-    border-right:
-        1px solid rgba(77, 49, 58, 0.30);
-
-    border-left:
-        1px solid rgba(77, 49, 58, 0.12);
-
-    /*
-       A right page is attached to the spine on its LEFT edge.
-
-       THIS is what makes the page swing around the spine.
-    */
-
-    transform-origin: left center;
-
-}
-
-
-/* ============================================================
-   15. PAGE FLIP STATES
+   21. BOOK SPINE
    ============================================================ */
 
 /*
-   Forward:
-
-       ┌────────┐│
-       │        ││
-       │  PAGE  ││
-       │        ││
-       └────────┘│
-              ↓
-       ┌────────┐
-       │ PAGE   │
-       │  ↘     │
-       │    ↘   │
-       └────────┘
-
-   The right page rotates toward the left.
+   The spine is kept above the pages visually, but it is
+   narrow enough that it doesn't interfere with the turning
+   sheet.
 */
-
-.page-right.flipping-forward {
-
-    transform:
-        rotateY(-180deg);
-
-}
-
-
-/*
-   Backward:
-
-   The previously turned page swings back
-   from the left side to the right.
-*/
-
-.page-right.flipping-backward {
-
-    transform:
-        rotateY(0deg);
-
-}
-
-
-/* ============================================================
-   16. TURNED PAGES
-   ============================================================ */
-
-/*
-   When a page has already been turned forward,
-   it stays at -180 degrees.
-
-   This is crucial.
-
-   Otherwise the page would snap back to its
-   original position after the animation.
-*/
-
-.page-right.turned {
-
-    transform:
-        rotateY(-180deg);
-
-}
-
-
-/* ============================================================
-   17. PAGE Z-INDEX SYSTEM
-   ============================================================ */
-
-/*
-   The later spreads sit underneath earlier spreads.
-
-   JavaScript will also update z-index during navigation.
-*/
-
-.spread {
-
-    z-index: 1;
-
-}
-
-
-/*
-   The page currently being turned must be above
-   everything else.
-*/
-
-.page.flipping-forward,
-.page.flipping-backward {
-
-    z-index: 500;
-
-}
-
-
-/* ============================================================
-   18. FLIPPING PAGE SHADOW
-   ============================================================ */
-
-.page-right.flipping-forward::after,
-.page-right.flipping-backward::after {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    z-index: 50;
-
-    opacity: 0;
-
-}
-
-
-/*
-   Forward shadow.
-
-   The shadow moves across the page as it turns.
-*/
-
-.page-right.flipping-forward::after {
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(49, 30, 15, 0.35),
-            rgba(49, 30, 15, 0.05) 65%,
-            transparent
-        );
-
-    animation:
-        flipShadowForward var(--page-flip-time)
-        ease-in-out forwards;
-
-}
-
-
-/*
-   Backward shadow.
-*/
-
-.page-right.flipping-backward::after {
-
-    background:
-        linear-gradient(
-            270deg,
-            rgba(49, 30, 15, 0.35),
-            rgba(49, 30, 15, 0.05) 65%,
-            transparent
-        );
-
-    animation:
-        flipShadowBackward var(--page-flip-time)
-        ease-in-out forwards;
-
-}
-
-
-@keyframes flipShadowForward {
-
-    0% {
-        opacity: 0;
-    }
-
-    20% {
-        opacity: 0.15;
-    }
-
-    50% {
-        opacity: 0.55;
-    }
-
-    80% {
-        opacity: 0.15;
-    }
-
-    100% {
-        opacity: 0;
-    }
-
-}
-
-
-@keyframes flipShadowBackward {
-
-    0% {
-        opacity: 0;
-    }
-
-    20% {
-        opacity: 0.15;
-    }
-
-    50% {
-        opacity: 0.55;
-    }
-
-    80% {
-        opacity: 0.15;
-    }
-
-    100% {
-        opacity: 0;
-    }
-
-}
-
-
-/* ============================================================
-   19. PAGE EDGE
-   ============================================================ */
-
-.page::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(49, 30, 15, 0.05),
-            transparent 5%,
-            transparent 95%,
-            rgba(49, 30, 15, 0.05)
-        );
-
-    z-index: 40;
-
-}
-
-
-/* ============================================================
-   20. BOOK SPINE
-   ============================================================ */
 
 .book::after {
 
@@ -766,7 +825,7 @@ body::before {
 
     left: 50%;
 
-    width: 18px;
+    width: 14px;
 
     transform:
         translateX(-50%);
@@ -774,22 +833,22 @@ body::before {
     background:
         linear-gradient(
             90deg,
-            rgba(49, 30, 15, 0.18),
-            rgba(255,255,255,0.20) 45%,
-            rgba(49,30,15,0.18)
+            rgba(49, 30, 15, 0.16),
+            rgba(255, 255, 255, 0.18) 45%,
+            rgba(49, 30, 15, 0.16)
         );
 
     pointer-events: none;
 
     z-index: 1000;
 
-    opacity: 0.7;
+    opacity: 0.68;
 
 }
 
 
 /*
-   Give the spine a subtle central shadow.
+   Central seam.
 */
 
 .book::before {
@@ -804,7 +863,7 @@ body::before {
 
     left: 50%;
 
-    width: 3px;
+    width: 2px;
 
     transform:
         translateX(-50%);
@@ -820,7 +879,7 @@ body::before {
 
 
 /* ============================================================
-   21. PAGE CONTENT
+   22. PAGE CONTENT
    ============================================================ */
 
 .page-content {
@@ -834,6 +893,8 @@ body::before {
     padding: 45px 55px;
 
     overflow-y: auto;
+
+    overflow-x: hidden;
 
     scrollbar-width: thin;
 
@@ -868,7 +929,7 @@ body::before {
 
 
 /* ============================================================
-   22. PAGE LABEL
+   23. PAGE LABEL
    ============================================================ */
 
 .page-label {
@@ -898,7 +959,7 @@ body::before {
 
 
 /* ============================================================
-   23. TYPOGRAPHY
+   24. TYPOGRAPHY
    ============================================================ */
 
 .page-title {
@@ -941,7 +1002,7 @@ body::before {
 
 
 /* ============================================================
-   24. COVER
+   25. COVER
    ============================================================ */
 
 .page-cover {
@@ -1131,7 +1192,7 @@ body::before {
 
 
 /* ============================================================
-   25. INDEX
+   26. INDEX
    ============================================================ */
 
 .scrapbook-index {
@@ -1263,7 +1324,7 @@ body::before {
 
 
 /* ============================================================
-   26. DROPDOWNS
+   27. DROPDOWNS
    ============================================================ */
 
 .accordion-list {
@@ -1370,7 +1431,7 @@ body::before {
 
 
 /* ============================================================
-   27. CHARACTER GALLERY
+   28. CHARACTER GALLERY
    ============================================================ */
 
 .character-gallery {
@@ -1553,7 +1614,7 @@ body::before {
 
 
 /* ============================================================
-   28. SCRAPBOOK PHOTOS
+   29. SCRAPBOOK PHOTOS
    ============================================================ */
 
 .scrapbook-photo {
@@ -1616,7 +1677,7 @@ body::before {
 
 
 /* ============================================================
-   29. ART GRID
+   30. ART GRID
    ============================================================ */
 
 .art-grid {
@@ -1648,7 +1709,7 @@ body::before {
 
 
 /* ============================================================
-   30. FILM STRIP
+   31. FILM STRIP
    ============================================================ */
 
 .film-strip {
@@ -1701,7 +1762,7 @@ body::before {
 
 
 /* ============================================================
-   31. POSTCARD
+   32. POSTCARD
    ============================================================ */
 
 .postcard {
@@ -1790,7 +1851,7 @@ body::before {
 
 
 /* ============================================================
-   32. NOTES
+   33. NOTES
    ============================================================ */
 
 .handwritten-note {
@@ -1881,7 +1942,7 @@ body::before {
 
 
 /* ============================================================
-   33. INDEX STICKER
+   34. INDEX STICKER
    ============================================================ */
 
 .index-sticker {
@@ -1925,7 +1986,7 @@ body::before {
 
 
 /* ============================================================
-   34. POSTMARK
+   35. POSTMARK
    ============================================================ */
 
 .postmark {
@@ -1969,7 +2030,7 @@ body::before {
 
 
 /* ============================================================
-   35. TAPE
+   36. TAPE
    ============================================================ */
 
 .tape {
@@ -2012,7 +2073,7 @@ body::before {
 
 
 /* ============================================================
-   36. BOOK CONTROLS
+   37. BOOK CONTROLS
    ============================================================ */
 
 .book-controls {
@@ -2070,6 +2131,17 @@ body::before {
     color:
         var(--cream);
 
+    transform:
+        translateY(-1px);
+
+}
+
+
+.book-control:active {
+
+    transform:
+        translateY(1px);
+
 }
 
 
@@ -2120,7 +2192,311 @@ body::before {
 
 
 /* ============================================================
-   37. ACCESSIBILITY
+   38. CHARACTER MODAL
+   ============================================================ */
+
+/*
+   These styles are included here so the character modal
+   doesn't inherit any accidental page-flip behavior.
+*/
+
+.character-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px;
+
+    z-index: 9000;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+
+}
+
+
+.character-modal[aria-hidden="false"] {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+}
+
+
+.character-modal-backdrop {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(49, 30, 15, 0.48);
+
+    backdrop-filter:
+        blur(4px);
+
+}
+
+
+.character-modal-card {
+
+    position: relative;
+
+    width:
+        min(850px, 94vw);
+
+    max-height:
+        min(760px, 90vh);
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(260px, 42%)
+        1fr;
+
+    background:
+        var(--paper-light);
+
+    border:
+        1px solid var(--paper-border);
+
+    box-shadow:
+        10px 15px 35px
+        rgba(49, 30, 15, 0.28);
+
+    transform:
+        translateY(12px)
+        rotate(-0.4deg);
+
+    transition:
+        transform 0.25s ease;
+
+    overflow: hidden;
+
+}
+
+
+.character-modal[aria-hidden="false"]
+.character-modal-card {
+
+    transform:
+        translateY(0)
+        rotate(-0.4deg);
+
+}
+
+
+.character-modal-close {
+
+    position: absolute;
+
+    top: 12px;
+
+    right: 12px;
+
+    width: 34px;
+
+    height: 34px;
+
+    border:
+        1px solid var(--mauve);
+
+    background:
+        rgba(255,248,241,0.92);
+
+    color:
+        var(--deep-mauve);
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        18px;
+
+    line-height:
+        1;
+
+    cursor:
+        pointer;
+
+    z-index: 10;
+
+}
+
+
+.character-modal-close:hover {
+
+    background:
+        var(--deep-mauve);
+
+    color:
+        var(--cream);
+
+}
+
+
+.character-modal-image {
+
+    min-height: 420px;
+
+    background:
+        var(--soft-lavender);
+
+    overflow: hidden;
+
+}
+
+
+.character-modal-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+}
+
+
+.character-modal-content {
+
+    padding:
+        55px 45px 45px;
+
+    overflow-y: auto;
+
+}
+
+
+.character-modal-label {
+
+    display: inline-block;
+
+    margin-bottom: 15px;
+
+    padding: 5px 9px;
+
+    background:
+        var(--deep-mauve);
+
+    color:
+        var(--cream);
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        9px;
+
+    letter-spacing:
+        2px;
+
+}
+
+
+.character-modal-content h2 {
+
+    margin:
+        0 0 20px;
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        clamp(28px, 4vw, 48px);
+
+    font-weight:
+        normal;
+
+    line-height:
+        1.05;
+
+    color:
+        var(--deep-mauve);
+
+}
+
+
+.character-modal-description {
+
+    font-size:
+        12px;
+
+    line-height:
+        1.9;
+
+}
+
+
+.character-modal-links {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        8px;
+
+    margin-top:
+        25px;
+
+}
+
+
+.character-modal-links a {
+
+    padding:
+        7px 11px;
+
+    border:
+        1px solid var(--dusty-rose);
+
+    color:
+        var(--deep-mauve);
+
+    text-decoration:
+        none;
+
+    font-family:
+        var(--heading-font);
+
+    font-size:
+        9px;
+
+}
+
+
+.character-modal-links a:hover {
+
+    background:
+        var(--soft-pink);
+
+}
+
+
+/* ============================================================
+   39. ACCESSIBILITY
    ============================================================ */
 
 button:focus-visible,
@@ -2137,7 +2513,7 @@ summary:focus-visible {
 
 
 /* ============================================================
-   38. RESPONSIVE
+   40. TABLET
    ============================================================ */
 
 @media (max-width: 1000px) {
@@ -2174,19 +2550,42 @@ summary:focus-visible {
 
     }
 
+
+    .character-modal-card {
+
+        width:
+            min(780px, 94vw);
+
+    }
+
 }
 
 
+/* ============================================================
+   41. MOBILE
+   ============================================================ */
+
+/*
+   IMPORTANT:
+
+   The old CSS attempted to turn .spread into a completely
+   different flex layout here. That conflicts with the
+   physical-sheet JavaScript system.
+
+   Instead, the actual book remains a two-page physical
+   object, but we scale the book and reduce the padding.
+*/
+
 @media (max-width: 700px) {
 
-    /*
-       True two-page 3D book flipping is intentionally
-       preserved on desktop/tablet.
+    :root {
 
-       Mobile switches to a single-page layout instead
-       because a half-screen physical page flip becomes
-       extremely cramped.
-    */
+        --book-width: 96vw;
+
+        --book-height: 72vh;
+
+    }
+
 
     .site-header {
 
@@ -2207,11 +2606,14 @@ summary:focus-visible {
 
     .site-nav {
 
-        width: 100%;
+        width:
+            100%;
 
-        justify-content: flex-start;
+        justify-content:
+            flex-start;
 
-        flex-wrap: wrap;
+        flex-wrap:
+            wrap;
 
     }
 
@@ -2230,92 +2632,24 @@ summary:focus-visible {
             96vw;
 
         height:
-            auto;
-
-        min-height:
-            700px;
+            72vh;
 
         perspective:
-            none;
+            1800px;
 
     }
 
 
     .book {
 
-        height:
-            auto;
-
-        min-height:
-            700px;
-
-        perspective:
-            none;
-
-    }
-
-
-    .book-back {
-
-        display:
-            none;
-
-    }
-
-
-    .book::before,
-    .book::after {
-
-        display:
-            none;
-
-    }
-
-
-    .spread {
-
-        position:
-            relative;
-
-        display:
-            flex;
-
-        flex-direction:
-            column;
-
-        min-height:
-            1400px;
-
-    }
-
-
-    .page {
-
-        position:
-            relative;
-
-        left:
-            auto;
-
-        right:
-            auto;
-
         width:
             100%;
 
-        min-height:
-            700px;
+        height:
+            100%;
 
-        transform:
-            none !important;
-
-    }
-
-
-    .page-right.turned {
-
-        transform:
-            none;
+        perspective:
+            1800px;
 
     }
 
@@ -2323,7 +2657,45 @@ summary:focus-visible {
     .page-content {
 
         padding:
-            35px 25px;
+            25px 20px;
+
+    }
+
+
+    .page-title {
+
+        font-size:
+            26px;
+
+    }
+
+
+    .cover-title h1 {
+
+        font-size:
+            36px;
+
+    }
+
+
+    .cover-small {
+
+        font-size:
+            9px;
+
+        letter-spacing:
+            3px;
+
+    }
+
+
+    .cover-image {
+
+        width:
+            min(190px, 70%);
+
+        margin:
+            18px 0;
 
     }
 
@@ -2332,6 +2704,9 @@ summary:focus-visible {
 
         grid-template-columns:
             repeat(2, 1fr);
+
+        gap:
+            15px 12px;
 
     }
 
@@ -2343,288 +2718,185 @@ summary:focus-visible {
 
     }
 
+
+    .character-modal {
+
+        padding:
+            15px;
+
+    }
+
+
+    .character-modal-card {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        width:
+            96vw;
+
+        max-height:
+            92vh;
+
+    }
+
+
+    .character-modal-image {
+
+        height:
+            38vh;
+
+        min-height:
+            250px;
+
+    }
+
+
+    .character-modal-content {
+
+        padding:
+            30px 25px;
+
+    }
+
 }
 
 
 /* ============================================================
-   39. REDUCED MOTION
+   42. VERY SMALL SCREENS
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+    :root {
+
+        --book-height: 68vh;
+
+    }
+
+
+    .page-content {
+
+        padding:
+            20px 15px;
+
+    }
+
+
+    .page-title {
+
+        font-size:
+            22px;
+
+    }
+
+
+    .cover-title h1 {
+
+        font-size:
+            29px;
+
+    }
+
+
+    .cover-image {
+
+        width:
+            145px;
+
+    }
+
+
+    .character-gallery {
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap:
+            12px 9px;
+
+    }
+
+
+    .character-polaroid {
+
+        padding:
+            6px 6px 14px;
+
+    }
+
+
+    .polaroid-caption {
+
+        font-size:
+            8px;
+
+    }
+
+
+    .book-control {
+
+        padding:
+            7px 10px;
+
+        font-size:
+            9px;
+
+    }
+
+
+    .page-counter {
+
+        font-size:
+            9px;
+
+    }
+
+}
+
+
+/* ============================================================
+   43. REDUCED MOTION
    ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
 
-    .page {
+    html {
+
+        scroll-behavior:
+            auto;
+
+    }
+
+
+    .flip-sheet {
 
         transition:
             none !important;
 
     }
 
-}
-/* =========================================================
-   REAL SCRAPBOOK PAGE FLIP
-   Physical-sheet system
-   ========================================================= */
 
-/* The book itself */
-.book {
-    position: relative;
-    perspective: 2200px;
-    transform-style: preserve-3d;
-    overflow: visible;
-}
+    .flip-sheet::after {
 
-/* Hide the old spread containers after JS converts them */
-.book > .spread {
-    display: none !important;
-}
+        transition:
+            none !important;
 
-/* Layer containing the physical sheets */
-.flipbook-layer {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    pointer-events: none;
-}
-
-/* ---------------------------------------------------------
-   STATIC END PAGES
-   --------------------------------------------------------- */
-
-.static-page {
-    position: absolute;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-
-    background:
-        linear-gradient(
-            rgba(255,255,255,0.08),
-            rgba(255,255,255,0.08)
-        ),
-        #f7e8df;
-
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-
-    pointer-events: auto;
-}
-
-.static-left {
-    left: 0;
-    z-index: 1;
-}
-
-.static-right {
-    right: 0;
-    z-index: 0;
-}
-
-/* ---------------------------------------------------------
-   PHYSICAL SHEETS
-   --------------------------------------------------------- */
-
-.flip-sheet {
-    position: absolute;
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    transform-style: preserve-3d;
-    transform-origin: left center;
-
-    transition:
-        transform 0.95s cubic-bezier(.22,.61,.36,1);
-
-    pointer-events: none;
-
-    /* Important: sheets farther into the book sit lower */
-}
-
-/*
-   Each sheet is a physical piece of paper:
-
-   FRONT = right side of a spread
-   BACK  = left side of the next spread
-*/
-.flip-sheet-face {
-    position: absolute;
-    top: 0;
-
-    width: 50%;
-    height: 100%;
-
-    overflow: hidden;
-
-    background:
-        linear-gradient(
-            rgba(255,255,255,0.08),
-            rgba(255,255,255,0.08)
-        ),
-        #f7e8df;
-
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-
-    transform-style: preserve-3d;
-}
-
-/* Right-hand page before it turns */
-.flip-sheet-front {
-    right: 0;
-
-    transform: rotateY(0deg);
-    transform-origin: left center;
-
-    z-index: 2;
-}
-
-/* Left-hand page after it turns */
-.flip-sheet-back {
-    left: 0;
-
-    transform: rotateY(180deg);
-    transform-origin: right center;
-
-    z-index: 1;
-}
-
-/* ---------------------------------------------------------
-   TURNING
-   --------------------------------------------------------- */
-
-.flip-sheet.is-turned {
-    transform: rotateY(-180deg);
-}
-
-/*
-   Subtle physical-paper shadow.
-   This makes the turning sheet feel like it has thickness.
-*/
-.flip-sheet::after {
-    content: "";
-
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
-
-    pointer-events: none;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(49,30,15,0.00) 0%,
-            rgba(49,30,15,0.00) 45%,
-            rgba(49,30,15,0.10) 62%,
-            rgba(49,30,15,0.18) 75%,
-            rgba(49,30,15,0.00) 100%
-        );
-
-    opacity: 0;
-
-    transition: opacity 0.25s ease;
-
-    z-index: 20;
-}
-
-.flip-sheet.is-turning::after {
-    opacity: 1;
-}
-
-/* ---------------------------------------------------------
-   PAGE CONTENT
-   --------------------------------------------------------- */
-
-/*
-   The original .page rules were designed for independent
-   spread pages, so reset their positioning here.
-*/
-.flip-sheet-face.page {
-    position: absolute;
-
-    margin: 0;
-
-    box-sizing: border-box;
-
-    display: block;
-
-    transform-style: preserve-3d;
-}
-
-/* Existing page content should still scroll normally */
-.flip-sheet-face .page-content {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-/* ---------------------------------------------------------
-   PAGE EDGE / PAPER DEPTH
-   --------------------------------------------------------- */
-
-.flip-sheet-front::before,
-.flip-sheet-back::before {
-    content: "";
-
-    position: absolute;
-    top: 0;
-    bottom: 0;
-
-    width: 5px;
-
-    pointer-events: none;
-
-    opacity: 0.45;
-
-    z-index: 30;
-}
-
-.flip-sheet-front::before {
-    left: 0;
-
-    background:
-        linear-gradient(
-            to right,
-            rgba(49,30,15,0.18),
-            rgba(255,255,255,0.00)
-        );
-}
-
-.flip-sheet-back::before {
-    right: 0;
-
-    background:
-        linear-gradient(
-            to left,
-            rgba(49,30,15,0.18),
-            rgba(255,255,255,0.00)
-        );
-}
-
-/* ---------------------------------------------------------
-   MOBILE
-   --------------------------------------------------------- */
-
-@media (max-width: 800px) {
-
-    /*
-       On smaller screens the physical book becomes
-       a single-page viewer rather than trying to
-       squeeze two full pages into the viewport.
-    */
-
-    .flipbook-layer {
-        perspective: 1600px;
     }
 
-    .flip-sheet-face {
-        width: 50%;
+
+    .character-polaroid,
+    .character-modal,
+    .character-modal-card,
+    .nav-button,
+    .book-control {
+
+        transition:
+            none !important;
+
     }
+
 }
