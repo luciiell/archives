@@ -1,22 +1,16 @@
-/* ==========================================================
+/* =========================================================
    DREAMLAND JOURNAL
-   Four interactive spreads:
+   Based directly on the supplied Janitor AI page-flip model.
 
-   1 = COVER / INDEX
-   2 = SOCIALS / SERIES
-   3 = FRIENDS / DREAMLAND RESIDENTS
-   4 = MAPS / CLOSING
-
-   The physical page turn follows the supplied Janitor AI CSS:
-     left: 50%
-     transform-origin: left center
-     transform: rotateY(-180deg)
-     transform-style: preserve-3d
-     .back { transform: rotateY(-180deg); }
-========================================================== */
+   IMPORTANT:
+   - .p-middle rotates from left center
+   - page sheet rotates -180deg
+   - .back rotates -180deg
+   This is deliberately NOT replaced with a different flip model.
+========================================================= */
 
 :root {
-  --pink-top: #D2899D;
+  --pink-header: #D2899D;
   --pink: #E49CB4;
   --pink-pale: #F7CACD;
   --pink-paper: #F0DDE8;
@@ -33,9 +27,9 @@
 }
 
 
-/* ==========================================================
+/* =========================================================
    RESET
-========================================================== */
+========================================================= */
 
 * {
   box-sizing: border-box;
@@ -43,9 +37,9 @@
 
 html,
 body {
-  min-height: 100%;
   margin: 0;
   padding: 0;
+  min-height: 100%;
 }
 
 body {
@@ -66,9 +60,8 @@ body {
     sans-serif;
 }
 
-a,
-button {
-  -webkit-tap-highlight-color: transparent;
+a {
+  color: inherit;
 }
 
 img {
@@ -76,24 +69,22 @@ img {
 }
 
 
-/* ==========================================================
-   URL ANCHORS
-========================================================== */
+/* =========================================================
+   URL TARGET ANCHORS
+========================================================= */
 
-.anchor {
+.anchors {
   position: fixed;
   width: 1px;
   height: 1px;
-  left: 0;
-  top: 0;
   overflow: hidden;
   pointer-events: none;
 }
 
 
-/* ==========================================================
+/* =========================================================
    HEADER
-========================================================== */
+========================================================= */
 
 .site-header {
   position: fixed;
@@ -108,7 +99,8 @@ img {
 
   padding: 0 22px;
 
-  background: rgba(210,137,157,.94);
+  background: rgba(210, 137, 157, .94);
+
   border-bottom: 1px solid white;
 
   z-index: 100;
@@ -178,15 +170,15 @@ img {
 }
 
 
-/* ==========================================================
-   BOOK
-========================================================== */
+/* =========================================================
+   BOOK CONTAINER
+========================================================= */
 
 main {
   min-height: 100vh;
 
   padding-top: 87px;
-  padding-bottom: 24px;
+  padding-bottom: 25px;
 }
 
 .book {
@@ -201,7 +193,9 @@ main {
   max-width: 1300px;
 
   left: 50%;
-  transform: translateX(-50%);
+
+  transform:
+    translateX(-50%);
 }
 
 .book-wrapper {
@@ -210,14 +204,16 @@ main {
 
   position: absolute;
 
-  margin: 20px;
-
   perspective: 5000px;
+
+  margin: 20px;
 }
 
 .book-wrapper-back {
+  width: 100%;
+  height: 100%;
+
   position: absolute;
-  inset: 0;
 
   border-radius: 5px;
 
@@ -236,9 +232,9 @@ main {
 }
 
 
-/* ==========================================================
-   PAGES
-========================================================== */
+/* =========================================================
+   PAGE BASE
+========================================================= */
 
 .page {
   height: 100%;
@@ -253,8 +249,6 @@ main {
     inset 0 0 50px 50px var(--paper-edge);
 
   border: 1px solid var(--paper-edge);
-
-  overflow: hidden;
 }
 
 .page .background {
@@ -263,15 +257,25 @@ main {
 
   object-fit: cover;
 
-  position: absolute;
-
   z-index: 0;
+
+  position: absolute;
 }
+
+
+/* =========================================================
+   PAGE 1 — COVER
+========================================================= */
 
 .p-first {
   left: 0;
   z-index: 1;
 }
+
+
+/* =========================================================
+   PAGE 6 — RESIDENTS
+========================================================= */
 
 .p-last {
   left: 50%;
@@ -279,9 +283,9 @@ main {
 }
 
 
-/* ==========================================================
+/* =========================================================
    TURNING SHEETS
-========================================================== */
+========================================================= */
 
 .p-middle {
   left: 50%;
@@ -297,31 +301,35 @@ main {
 
   transform-style:
     preserve-3d;
-
-  will-change:
-    transform;
 }
 
 .p-middle-1 {
-  z-index: 5;
-}
-
-.p-middle-2 {
-  z-index: 4;
-}
-
-.p-middle-3 {
   z-index: 3;
 }
 
+.p-middle-2 {
+  z-index: 2;
+}
 
-/*
-  Spread 2:
-    COVER | INDEX
-      ↓
-  SOCIALS | SERIES
-*/
-body.spread-2 .p-middle-1 {
+
+/* =========================================================
+   THE EXACT SPREAD LOGIC FROM THE SUPPLIED CSS
+
+   Initial:
+     page 1 | page 2
+       COVER | INDEX
+
+   #page-3:
+     page 3 | page 4
+      SOCIALS | SERIES
+
+   #page-5:
+     page 5 | page 6
+      FRIENDS | RESIDENTS
+========================================================= */
+
+body:has(#page-3:target) .p-middle-1,
+body:has(#page-5:target) .p-middle-1 {
   transform:
     rotateY(-180deg);
 
@@ -329,20 +337,7 @@ body.spread-2 .p-middle-1 {
     2;
 }
 
-
-/*
-  Spread 3:
-    FRIENDS | DREAMLAND RESIDENTS
-*/
-body.spread-3 .p-middle-1 {
-  transform:
-    rotateY(-180deg);
-
-  z-index:
-    2;
-}
-
-body.spread-3 .p-middle-2 {
+body:has(#page-5:target) .p-middle-2 {
   transform:
     rotateY(-180deg);
 
@@ -351,52 +346,19 @@ body.spread-3 .p-middle-2 {
 }
 
 
-/*
-  Spread 4:
-    MAPS | CLOSING
-*/
-body.spread-4 .p-middle-1,
-body.spread-4 .p-middle-2 {
-  transform:
-    rotateY(-180deg);
-}
-
-body.spread-4 .p-middle-1 {
-  z-index:
-    2;
-}
-
-body.spread-4 .p-middle-2 {
-  z-index:
-    3;
-}
-
-body.spread-4 .p-middle-3 {
-  transform:
-    rotateY(-180deg);
-
-  z-index:
-    6;
-}
-
-
-/* ==========================================================
-   PAGE FACES
-   Same orientation as supplied CSS.
-========================================================== */
+/* =========================================================
+   PAGE FACE
+========================================================= */
 
 .front,
 .back {
   position: absolute;
 
-  width: 100%;
   height: 100%;
+  width: 100%;
 
-  backface-visibility:
-    hidden;
-
-  -webkit-backface-visibility:
-    hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 
   padding:
     20px;
@@ -407,8 +369,8 @@ body.spread-4 .p-middle-3 {
 
 
 /*
-  Keep the -180deg rotation exactly as supplied.
-  The parent sheet performs the actual page turn.
+  This is the same orientation used by the CSS supplied by
+  the user. Do NOT change this to +180deg.
 */
 .back {
   transform:
@@ -416,25 +378,20 @@ body.spread-4 .p-middle-3 {
 }
 
 
-/* ==========================================================
-   CONTENT / HEADINGS
-========================================================== */
+/* =========================================================
+   SCROLLING CONTENT
+========================================================= */
 
 .inner-cont {
   overflow: hidden;
   overflow-y: auto;
 
-  height:
-    calc(100% - 50px);
+  height: calc(100% - 50px);
+  width: 100%;
 
-  width:
-    100%;
+  padding: 10px 0;
 
-  padding:
-    10px 0;
-
-  scrollbar-width:
-    thin;
+  scrollbar-width: thin;
 
   scrollbar-color:
     var(--pink-dark)
@@ -442,8 +399,7 @@ body.spread-4 .p-middle-3 {
 }
 
 .inner-cont::-webkit-scrollbar {
-  width:
-    5px;
+  width: 5px;
 }
 
 .inner-cont::-webkit-scrollbar-thumb {
@@ -451,10 +407,14 @@ body.spread-4 .p-middle-3 {
     var(--pink-dark);
 }
 
+
+/* =========================================================
+   PAGE TITLES
+========================================================= */
+
 .front h3,
 .back h3 {
-  margin:
-    0;
+  margin: 0;
 
   padding:
     10px 5px 5px;
@@ -478,6 +438,9 @@ body.spread-4 .p-middle-3 {
   font-size:
     30px;
 
+  position:
+    relative;
+
   width:
     100%;
 
@@ -493,29 +456,33 @@ body.spread-4 .p-middle-3 {
 
 .front h4,
 .back h4 {
+  padding:
+    10px 5px 5px;
+
   font-family:
     "Special Elite",
     cursive;
 
   font-weight:
     100;
+
+  line-height:
+    1;
+
+  font-size:
+    20px;
 }
 
 
-/* ==========================================================
+/* =========================================================
    COVER
-   Positions taken from the supplied CSS.
-========================================================== */
+   Positions follow the original CSS.
+========================================================= */
 
 .p-first img {
-  width:
-    100%;
-
-  height:
-    100%;
-
-  object-fit:
-    cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .p-first .film-strip-wrap {
@@ -742,6 +709,9 @@ body.spread-4 .p-middle-3 {
   position:
     absolute;
 
+  width:
+    auto;
+
   left:
     20%;
 
@@ -758,6 +728,9 @@ body.spread-4 .p-middle-3 {
 .p-first .front-strip-2 {
   position:
     absolute;
+
+  width:
+    auto;
 
   left:
     30%;
@@ -926,9 +899,9 @@ body.spread-4 .p-middle-3 {
 }
 
 
-/* ==========================================================
+/* =========================================================
    FILM STRIP
-========================================================== */
+========================================================= */
 
 .film-strip-wrap {
   border:
@@ -976,6 +949,9 @@ body.spread-4 .p-middle-3 {
 
   grid-template-rows:
     repeat(4, 1fr);
+
+  min-height:
+    0;
 }
 
 .film-strip-wrap .film-strip-side {
@@ -1027,20 +1003,20 @@ body.spread-4 .p-middle-3 {
 }
 
 
-/* ==========================================================
+/* =========================================================
    INDEX
-========================================================== */
+========================================================= */
 
 .index-wrap {
+  position:
+    relative;
+
   color:
     var(--ink);
 
   font-family:
     "Cutive Mono",
     monospace;
-
-  position:
-    relative;
 }
 
 .index-intro {
@@ -1054,18 +1030,21 @@ body.spread-4 .p-middle-3 {
     12px;
 
   min-height:
-    130px;
+    135px;
+
+  margin-bottom:
+    12px;
 }
 
 .index-sticker {
   width:
-    120px;
+    125px;
 
   height:
-    120px;
+    125px;
 
   flex:
-    0 0 120px;
+    0 0 125px;
 }
 
 .index-sticker img {
@@ -1081,7 +1060,7 @@ body.spread-4 .p-middle-3 {
 
 .index-intro p {
   margin:
-    0 0 10px;
+    0 0 11px;
 
   font-size:
     10px;
@@ -1113,7 +1092,7 @@ body.spread-4 .p-middle-3 {
     column;
 
   gap:
-    5px;
+    6px;
 }
 
 .index-entry {
@@ -1143,7 +1122,7 @@ body.spread-4 .p-middle-3 {
 
   border-bottom:
     1px solid
-    rgba(198,153,165,.62);
+    rgba(198,153,165,.60);
 
   font-family:
     "Special Elite",
@@ -1162,7 +1141,7 @@ body.spread-4 .p-middle-3 {
     8px;
 }
 
-.index-entry .index-number {
+.index-number {
   color:
     var(--pink-dark);
 
@@ -1176,7 +1155,7 @@ body.spread-4 .p-middle-3 {
 
 .index-entry strong {
   font-size:
-    12px;
+    13px;
 
   font-weight:
     400;
@@ -1214,7 +1193,7 @@ body.spread-4 .p-middle-3 {
     14px;
 
   padding:
-    9px;
+    10px;
 
   border:
     1px dashed
@@ -1236,7 +1215,7 @@ body.spread-4 .p-middle-3 {
     cursive;
 
   font-size:
-    9px;
+    10px;
 }
 
 .index-note p {
@@ -1244,16 +1223,36 @@ body.spread-4 .p-middle-3 {
     6px 0 0;
 
   font-size:
-    8px;
+    9px;
 
   line-height:
     1.4;
 }
 
+.index-sticker-small {
+  position:
+    absolute;
 
-/* ==========================================================
+  right:
+    2px;
+
+  bottom:
+    -2px;
+
+  width:
+    65px !important;
+
+  height:
+    65px !important;
+
+  object-fit:
+    contain !important;
+}
+
+
+/* =========================================================
    SOCIALS
-========================================================== */
+========================================================= */
 
 .socials-list {
   display:
@@ -1288,6 +1287,9 @@ body.spread-4 .p-middle-3 {
 
   background:
     rgba(173,128,154,.15);
+
+  transition:
+    background .3s ease;
 }
 
 .social-link:hover {
@@ -1314,6 +1316,9 @@ body.spread-4 .p-middle-3 {
   justify-content:
     center;
 
+  flex-shrink:
+    0;
+
   color:
     var(--pink-dark);
 
@@ -1321,9 +1326,6 @@ body.spread-4 .p-middle-3 {
     inset
     0 0 0 3px
     var(--pink-dark);
-
-  flex-shrink:
-    0;
 }
 
 .social-platform {
@@ -1336,6 +1338,9 @@ body.spread-4 .p-middle-3 {
 
   font-size:
     14px;
+
+  line-height:
+    1;
 
   display:
     block;
@@ -1370,14 +1375,12 @@ body.spread-4 .p-middle-3 {
     var(--pink-mid);
 }
 
-
-/* ==========================================================
-   POLAROIDS
-========================================================== */
-
 .polaroid-gallery-wrap {
   display:
     flex;
+
+  flex-direction:
+    row;
 
   flex-wrap:
     wrap;
@@ -1385,6 +1388,11 @@ body.spread-4 .p-middle-3 {
   justify-content:
     center;
 }
+
+
+/* =========================================================
+   POLAROID BASE
+========================================================= */
 
 .polaroid {
   width:
@@ -1411,8 +1419,7 @@ body.spread-4 .p-middle-3 {
     var(--ink);
 
   transition:
-    transform .35s ease,
-    box-shadow .35s ease;
+    all .5s ease;
 }
 
 .polaroid img {
@@ -1445,23 +1452,10 @@ body.spread-4 .p-middle-3 {
     5px 0 0;
 }
 
-.polaroid:hover {
-  transform:
-    translateY(-4px)
-    rotate(-2deg);
 
-  box-shadow:
-    4px 4px 8px
-    rgba(49,30,15,.24);
-
-  z-index:
-    2;
-}
-
-
-/* ==========================================================
+/* =========================================================
    SERIES
-========================================================== */
+========================================================= */
 
 .series-wrap {
   display:
@@ -1509,16 +1503,79 @@ body.spread-4 .p-middle-3 {
 
   transform-style:
     preserve-3d;
+
+  transition:
+    transform .7s ease;
+
+  animation:
+    postcard-unflip
+    .5s ease-in-out
+    forwards;
 }
 
-.flip-card:hover {
-  transform:
-    scale(1.02);
+.postcard-wrap:hover .flip-card {
+  animation:
+    postcard-flip
+    .5s
+    ease
+    forwards;
 }
 
 .flip-card.keyboard-flipped {
   transform:
     rotateY(180deg);
+}
+
+@keyframes postcard-flip {
+  0% {
+    transform:
+      rotateY(0deg)
+      scale(1);
+  }
+
+  30% {
+    transform:
+      rotateY(0deg)
+      scale(1.05);
+  }
+
+  70% {
+    transform:
+      rotateY(180deg)
+      scale(1.05);
+  }
+
+  100% {
+    transform:
+      rotateY(180deg)
+      scale(1);
+  }
+}
+
+@keyframes postcard-unflip {
+  0% {
+    transform:
+      rotateY(180deg)
+      scale(1);
+  }
+
+  30% {
+    transform:
+      rotateY(180deg)
+      scale(1.05);
+  }
+
+  70% {
+    transform:
+      rotateY(0deg)
+      scale(1.05);
+  }
+
+  100% {
+    transform:
+      rotateY(0deg)
+      scale(1);
+  }
 }
 
 .face {
@@ -1597,14 +1654,11 @@ body.spread-4 .p-middle-3 {
   color:
     rgba(255,255,255,.55);
 
-  margin:
-    0 0 8px;
+  margin-bottom:
+    8px;
 }
 
 .face-front h1 {
-  margin:
-    0;
-
   font-family:
     "Special Elite",
     cursive;
@@ -1617,6 +1671,12 @@ body.spread-4 .p-middle-3 {
 
   color:
     #fff;
+
+  line-height:
+    1.15;
+
+  margin:
+    0;
 }
 
 .face-back {
@@ -1628,6 +1688,9 @@ body.spread-4 .p-middle-3 {
 
   background:
     #faf7f0;
+
+  text-decoration:
+    none;
 }
 
 .pc-left {
@@ -1695,6 +1758,9 @@ body.spread-4 .p-middle-3 {
   font-size:
     9px;
 
+  text-transform:
+    uppercase;
+
   letter-spacing:
     1px;
 
@@ -1736,6 +1802,9 @@ body.spread-4 .p-middle-3 {
 
   justify-content:
     flex-end;
+
+  align-items:
+    flex-start;
 
   gap:
     10px;
@@ -1799,11 +1868,26 @@ body.spread-4 .p-middle-3 {
   transform:
     rotate(-12deg);
 
+  opacity:
+    .55;
+
+  margin-top:
+    4px;
+}
+
+.postmark span {
   color:
     #916e86;
 
+  font-family:
+    "Alegreya Sans",
+    sans-serif;
+
   font-size:
     8px;
+
+  line-height:
+    1.5;
 
   text-align:
     center;
@@ -1844,9 +1928,9 @@ body.spread-4 .p-middle-3 {
 }
 
 
-/* ==========================================================
+/* =========================================================
    FRIENDS
-========================================================== */
+========================================================= */
 
 .friends-wrap {
   display:
@@ -1859,151 +1943,151 @@ body.spread-4 .p-middle-3 {
     center;
 }
 
-.friends-wrap > a:nth-child(4n+1) {
+.friends-wrap a:nth-child(4n+1) {
   transform:
     rotate(3deg);
 }
 
-.friends-wrap > a:nth-child(4n+2) {
+.friends-wrap a:nth-child(4n+2) {
   transform:
     rotate(-1deg);
 }
 
-.friends-wrap > a:nth-child(4n+3) {
+.friends-wrap a:nth-child(4n+3) {
   transform:
     rotate(2deg);
 }
 
-.friends-wrap > a:nth-child(4n) {
+.friends-wrap a:nth-child(4n) {
   transform:
     rotate(-1deg);
 }
 
+.friends-wrap a:hover .polaroid {
+  transform:
+    rotate(-3deg);
 
-/* ==========================================================
+  z-index:
+    1;
+
+  box-shadow:
+    5px 5px 5px
+    var(--ink-deep);
+}
+
+
+/* =========================================================
    DREAMLAND RESIDENTS
-========================================================== */
+   Same polaroid system, plus editable information panel.
+========================================================= */
 
-.resident-grid {
+.resident-wrap {
   display:
     grid;
 
   grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+    1fr 1fr;
 
   gap:
-    12px;
+    14px;
 
-  justify-items:
-    stretch;
+  padding:
+    6px 0;
 }
 
 .resident-card {
   display:
-    flex;
+    grid;
 
-  align-items:
-    center;
+  grid-template-columns:
+    120px
+    1fr;
 
   gap:
-    10px;
+    12px;
 
-  min-width:
-    0;
+  align-items:
+    start;
 
   padding:
-    6px;
+    7px;
 
   border:
     1px solid
     var(--pink-dark);
 
   background:
-    rgba(255,255,255,.20);
+    rgba(255,255,255,.22);
 
-  min-height:
-    145px;
+  box-shadow:
+    1px 2px 5px
+    rgba(77,49,58,.12);
 }
 
 .resident-polaroid {
-  flex:
-    0 0 78px;
+  display:
+    block;
 
+  text-decoration:
+    none;
+}
+
+.resident-card .polaroid {
   width:
-    78px;
+    120px;
 
   height:
-    118px;
+    192px;
 
   padding:
-    6px;
+    9px;
 
   margin:
     0;
 }
 
-.resident-image {
-  width:
-    100%;
-
-  height:
-    89px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  background:
-    rgba(255,255,255,.50);
-
-  border:
-    2px solid
-    var(--ink);
-
-  color:
-    var(--pink-dark);
-
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    8px;
-
-  letter-spacing:
-    1px;
+.resident-card .polaroid img {
+  aspect-ratio:
+    23 / 31;
 }
 
-.resident-polaroid p {
-  margin:
-    5px 0 0;
-
+.resident-card .polaroid p {
   font-size:
-    8px;
+    11px;
 
-  line-height:
-    1.1;
-
-  white-space:
-    nowrap;
+  margin-top:
+    5px;
 }
 
 .resident-info {
   min-width:
     0;
 
-  flex:
-    1;
+  padding:
+    4px 2px;
+}
+
+.resident-number {
+  display:
+    block;
+
+  color:
+    var(--pink-dark);
+
+  font-family:
+    "Cutive Mono",
+    monospace;
+
+  font-size:
+    8px;
+
+  letter-spacing:
+    .7px;
 }
 
 .resident-info h4 {
   margin:
-    0 0 5px;
+    4px 0 4px;
 
   padding:
     0;
@@ -2019,10 +2103,31 @@ body.spread-4 .p-middle-3 {
     cursive;
 
   font-size:
-    14px;
+    17px;
 
   line-height:
     1.1;
+}
+
+.resident-role {
+  display:
+    block;
+
+  margin-bottom:
+    8px;
+
+  color:
+    var(--pink-dark);
+
+  font-family:
+    "Alegreya Sans",
+    sans-serif;
+
+  font-size:
+    8px;
+
+  letter-spacing:
+    .8px;
 }
 
 .resident-info p {
@@ -2037,513 +2142,52 @@ body.spread-4 .p-middle-3 {
     monospace;
 
   font-size:
-    8px;
-
-  line-height:
-    1.35;
-}
-
-
-/* ==========================================================
-   MAPS PAGE
-========================================================== */
-
-.maps-wrap {
-  color:
-    var(--ink);
-}
-
-.maps-intro {
-  margin:
-    0 0 12px;
-
-  padding:
-    9px 10px;
-
-  border:
-    1px dashed
-    var(--pink-dark);
-
-  background:
-    rgba(219,180,196,.12);
-}
-
-.maps-intro p {
-  margin:
-    0;
-
-  font-family:
-    "Cutive Mono",
-    monospace;
-
-  font-size:
     9px;
 
   line-height:
-    1.4;
+    1.38;
 }
 
-.map-card {
+.resident-tags {
   display:
     flex;
 
-  align-items:
-    center;
+  flex-wrap:
+    wrap;
 
   gap:
-    13px;
+    4px;
 
-  width:
-    100%;
-
-  margin:
-    0 0 12px;
-
-  padding:
-    8px;
-
-  border:
-    1px solid
-    var(--pink-dark);
-
-  background:
-    rgba(255,255,255,.25);
-
-  color:
-    var(--ink);
-
-  text-align:
-    left;
-
-  cursor:
-    pointer;
-}
-
-.map-card:hover {
-  background:
-    rgba(219,180,196,.28);
-}
-
-.map-preview {
-  flex:
-    0 0 120px;
-
-  width:
-    120px;
-
-  height:
-    82px;
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  border:
-    1px dashed
-    var(--pink-dark);
-
-  background:
-    rgba(240,221,232,.75);
-
-  color:
-    var(--pink-dark);
-
-  font-family:
-    "Special Elite",
-    cursive;
-}
-
-.map-preview span {
-  font-size:
-    13px;
-}
-
-.map-preview small {
   margin-top:
-    5px;
-
-  font-size:
-    7px;
-
-  letter-spacing:
-    1px;
+    9px;
 }
 
-.map-card strong {
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    14px;
-
-  font-weight:
-    400;
-}
-
-
-/* ==========================================================
-   MAP FULLSCREEN VIEWER
-========================================================== */
-
-.map-viewer {
-  position:
-    fixed;
-
-  inset:
-    0;
-
-  display:
-    none;
-
-  flex-direction:
-    column;
-
-  background:
-    rgba(25,17,21,.96);
-
-  z-index:
-    10000;
-}
-
-.map-viewer.open {
-  display:
-    flex;
-}
-
-.map-toolbar {
-  flex:
-    0 0 54px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
+.resident-tags span {
   padding:
-    0 12px;
-
-  background:
-    var(--pink-top);
-
-  border-bottom:
-    1px solid
-    white;
-
-  color:
-    white;
-}
-
-.map-toolbar strong {
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    14px;
-
-  font-weight:
-    400;
-}
-
-.map-toolbar-actions {
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    6px;
-}
-
-.map-toolbar-actions button {
-  min-width:
-    34px;
-
-  height:
-    30px;
-
-  padding:
-    0 9px;
+    3px 5px;
 
   border:
     1px solid
-    white;
-
-  background:
     var(--pink-mid);
 
   color:
-    white;
-
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    10px;
-}
-
-.map-toolbar-actions button:hover {
-  background:
     var(--pink-dark);
-}
 
-.map-viewport {
-  position:
-    relative;
-
-  flex:
-    1;
-
-  overflow:
-    hidden;
-
-  touch-action:
-    none;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-}
-
-.map-stage {
-  position:
-    absolute;
-
-  left:
-    50%;
-
-  top:
-    50%;
-
-  transform:
-    translate(-50%, -50%)
-    scale(1);
-
-  transform-origin:
-    center center;
-
-  cursor:
-    grab;
-
-  will-change:
-    transform;
-}
-
-.map-stage.dragging {
-  cursor:
-    grabbing;
-}
-
-.map-stage img {
-  max-width:
-    none;
-
-  width:
-    auto;
-
-  height:
-    auto;
-
-  max-height:
-    none;
-
-  user-select:
-    none;
-
-  -webkit-user-drag:
-    none;
-
-  display:
-    block;
-}
-
-.map-viewer-placeholder {
-  color:
-    rgba(255,255,255,.75);
+  background:
+    rgba(255,255,255,.36);
 
   font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    14px;
-
-  letter-spacing:
-    1px;
-
-  text-align:
-    center;
-}
-
-.map-viewer.has-image .map-viewer-placeholder {
-  display:
-    none;
-}
-
-.map-viewer-hint {
-  flex:
-    0 0 31px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  color:
-    rgba(255,255,255,.65);
-
-  font-family:
-    "Alegreya Sans",
+    "Montserrat",
     sans-serif;
 
   font-size:
-    8px;
-
-  letter-spacing:
-    1px;
+    7px;
 }
 
 
-/* ==========================================================
-   CLOSING PAGE
-========================================================== */
-
-.closing-page {
-  position:
-    absolute;
-
-  inset:
-    0;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  flex-direction:
-    column;
-
-  text-align:
-    center;
-}
-
-.closing-symbol {
-  width:
-    60px;
-
-  height:
-    60px;
-
-  display:
-    grid;
-
-  place-items:
-    center;
-
-  border:
-    1px solid
-    var(--pink-dark);
-
-  border-radius:
-    50%;
-
-  color:
-    var(--pink-dark);
-
-  margin-bottom:
-    15px;
-}
-
-.closing-page h3 {
-  margin:
-    0;
-
-  background:
-    transparent;
-
-  color:
-    var(--ink);
-
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    24px;
-}
-
-.closing-page p {
-  max-width:
-    260px;
-
-  margin:
-    8px 0;
-
-  font-family:
-    "Cutive Mono",
-    monospace;
-
-  font-size:
-    10px;
-
-  line-height:
-    1.5;
-}
-
-.return-index {
-  margin-top:
-    10px;
-
-  padding:
-    8px 10px;
-
-  border:
-    1px solid
-    var(--pink-dark);
-
-  text-decoration:
-    none;
-
-  font-family:
-    "Special Elite",
-    cursive;
-
-  font-size:
-    10px;
-}
-
-
-/* ==========================================================
-   NAV
-========================================================== */
+/* =========================================================
+   PAGE NAV
+========================================================= */
 
 .page-nav {
   height:
@@ -2562,63 +2206,60 @@ body.spread-4 .p-middle-3 {
     center;
 
   gap:
-    18px;
+    13px;
 }
 
-.nav-button {
-  border:
-    0;
+.page-nav a,
+.page-current {
+  display:
+    inline-flex;
 
-  background:
-    transparent;
+  align-items:
+    center;
 
-  color:
-    var(--ink);
+  justify-content:
+    center;
+
+  height:
+    25px;
+
+  padding:
+    0 5px;
 
   font-family:
     "Special Elite",
     cursive;
 
   font-size:
-    11px;
+    10px;
 
-  letter-spacing:
-    1px;
+  text-decoration:
+    none;
 
-  cursor:
-    pointer;
-
-  transition:
-    color .25s ease,
-    transform .25s ease;
+  border-radius:
+    5px;
 }
 
-.nav-button:hover:not(:disabled) {
+.page-nav a {
   color:
     var(--pink-dark);
 
-  transform:
-    translateY(-2px);
+  background:
+    var(--pink-paper);
 }
 
-.nav-button:disabled {
-  opacity:
-    .25;
+.page-nav a:hover {
+  color:
+    var(--ink-deep);
 
-  cursor:
-    default;
+  border:
+    1px solid
+    var(--ink-deep);
 }
 
 .page-current {
   color:
     var(--pink-dark);
-
-  font-family:
-    "Cutive Mono",
-    monospace;
-
-  font-size:
-    10px;
 }
 
 .journal-hint {
@@ -2639,30 +2280,48 @@ body.spread-4 .p-middle-3 {
     8px;
 
   letter-spacing:
-    1.3px;
+    1.4px;
 }
 
 
-/* ==========================================================
-   MOBILE
-========================================================== */
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .resident-wrap {
+    grid-template-columns:
+      1fr;
+  }
+
+  .resident-card {
+    grid-template-columns:
+      105px
+      1fr;
+  }
+
+  .resident-card .polaroid {
+    width:
+      105px;
+
+    height:
+      175px;
+  }
+}
+
 
 @media (max-width: 768px) {
 
-  main {
-    padding-top:
-      76px;
-  }
+  /*
+     Same responsive movement used by the supplied CSS:
+     the book becomes two pages wide so the user can move
+     between the left and right halves.
+  */
 
   .book {
-    height:
-      calc(100vh - 135px);
-
-    min-height:
-      610px;
-
-    max-height:
-      none;
+    transition:
+      all 1s ease;
 
     width:
       calc(200vw - 40px);
@@ -2672,34 +2331,48 @@ body.spread-4 .p-middle-3 {
 
     transform:
       translateX(0);
-
-    transition:
-      transform 1s ease;
   }
 
-  /*
-    Each spread is one half-book movement.
-    Turning is still handled by the exact sheet model.
-  */
-
-  body.spread-1 .book {
+  body:has(#page-1:target) .book,
+  body:has(#page-2:target) .book {
     transform:
       translateX(0);
   }
 
-  body.spread-2 .book {
+  body:has(#page-3:target) .book,
+  body:has(#page-4:target) .book {
     transform:
       translateX(-25%);
   }
 
-  body.spread-3 .book {
+  body:has(#page-5:target) .book,
+  body:has(#page-6:target) .book {
     transform:
       translateX(-50%);
   }
 
-  body.spread-4 .book {
+  /*
+     Sheets still turn using the same left-center model.
+  */
+
+  body:has(#page-3:target) .p-middle-1,
+  body:has(#page-4:target) .p-middle-1,
+  body:has(#page-5:target) .p-middle-1,
+  body:has(#page-6:target) .p-middle-1 {
     transform:
-      translateX(-75%);
+      rotateY(-180deg);
+
+    z-index:
+      2;
+  }
+
+  body:has(#page-5:target) .p-middle-2,
+  body:has(#page-6:target) .p-middle-2 {
+    transform:
+      rotateY(-180deg);
+
+    z-index:
+      3;
   }
 
   .site-header-right {
@@ -2712,25 +2385,25 @@ body.spread-4 .p-middle-3 {
       0 14px;
   }
 
-  .resident-grid {
+  .page-nav {
+    gap:
+      9px;
+  }
+
+  .resident-wrap {
     grid-template-columns:
       1fr;
   }
 
-  .resident-card {
-    min-height:
-      125px;
-  }
-
-  .map-preview {
-    flex-basis:
-      95px;
-
+  .friends-wrap .polaroid {
     width:
-      95px;
+      145px;
 
     height:
-      68px;
+      235px;
+
+    padding:
+      11px;
   }
 }
 
@@ -2745,18 +2418,18 @@ body.spread-4 .p-middle-3 {
 
   .index-intro {
     min-height:
-      105px;
+      110px;
   }
 
   .index-sticker {
     width:
-      88px;
+      95px;
 
     height:
-      88px;
+      95px;
 
     flex-basis:
-      88px;
+      95px;
   }
 
   .index-intro p {
@@ -2764,39 +2437,60 @@ body.spread-4 .p-middle-3 {
       8px;
   }
 
-  .postcard-wrap {
-    width:
-      calc(100% - 20px);
-  }
-
-  .pc-body {
+  .index-entry strong {
     font-size:
-      9px;
-  }
+      11px;
+    }
 
-  .journal-hint {
-    display:
-      none;
-  }
+    .postcard-wrap {
+      width:
+        calc(100% - 20px);
+    }
 
-  .p-first [class*=front-strip] {
-    display:
-      none;
-  }
+    .pc-body {
+      font-size:
+        9px;
+    }
 
-  .map-toolbar-actions button {
-    min-width:
-      29px;
+    .resident-card {
+      grid-template-columns:
+        90px
+        1fr;
+    }
 
-    padding:
-      0 6px;
-  }
+    .resident-card .polaroid {
+      width:
+        90px;
+
+      height:
+        150px;
+    }
+
+    .resident-info h4 {
+      font-size:
+        14px;
+    }
+
+    .resident-info p {
+      font-size:
+        8px;
+    }
+
+    .journal-hint {
+      display:
+        none;
+    }
+
+    .p-first [class*=front-strip] {
+      display:
+        none;
+    }
 }
 
 
-/* ==========================================================
+/* =========================================================
    REDUCED MOTION
-========================================================== */
+========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
 

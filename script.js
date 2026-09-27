@@ -1,225 +1,178 @@
 /*
-  DREAMLAND JOURNAL CONTROLLER
+  DREAMLAND NAVIGATION
 
-  The book now has exactly FOUR spreads:
+  IMPORTANT:
+  The actual page turn is CSS :target, exactly matching the
+  mechanism from the supplied Janitor AI CSS.
 
-    1  = COVER / INDEX
-    2  = SOCIALS / SERIES
-    3  = FRIENDS / DREAMLAND RESIDENTS
-    4  = MAPS / CLOSING
-
-  The page-turn itself is CSS. This script changes the spread
-  class and handles navigation reliably.
+  JavaScript does NOT rotate the book. It only:
+    - keeps the visible page number in sync
+    - makes Previous / Next move by one spread
+    - supports arrow keys
+    - preserves hash URLs
+    - makes postcard flips keyboard accessible
 */
 
 (() => {
   "use strict";
 
-
-  const TOTAL_SPREADS = 4;
-
-  let currentSpread = 1;
-
-
   const pageNumber =
     document.getElementById("page-number");
 
-  const previousButton =
-    document.getElementById("previousPage");
+  const previous =
+    document.querySelector(".nav-prev");
 
-  const nextButton =
-    document.getElementById("nextPage");
+  const next =
+    document.querySelector(".nav-next");
+
+  /*
+     A physical spread starts on odd-numbered pages:
+       1/2
+       3/4
+       5/6
+  */
+  const SPREADS = [1, 3, 5];
 
 
-  /* ==========================================================
-     SPREAD <-> HASH
-  ========================================================== */
-
-  function spreadFromHash() {
-
-    const hash =
-      window.location.hash;
-
-    if (!hash) {
-      return 1;
-    }
+  function getPage() {
 
     const match =
-      hash.match(/^#page-(\d+)$/);
+      window.location.hash.match(/^#page-(\d+)$/);
 
     if (!match) {
       return 1;
     }
 
-    const spread =
+    const value =
       Number(match[1]);
 
-    if (!Number.isFinite(spread)) {
+    if (!Number.isFinite(value)) {
       return 1;
     }
 
-    /*
-      The site has four OPEN-BOOK SPREADS.
-      The hash identifies the spread directly:
-
-        #page-1 = Cover / Index
-        #page-2 = Socials / Series
-        #page-3 = Friends / Dreamland Residents
-        #page-4 = Maps / Closing
-    */
     return Math.min(
-      TOTAL_SPREADS,
-      Math.max(1, spread)
+      6,
+      Math.max(1, value)
     );
   }
 
 
-  function hashForSpread(spread) {
+  function getSpreadStart(page) {
 
-    return `#page-${spread}`;
+    if (page <= 2) {
+      return 1;
+    }
 
+    if (page <= 4) {
+      return 3;
+    }
+
+    return 5;
   }
 
 
-  /* ==========================================================
-     RENDER
-  ========================================================== */
+  function setPage(page) {
 
-  function renderSpread(spread) {
-
-    currentSpread =
+    const target =
       Math.min(
-        TOTAL_SPREADS,
-        Math.max(1, spread)
+        6,
+        Math.max(1, page)
       );
 
-    document.body.classList.remove(
-      "spread-1",
-      "spread-2",
-      "spread-3",
-      "spread-4"
+    window.location.hash =
+      `page-${target}`;
+  }
+
+
+  function nextSpread() {
+
+    const current =
+      getSpreadStart(getPage());
+
+    const position =
+      SPREADS.indexOf(current);
+
+    if (position === -1) {
+      setPage(1);
+      return;
+    }
+
+    if (position < SPREADS.length - 1) {
+      setPage(
+        SPREADS[position + 1]
+      );
+    }
+
+  }
+
+
+  function previousSpread() {
+
+    const current =
+      getSpreadStart(getPage());
+
+    const position =
+      SPREADS.indexOf(current);
+
+    if (position <= 0) {
+      setPage(1);
+      return;
+    }
+
+    setPage(
+      SPREADS[position - 1]
     );
 
-    document.body.classList.add(
-      `spread-${currentSpread}`
-    );
+  }
 
 
+  function updateControls() {
+
+    const page =
+      getPage();
+
+    const spread =
+      getSpreadStart(page);
+
+    /*
+       Display the left-hand page of the visible spread.
+    */
     if (pageNumber) {
 
       pageNumber.textContent =
-        String(currentSpread)
+        String(spread)
           .padStart(2, "0");
 
     }
 
 
-    previousButton.disabled =
-      currentSpread === 1;
+    if (previous) {
 
-    nextButton.disabled =
-      currentSpread === TOTAL_SPREADS;
+      previous.href =
+        spread === 1
+          ? "#page-1"
+          : `#page-${spread - 2}`;
 
-
-    previousButton.setAttribute(
-      "aria-label",
-      currentSpread === 1
-        ? "Already at first spread"
-        : `Go to spread ${currentSpread - 1}`
-    );
+    }
 
 
-    nextButton.setAttribute(
-      "aria-label",
-      currentSpread === TOTAL_SPREADS
-        ? "Already at final spread"
-        : `Go to spread ${currentSpread + 1}`
-    );
+    if (next) {
 
-  }
-
-
-  function goToSpread(spread) {
-
-    const target =
-      Math.min(
-        TOTAL_SPREADS,
-        Math.max(1, spread)
-      );
-
-    const hash =
-      hashForSpread(target);
-
-    /*
-      Set the hash so the Index and direct links all use
-      exactly the same navigation state.
-    */
-    if (window.location.hash !== hash) {
-
-      window.location.hash =
-        hash;
-
-    } else {
-
-      renderSpread(target);
+      next.href =
+        spread === 5
+          ? "#page-5"
+          : `#page-${spread + 2}`;
 
     }
 
   }
 
-
-  /* ==========================================================
-     NEXT / PREVIOUS
-  ========================================================== */
-
-  nextButton.addEventListener(
-    "click",
-    () => {
-
-      if (currentSpread < TOTAL_SPREADS) {
-        goToSpread(
-          currentSpread + 1
-        );
-      }
-
-    }
-  );
-
-
-  previousButton.addEventListener(
-    "click",
-    () => {
-
-      if (currentSpread > 1) {
-        goToSpread(
-          currentSpread - 1
-        );
-      }
-
-    }
-  );
-
-
-  /* ==========================================================
-     HASH CHANGES
-  ========================================================== */
 
   window.addEventListener(
     "hashchange",
-    () => {
-
-      const target =
-        spreadFromHash();
-
-      renderSpread(target);
-
-    }
+    updateControls
   );
 
-
-  /* ==========================================================
-     KEYBOARD
-  ========================================================== */
 
   document.addEventListener(
     "keydown",
@@ -236,62 +189,27 @@
         return;
       }
 
-      /*
-        Do not treat Escape as page navigation.
-        It is reserved for the map viewer.
-      */
-
-      if (
-        event.key === "ArrowRight" ||
-        event.key === "PageDown"
-      ) {
-
+      if (event.key === "ArrowRight") {
         event.preventDefault();
-
-        if (
-          currentSpread <
-          TOTAL_SPREADS
-        ) {
-
-          goToSpread(
-            currentSpread + 1
-          );
-
-        }
-
+        nextSpread();
       }
 
-
-      if (
-        event.key === "ArrowLeft" ||
-        event.key === "PageUp"
-      ) {
-
+      if (event.key === "ArrowLeft") {
         event.preventDefault();
-
-        if (
-          currentSpread > 1
-        ) {
-
-          goToSpread(
-            currentSpread - 1
-          );
-
-        }
-
+        previousSpread();
       }
 
     }
   );
 
 
-  /* ==========================================================
-     EDGE CLICK
-  ========================================================== */
-
+  /*
+     The physical right edge advances.
+     The physical left edge moves back.
+     Content itself is left alone.
+  */
   const book =
     document.querySelector(".book");
-
 
   if (book) {
 
@@ -299,54 +217,30 @@
       "click",
       (event) => {
 
-        /*
-          Do not hijack links, postcards, map buttons,
-          the actual page content, or the navigation controls.
-        */
-
         if (
           event.target.closest("a") ||
-          event.target.closest(".flip-card") ||
-          event.target.closest("button")
+          event.target.closest(".flip-card")
         ) {
           return;
         }
-
 
         const rect =
           book.getBoundingClientRect();
 
-        const x =
+        const relativeX =
           event.clientX -
           rect.left;
 
         const ratio =
-          x / rect.width;
+          relativeX /
+          rect.width;
 
-
-        if (
-          ratio >= .94 &&
-          currentSpread <
-          TOTAL_SPREADS
-        ) {
-
-          goToSpread(
-            currentSpread + 1
-          );
-
-          return;
+        if (ratio >= .92) {
+          nextSpread();
         }
 
-
-        if (
-          ratio <= .06 &&
-          currentSpread > 1
-        ) {
-
-          goToSpread(
-            currentSpread - 1
-          );
-
+        if (ratio <= .08) {
+          previousSpread();
         }
 
       }
@@ -355,10 +249,9 @@
   }
 
 
-  /* ==========================================================
-     POSTCARD ACCESSIBILITY
-  ========================================================== */
-
+  /*
+     Keep postcards separate from book navigation.
+  */
   document
     .querySelectorAll(".flip-card")
     .forEach((card) => {
@@ -375,6 +268,7 @@
           }
 
           event.preventDefault();
+          event.stopPropagation();
 
           card.classList.toggle(
             "keyboard-flipped"
@@ -386,445 +280,6 @@
     });
 
 
-  /* ==========================================================
-     MAP FULLSCREEN VIEWER
-  ========================================================== */
-
-  const mapViewer =
-    document.getElementById("mapViewer");
-
-  const mapViewerTitle =
-    document.getElementById("mapViewerTitle");
-
-  const mapViewport =
-    document.getElementById("mapViewport");
-
-  const mapStage =
-    document.getElementById("mapStage");
-
-  const mapImage =
-    document.getElementById("mapViewerImage");
-
-  const mapPlaceholder =
-    document.getElementById(
-      "mapViewerPlaceholder"
-    );
-
-  const mapClose =
-    document.getElementById("mapClose");
-
-  const mapReset =
-    document.getElementById("mapReset");
-
-  const mapZoomIn =
-    document.getElementById("mapZoomIn");
-
-  const mapZoomOut =
-    document.getElementById("mapZoomOut");
-
-
-  let mapScale = 1;
-  let mapX = 0;
-  let mapY = 0;
-
-  let dragging = false;
-
-  let dragStartX = 0;
-  let dragStartY = 0;
-
-  let originX = 0;
-  let originY = 0;
-
-
-  function applyMapTransform() {
-
-    mapStage.style.transform =
-      `translate(calc(-50% + ${mapX}px), calc(-50% + ${mapY}px)) scale(${mapScale})`;
-
-  }
-
-
-  function resetMap() {
-
-    mapScale = 1;
-    mapX = 0;
-    mapY = 0;
-
-    applyMapTransform();
-
-  }
-
-
-  function setMapScale(nextScale) {
-
-    mapScale =
-      Math.min(
-        8,
-        Math.max(
-          .25,
-          nextScale
-        )
-      );
-
-    applyMapTransform();
-
-  }
-
-
-  function openMap(card) {
-
-    const src =
-      card.dataset.mapSrc?.trim() ||
-      "";
-
-    const title =
-      card.dataset.mapTitle?.trim() ||
-      "MAP";
-
-
-    mapViewerTitle.textContent =
-      title;
-
-
-    if (src) {
-
-      mapImage.src =
-        src;
-
-      mapImage.alt =
-        title;
-
-      mapImage.style.display =
-        "block";
-
-      mapViewer.classList.add(
-        "has-image"
-      );
-
-      /*
-        Wait for dimensions before resetting so large
-        images are shown at a sensible initial scale.
-      */
-      mapImage.onload =
-        () => {
-
-          resetMap();
-
-          const vw =
-            mapViewport.clientWidth;
-
-          const vh =
-            mapViewport.clientHeight;
-
-          const iw =
-            mapImage.naturalWidth;
-
-          const ih =
-            mapImage.naturalHeight;
-
-          if (
-            iw &&
-            ih
-          ) {
-
-            const fit =
-              Math.min(
-                vw / iw,
-                vh / ih,
-                1
-              );
-
-            mapScale =
-              Math.max(
-                .1,
-                fit
-              );
-
-            applyMapTransform();
-
-          }
-
-        };
-
-    } else {
-
-      mapImage.removeAttribute(
-        "src"
-      );
-
-      mapImage.style.display =
-        "none";
-
-      mapViewer.classList.remove(
-        "has-image"
-      );
-
-      resetMap();
-
-    }
-
-
-    mapViewer.classList.add(
-      "open"
-    );
-
-    mapViewer.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-
-    document.body.style.overflow =
-      "hidden";
-
-  }
-
-
-  function closeMap() {
-
-    mapViewer.classList.remove(
-      "open"
-    );
-
-    mapViewer.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-    document.body.style.overflow =
-      "";
-
-    dragging =
-      false;
-
-  }
-
-
-  document
-    .querySelectorAll(".map-card")
-    .forEach((card) => {
-
-      card.addEventListener(
-        "click",
-        () => {
-
-          openMap(card);
-
-        }
-      );
-
-    });
-
-
-  mapClose.addEventListener(
-    "click",
-    closeMap
-  );
-
-
-  mapReset.addEventListener(
-    "click",
-    resetMap
-  );
-
-
-  mapZoomIn.addEventListener(
-    "click",
-    () => {
-
-      setMapScale(
-        mapScale * 1.25
-      );
-
-    }
-  );
-
-
-  mapZoomOut.addEventListener(
-    "click",
-    () => {
-
-      setMapScale(
-        mapScale / 1.25
-      );
-
-    }
-  );
-
-
-  /* wheel zoom */
-  mapViewport.addEventListener(
-    "wheel",
-    (event) => {
-
-      event.preventDefault();
-
-      const direction =
-        event.deltaY < 0
-          ? 1.15
-          : 1 / 1.15;
-
-      setMapScale(
-        mapScale * direction
-      );
-
-    },
-    {
-      passive: false
-    }
-  );
-
-
-  /* drag to pan */
-  mapViewport.addEventListener(
-    "pointerdown",
-    (event) => {
-
-      if (
-        !mapViewer.classList.contains(
-          "has-image"
-        )
-      ) {
-        return;
-      }
-
-      dragging =
-        true;
-
-      mapStage.classList.add(
-        "dragging"
-      );
-
-      mapStage.setPointerCapture?.(
-        event.pointerId
-      );
-
-      dragStartX =
-        event.clientX;
-
-      dragStartY =
-        event.clientY;
-
-      originX =
-        mapX;
-
-      originY =
-        mapY;
-
-    }
-  );
-
-
-  mapViewport.addEventListener(
-    "pointermove",
-    (event) => {
-
-      if (!dragging) {
-        return;
-      }
-
-      mapX =
-        originX +
-        (event.clientX - dragStartX);
-
-      mapY =
-        originY +
-        (event.clientY - dragStartY);
-
-      applyMapTransform();
-
-    }
-  );
-
-
-  function endDrag() {
-
-    dragging =
-      false;
-
-    mapStage.classList.remove(
-      "dragging"
-    );
-
-  }
-
-
-  mapViewport.addEventListener(
-    "pointerup",
-    endDrag
-  );
-
-  mapViewport.addEventListener(
-    "pointercancel",
-    endDrag
-  );
-
-  mapViewport.addEventListener(
-    "pointerleave",
-    () => {
-
-      if (dragging) {
-        endDrag();
-      }
-
-    }
-  );
-
-
-  /* double click zoom */
-  mapViewport.addEventListener(
-    "dblclick",
-    (event) => {
-
-      if (
-        !mapViewer.classList.contains(
-          "has-image"
-        )
-      ) {
-        return;
-      }
-
-      event.preventDefault();
-
-      setMapScale(
-        mapScale < 2
-          ? mapScale * 1.5
-          : 1
-      );
-
-    }
-  );
-
-
-  /* escape closes map viewer */
-  document.addEventListener(
-    "keydown",
-    (event) => {
-
-      if (
-        event.key === "Escape" &&
-        mapViewer.classList.contains(
-          "open"
-        )
-      ) {
-
-        closeMap();
-
-      }
-
-    }
-  );
-
-
-  /* ==========================================================
-     INITIAL STATE
-
-     No hash => first spread.
-     A direct #page-5 or #page-7 link opens the correct spread.
-  ========================================================== */
-
-  renderSpread(
-    spreadFromHash()
-  );
+  updateControls();
 
 })();
