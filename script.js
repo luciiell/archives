@@ -1,1808 +1,1080 @@
 document.addEventListener("DOMContentLoaded", () => {
+    "use strict";
 
-    /* ========================================================
-       DREAMLAND ARCHIVES
-       CONTINUOUS PHYSICAL BOOK SYSTEM
+    /* =====================================================
+       BASIC REFERENCES
+       ===================================================== */
 
-       The original HTML is structured as:
-
-       spread 0:
-           left  = intro
-           right = cover
-
-       spread 1:
-           left  = index left
-           right = index right
-
-       spread 2:
-           left  = characters left
-           right = characters right
-
-       etc.
-
-       JavaScript converts that into physical sheets:
-
-       sheet 0:
-           front = spread 0 right
-           back  = spread 1 left
-
-       sheet 1:
-           front = spread 1 right
-           back = spread 2 left
-
-       etc.
-
-       This means a page actually lands on the opposite
-       side of the book instead of being replaced.
-    ======================================================== */
-
-
-    /* ========================================================
-       BOOK ELEMENTS
-    ======================================================== */
-
-    const book =
-        document.getElementById("scrapbook");
-
+    const book = document.getElementById("scrapbook");
 
     if (!book) {
+        console.warn("Scrapbook book element was not found.");
         return;
     }
 
+    const originalSpreads = Array.from(
+        book.querySelectorAll(":scope > .spread")
+    );
 
-    const spreads =
-        Array.from(
-            book.querySelectorAll(".spread")
-        );
-
-
-    if (!spreads.length) {
+    if (!originalSpreads.length) {
+        console.warn("No scrapbook spreads were found.");
         return;
     }
-
 
     const currentPageElement =
         document.getElementById("current-page");
 
-
-    const totalPagesElement =
+    const totalPageElement =
         document.getElementById("total-pages");
 
-
-    /* ========================================================
-       BOOK CONSTANTS
-    ======================================================== */
-
     const FLIP_TIME = 950;
-
     const NAVIGATION_BUFFER = 40;
 
-    const NAVIGATION_DELAY =
-        FLIP_TIME + NAVIGATION_BUFFER;
-
-
-    /* ========================================================
-       BOOK STATE
-    ======================================================== */
-
     let currentSpread = 0;
-
     let isAnimating = false;
 
-    let navigationTimer = null;
+    let flipbookLayer = null;
+    let sheets = [];
 
-    const totalSpreads =
-        spreads.length;
+    const totalSpreads = originalSpreads.length;
 
-
-    /* ========================================================
+    /* =====================================================
        SECTION MAP
-    ======================================================== */
+       ===================================================== */
 
     const sectionMap = {};
 
+    originalSpreads.forEach((spread, index) => {
+        const section =
+            spread.dataset.section;
 
-    spreads.forEach(
-        (spread, index) => {
-
-            const section =
-                spread.dataset.section;
-
-
-            if (section) {
-
-                sectionMap[section] =
-                    index;
-
-            }
-
+        if (section) {
+            sectionMap[section] = index;
         }
-    );
-
-
-    /* ========================================================
-       BUILD PHYSICAL BOOK
-    ======================================================== */
-
-    const sheets = [];
-
-    let flipbookLayer = null;
-
-
-    function buildPhysicalBook() {
 
         /*
-           Prevent accidental double initialization.
-        */
-
-        if (
-            book.querySelector(
-                ".flipbook-layer"
-            )
-        ) {
-
-            return;
-
+         * Also support IDs directly on spreads.
+         */
+        if (spread.id) {
+            sectionMap[spread.id] = index;
         }
+    });
 
+    /* =====================================================
+       BUILD PHYSICAL BOOK
+       ===================================================== */
 
-        /* ----------------------------------------------------
-           Create the physical sheet layer
-           ---------------------------------------------------- */
-
+    function buildPhysicalBook() {
         flipbookLayer =
             document.createElement("div");
 
         flipbookLayer.className =
             "flipbook-layer";
 
-
-        /* ----------------------------------------------------
-           FIRST STATIC LEFT PAGE
-           ----------------------------------------------------
-
-           This is the left page visible before any sheet
-           has been turned.
-
-           Example:
-
-               INTRO | COVER
-
-           Intro stays underneath the sheets.
-        */
+        /*
+         * -------------------------------------------------
+         * STATIC LEFT PAGE
+         * -------------------------------------------------
+         *
+         * This is the very first left page.
+         */
 
         const firstSpread =
-            spreads[0];
-
+            originalSpreads[0];
 
         const firstLeft =
-            firstSpread.querySelector(
-                ".page-left"
-            );
-
+            firstSpread.querySelector(".page-left");
 
         if (firstLeft) {
-
-            firstLeft.classList.remove(
-                "page-left"
-            );
-
             firstLeft.classList.add(
                 "static-page",
                 "static-left"
             );
 
-            book.appendChild(
-                firstLeft
-            );
-
+            flipbookLayer.appendChild(firstLeft);
         }
 
-
-        /* ----------------------------------------------------
-           CREATE PHYSICAL SHEETS
-           ----------------------------------------------------
-
-           Every sheet connects two consecutive spreads.
-
-           Sheet 0:
-               front = spread 0 right
-               back  = spread 1 left
-
-           Sheet 1:
-               front = spread 1 right
-               back  = spread 2 left
-        */
+        /*
+         * -------------------------------------------------
+         * PHYSICAL SHEETS
+         * -------------------------------------------------
+         *
+         * Sheet 0:
+         *   front = spread 0 right
+         *   back  = spread 1 left
+         *
+         * Sheet 1:
+         *   front = spread 1 right
+         *   back  = spread 2 left
+         *
+         * etc.
+         */
 
         for (
             let i = 0;
             i < totalSpreads - 1;
             i++
         ) {
+            const currentSpreadElement =
+                originalSpreads[i];
 
-            const current =
-                spreads[i];
-
-
-            const next =
-                spreads[i + 1];
-
+            const nextSpreadElement =
+                originalSpreads[i + 1];
 
             const front =
-                current.querySelector(
+                currentSpreadElement.querySelector(
                     ".page-right"
                 );
 
-
             const back =
-                next.querySelector(
+                nextSpreadElement.querySelector(
                     ".page-left"
                 );
 
-
-            if (
-                !front ||
-                !back
-            ) {
+            if (!front || !back) {
+                console.warn(
+                    `Missing page on physical sheet ${i}.`
+                );
 
                 continue;
-
             }
-
 
             const sheet =
                 document.createElement("div");
 
-
             sheet.className =
                 "flip-sheet";
-
 
             sheet.dataset.sheetIndex =
                 String(i);
 
-
             /*
-               Critical stacking system.
-
-               Earlier sheets are physically above later
-               sheets.
-
-               Example:
-
-                   sheet 0 = 100
-                   sheet 1 = 99
-                   sheet 2 = 98
-
-               When sheet 0 turns, sheet 1 is already
-               underneath it.
-
-               When sheet 0 turns back, it is still above
-               sheet 1.
-
-               This is what makes the book continuous.
-            */
-
-            sheet.style.zIndex =
-                String(
-                    1000 - i
-                );
-
-
-            /* ------------------------------------------------
-               FRONT
-               ------------------------------------------------ */
-
-            front.classList.remove(
-                "page-right"
-            );
-
+             * Front
+             */
 
             front.classList.add(
                 "flip-sheet-face",
                 "flip-sheet-front"
             );
 
-
-            /* ------------------------------------------------
-               BACK
-               ------------------------------------------------ */
-
-            back.classList.remove(
-                "page-left"
-            );
-
+            /*
+             * Back
+             */
 
             back.classList.add(
                 "flip-sheet-face",
                 "flip-sheet-back"
             );
 
+            sheet.appendChild(front);
+            sheet.appendChild(back);
 
-            /* ------------------------------------------------
-               Put both sides on the same physical sheet
-               ------------------------------------------------ */
+            flipbookLayer.appendChild(sheet);
 
-            sheet.appendChild(
-                front
-            );
-
-
-            sheet.appendChild(
-                back
-            );
-
-
-            flipbookLayer.appendChild(
-                sheet
-            );
-
-
-            sheets.push(
-                sheet
-            );
-
+            sheets.push(sheet);
         }
 
-
-        /* ----------------------------------------------------
-           FINAL STATIC RIGHT PAGE
-           ----------------------------------------------------
-
-           After every physical sheet has turned, this is
-           what remains on the right.
-
-           Example:
-
-               MISC LEFT | MISC RIGHT
-        */
+        /*
+         * -------------------------------------------------
+         * STATIC RIGHT PAGE
+         * -------------------------------------------------
+         *
+         * The final right page has no sheet after it.
+         */
 
         const finalSpread =
-            spreads[
+            originalSpreads[
                 totalSpreads - 1
             ];
-
 
         const finalRight =
             finalSpread.querySelector(
                 ".page-right"
             );
 
-
         if (finalRight) {
-
-            finalRight.classList.remove(
-                "page-right"
-            );
-
-
             finalRight.classList.add(
                 "static-page",
                 "static-right"
             );
 
-
             flipbookLayer.appendChild(
                 finalRight
             );
-
         }
 
-
-        /* ----------------------------------------------------
-           Remove the old spread wrappers.
-
-           Their pages have already been moved into the
-           physical sheets or static pages.
-        */
-
-        spreads.forEach(
-            spread => {
-
-                spread.remove();
-
-            }
-        );
-
-
-        /* ----------------------------------------------------
-           Insert physical layer into book
-           ---------------------------------------------------- */
+        /*
+         * Put physical layer into the book.
+         */
 
         const bookBack =
-            book.querySelector(
-                ".book-back"
-            );
-
+            book.querySelector(".book-back");
 
         if (bookBack) {
-
             bookBack.insertAdjacentElement(
                 "afterend",
                 flipbookLayer
             );
-
         } else {
-
-            book.prepend(
+            book.appendChild(
                 flipbookLayer
             );
-
         }
 
+        /*
+         * Remove original spread wrappers.
+         *
+         * Their page contents have already been moved
+         * into the physical book.
+         */
+
+        originalSpreads.forEach(spread => {
+            spread.remove();
+        });
     }
 
+    /* =====================================================
+       CRITICAL:
+       PHYSICAL SHEET STACKING
+       ===================================================== */
 
-    /* ========================================================
-       INITIALIZE PHYSICAL BOOK
-    ======================================================== */
+    function updateSheetStacking() {
+        /*
+         * The stack is intentionally different depending
+         * on whether a sheet has already turned.
+         *
+         * UNTURNED:
+         *     closest/current sheet is on top.
+         *
+         * TURNED:
+         *     older sheets are underneath newer sheets.
+         *
+         * This prevents previously viewed text and
+         * backgrounds from remaining above the new spread.
+         */
 
-    buildPhysicalBook();
+        sheets.forEach((sheet, index) => {
+            const hasTurned =
+                index < currentSpread;
 
+            /*
+             * A sheet currently being animated is handled
+             * separately by turnForward/turnBackward.
+             */
 
-    /* ========================================================
+            if (sheet.classList.contains("is-turning")) {
+                sheet.style.zIndex = "5000";
+                return;
+            }
+
+            if (hasTurned) {
+                /*
+                 * Turned sheets live BELOW the current
+                 * unturned stack.
+                 *
+                 * Higher index = newer sheet = slightly
+                 * higher in the turned stack.
+                 */
+
+                sheet.style.zIndex =
+                    String(100 + index);
+            } else {
+                /*
+                 * Unturned sheets are stacked from the
+                 * current sheet outward.
+                 *
+                 * Lower index = closer to the current
+                 * visible page = higher z-index.
+                 */
+
+                sheet.style.zIndex =
+                    String(
+                        2000 - index
+                    );
+            }
+        });
+    }
+
+    /* =====================================================
+       SHEET VISUAL STATE
+       ===================================================== */
+
+    function setSheetState(targetSpread) {
+        sheets.forEach((sheet, index) => {
+            const shouldBeTurned =
+                index < targetSpread;
+
+            sheet.classList.toggle(
+                "is-turned",
+                shouldBeTurned
+            );
+
+            sheet.classList.remove(
+                "is-turning"
+            );
+        });
+
+        currentSpread =
+            Math.max(
+                0,
+                Math.min(
+                    targetSpread,
+                    totalSpreads - 1
+                )
+            );
+
+        updateSheetStacking();
+    }
+
+    /* =====================================================
        COUNTER
-    ======================================================== */
-
-    if (totalPagesElement) {
-
-        totalPagesElement.textContent =
-            String(totalSpreads);
-
-    }
-
-
-    /* ========================================================
-       UPDATE COUNTER
-    ======================================================== */
+       ===================================================== */
 
     function updateCounter() {
-
-        if (!currentPageElement) {
-            return;
+        if (currentPageElement) {
+            currentPageElement.textContent =
+                String(currentSpread + 1);
         }
 
-
-        currentPageElement.textContent =
-            String(
-                currentSpread + 1
-            );
-
+        if (totalPageElement) {
+            totalPageElement.textContent =
+                String(totalSpreads);
+        }
     }
 
+    /* =====================================================
+       NAVIGATION BUTTONS
+       ===================================================== */
 
-    /* ========================================================
-       UPDATE BUTTONS
-    ======================================================== */
-
-    function updateButtons() {
-
-        document
-            .querySelectorAll(
+    function updateNavigationButtons() {
+        const previousButtons =
+            document.querySelectorAll(
                 '[data-action="previous"]'
-            )
-            .forEach(
-                button => {
-
-                    button.disabled =
-                        isAnimating ||
-                        currentSpread === 0;
-
-                }
             );
 
-
-        document
-            .querySelectorAll(
+        const nextButtons =
+            document.querySelectorAll(
                 '[data-action="next"]'
-            )
-            .forEach(
-                button => {
-
-                    button.disabled =
-                        isAnimating ||
-                        currentSpread ===
-                        totalSpreads - 1;
-
-                }
             );
 
+        previousButtons.forEach(button => {
+            button.disabled =
+                isAnimating ||
+                currentSpread <= 0;
+        });
+
+        nextButtons.forEach(button => {
+            button.disabled =
+                isAnimating ||
+                currentSpread >=
+                    totalSpreads - 1;
+        });
     }
 
+    /* =====================================================
+       HASH
+       ===================================================== */
 
-    /* ========================================================
-       HASH MANAGEMENT
-    ======================================================== */
-
-    function updateHash(
-        usePushState = false
-    ) {
-
+    function getHashForCurrentSpread() {
         const spread =
-            spreads[currentSpread];
-
+            originalSpreadData[currentSpread];
 
         if (!spread) {
-            return;
+            return null;
         }
 
+        return (
+            spread.section ||
+            spread.id ||
+            null
+        );
+    }
 
+    /*
+     * We need a small data representation because the
+     * original spread DOM nodes are removed during setup.
+     */
+
+    const originalSpreadData =
+        originalSpreads.map(
+            spread => ({
+                id: spread.id || null,
+                section:
+                    spread.dataset.section ||
+                    null
+            })
+        );
+
+    function updateHash() {
         const section =
-            spread.dataset.section;
-
+            getHashForCurrentSpread();
 
         if (!section) {
             return;
         }
 
-
         const newHash =
             `#${section}`;
 
-
         if (
-            window.location.hash ===
+            window.location.hash !==
             newHash
         ) {
-
-            return;
-
-        }
-
-
-        if (usePushState) {
-
-            history.pushState(
-                {
-                    scrapbookSpread:
-                        currentSpread
-                },
-                "",
-                newHash
-            );
-
-        } else {
-
             history.replaceState(
-                {
-                    scrapbookSpread:
-                        currentSpread
-                },
+                null,
                 "",
                 newHash
             );
-
         }
-
     }
 
+    /* =====================================================
+       WAIT FOR FLIP
+       ===================================================== */
 
-    /* ========================================================
-       SET SHEET STATE
-    ======================================================== */
+    function waitForFlip(sheet) {
+        return new Promise(resolve => {
+            let finished = false;
 
-    function setSheetState(
-        targetSpread
-    ) {
+            const finish = () => {
+                if (finished) {
+                    return;
+                }
 
-        /*
-           Every sheet before the current spread has
-           physically turned.
+                finished = true;
 
-           Every sheet at or after the current spread
-           remains unturned.
-        */
-
-        sheets.forEach(
-            (sheet, index) => {
-
-                const shouldBeTurned =
-                    index <
-                    targetSpread;
-
-
-                sheet.classList.toggle(
-                    "is-turned",
-                    shouldBeTurned
+                sheet.removeEventListener(
+                    "transitionend",
+                    onTransitionEnd
                 );
 
-
-                sheet.classList.remove(
-                    "is-turning"
+                clearTimeout(
+                    fallbackTimer
                 );
 
-            }
-        );
+                resolve();
+            };
 
+            const onTransitionEnd = event => {
+                if (
+                    event.target === sheet &&
+                    event.propertyName ===
+                        "transform"
+                ) {
+                    finish();
+                }
+            };
+
+            sheet.addEventListener(
+                "transitionend",
+                onTransitionEnd
+            );
+
+            const fallbackTimer =
+                setTimeout(
+                    finish,
+                    FLIP_TIME +
+                        NAVIGATION_BUFFER
+                );
+        });
     }
 
+    /* =====================================================
+       FORWARD FLIP
+       ===================================================== */
 
-    /* ========================================================
-       INITIAL STATE
-    ======================================================== */
-
-    function initializeBook() {
-
-        currentSpread = 0;
-
-        isAnimating = false;
-
-        setSheetState(
-            currentSpread
-        );
-
-        updateCounter();
-
-        updateButtons();
-
-        updateHash(
-            false
-        );
-
-    }
-
-
-    initializeBook();
-
-
-    /* ========================================================
-       TURN ONE SHEET FORWARD
-    ======================================================== */
-
-    function turnForward() {
+    async function turnForward() {
+        if (isAnimating) {
+            return false;
+        }
 
         if (
-            isAnimating ||
             currentSpread >=
             totalSpreads - 1
         ) {
-
-            return Promise.resolve(
-                false
-            );
-
+            return false;
         }
-
 
         const sheet =
             sheets[currentSpread];
 
-
         if (!sheet) {
-
-            return Promise.resolve(
-                false
-            );
-
+            return false;
         }
-
 
         isAnimating = true;
 
-        updateButtons();
+        updateNavigationButtons();
 
-
-        /* ----------------------------------------------------
-           Shadow/turning state
-           ---------------------------------------------------- */
+        /*
+         * IMPORTANT:
+         *
+         * Keep the turning sheet ABOVE EVERYTHING while
+         * the animation is happening.
+         */
 
         sheet.classList.add(
             "is-turning"
         );
 
+        sheet.style.zIndex = "5000";
 
         /*
-           The CSS transition itself performs:
-
-               rotateY(0deg)
-                    ↓
-               rotateY(-180deg)
-
-           We do NOT remove the turned state afterward.
-
-           This is the critical difference from the old
-           implementation.
-        */
-
-        /*
-           Force the browser to acknowledge the current
-           state before changing it.
-
-           This prevents some browsers from collapsing the
-           two transform states into one frame.
-        */
+         * Force the browser to recognize the starting
+         * transform before applying the turned state.
+         */
 
         void sheet.offsetWidth;
-
 
         sheet.classList.add(
             "is-turned"
         );
 
-
-        return new Promise(
-            resolve => {
-
-                let finished = false;
-
-
-                const finish =
-                    () => {
-
-                        if (finished) {
-                            return;
-                        }
-
-
-                        finished = true;
-
-
-                        sheet.removeEventListener(
-                            "transitionend",
-                            onTransitionEnd
-                        );
-
-
-                        sheet.classList.remove(
-                            "is-turning"
-                        );
-
-
-                        currentSpread++;
-
-
-                        updateCounter();
-
-                        updateButtons();
-
-                        updateHash(
-                            true
-                        );
-
-
-                        isAnimating = false;
-
-                        updateButtons();
-
-
-                        resolve(
-                            true
-                        );
-
-                    };
-
-
-                const onTransitionEnd =
-                    event => {
-
-                        if (
-                            event.propertyName !==
-                            "transform"
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        if (
-                            event.target !==
-                            sheet
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        finish();
-
-                    };
-
-
-                sheet.addEventListener(
-                    "transitionend",
-                    onTransitionEnd
-                );
-
-
-                /*
-                   Safety fallback.
-
-                   If a browser does not fire transitionend,
-                   the book still completes correctly.
-                */
-
-                setTimeout(
-                    finish,
-                    FLIP_TIME + 100
-                );
-
-            }
-        );
-
-    }
-
-
-    /* ========================================================
-       TURN ONE SHEET BACKWARD
-    ======================================================== */
-
-    function turnBackward() {
-
-        if (
-            isAnimating ||
-            currentSpread <= 0
-        ) {
-
-            return Promise.resolve(
-                false
-            );
-
-        }
-
+        await waitForFlip(sheet);
 
         /*
-           The sheet immediately before the current spread
-           is the sheet that is currently lying on the
-           LEFT side.
+         * Now the sheet has physically moved to the
+         * opposite side.
+         *
+         * Only NOW do we update the spread index and
+         * move the sheet underneath the newer sheets.
+         */
 
-           Example:
+        currentSpread++;
 
-               currentSpread = 3
+        sheet.classList.remove(
+            "is-turning"
+        );
 
-               sheets:
-                   0 = turned
-                   1 = turned
-                   2 = turned ← THIS ONE FLIPS BACK
-                   3 = unturned
-        */
+        updateSheetStacking();
 
-        const sheet =
-            sheets[
-                currentSpread - 1
-            ];
+        updateCounter();
 
+        updateNavigationButtons();
 
-        if (!sheet) {
+        updateHash();
 
-            return Promise.resolve(
-                false
-            );
+        isAnimating = false;
 
+        updateNavigationButtons();
+
+        return true;
+    }
+
+    /* =====================================================
+       BACKWARD FLIP
+       ===================================================== */
+
+    async function turnBackward() {
+        if (isAnimating) {
+            return false;
         }
 
+        if (currentSpread <= 0) {
+            return false;
+        }
+
+        const sheet =
+            sheets[currentSpread - 1];
+
+        if (!sheet) {
+            return false;
+        }
 
         isAnimating = true;
 
-        updateButtons();
+        updateNavigationButtons();
 
+        /*
+         * Bring the sheet being pulled back ABOVE the
+         * newer pages.
+         */
 
         sheet.classList.add(
             "is-turning"
         );
 
+        sheet.style.zIndex = "5000";
 
         /*
-           Force a layout read before removing the turned
-           state so the browser performs the actual reverse
-           animation instead of snapping.
-        */
+         * Force layout before removing the turned state.
+         */
 
         void sheet.offsetWidth;
-
-
-        /*
-           Removing .is-turned changes:
-
-               rotateY(-180deg)
-                     ↓
-               rotateY(0deg)
-
-           The same physical sheet therefore swings back
-           to the right.
-        */
 
         sheet.classList.remove(
             "is-turned"
         );
 
-
-        return new Promise(
-            resolve => {
-
-                let finished = false;
-
-
-                const finish =
-                    () => {
-
-                        if (finished) {
-                            return;
-                        }
-
-
-                        finished = true;
-
-
-                        sheet.removeEventListener(
-                            "transitionend",
-                            onTransitionEnd
-                        );
-
-
-                        sheet.classList.remove(
-                            "is-turning"
-                        );
-
-
-                        currentSpread--;
-
-
-                        updateCounter();
-
-                        updateButtons();
-
-                        updateHash(
-                            true
-                        );
-
-
-                        isAnimating = false;
-
-                        updateButtons();
-
-
-                        resolve(
-                            true
-                        );
-
-                    };
-
-
-                const onTransitionEnd =
-                    event => {
-
-                        if (
-                            event.propertyName !==
-                            "transform"
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        if (
-                            event.target !==
-                            sheet
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        finish();
-
-                    };
-
-
-                sheet.addEventListener(
-                    "transitionend",
-                    onTransitionEnd
-                );
-
-
-                setTimeout(
-                    finish,
-                    FLIP_TIME + 100
-                );
-
-            }
-        );
-
-    }
-
-
-    /* ========================================================
-       NEXT
-    ======================================================== */
-
-    async function nextSpread() {
-
-        await turnForward();
-
-    }
-
-
-    /* ========================================================
-       PREVIOUS
-    ======================================================== */
-
-    async function previousSpread() {
-
-        await turnBackward();
-
-    }
-
-
-    /* ========================================================
-       HOME
-    ======================================================== */
-
-    async function goHome() {
-
-        if (
-            isAnimating ||
-            currentSpread === 0
-        ) {
-
-            return;
-
-        }
-
+        await waitForFlip(sheet);
 
         /*
-           Physically turn the book backward one sheet at
-           a time.
+         * The physical sheet is now back on the right.
+         */
 
-           Example:
+        currentSpread--;
 
-               spread 5
-                  ↓
-               spread 4
-                  ↓
-               spread 3
-                  ↓
-               spread 2
-                  ↓
-               spread 1
-                  ↓
-               spread 0
-        */
+        sheet.classList.remove(
+            "is-turning"
+        );
 
-        while (
-            currentSpread > 0
-        ) {
+        updateSheetStacking();
 
-            await turnBackward();
+        updateCounter();
 
-        }
+        updateNavigationButtons();
 
+        updateHash();
+
+        isAnimating = false;
+
+        updateNavigationButtons();
+
+        return true;
     }
 
+    /* =====================================================
+       NEXT
+       ===================================================== */
 
-    /* ========================================================
+    async function nextSpread() {
+        return turnForward();
+    }
+
+    /* =====================================================
+       PREVIOUS
+       ===================================================== */
+
+    async function previousSpread() {
+        return turnBackward();
+    }
+
+    /* =====================================================
+       HOME
+       ===================================================== */
+
+    async function goHome() {
+        if (isAnimating) {
+            return;
+        }
+
+        while (currentSpread > 0) {
+            await turnBackward();
+        }
+    }
+
+    /* =====================================================
        GO TO SPREAD
-    ======================================================== */
+       ===================================================== */
 
-    async function goToSpread(
-        targetIndex,
-        updateBrowserHistory = true
-    ) {
-
-        const target =
-            Number(targetIndex);
-
+    async function goToSpread(target) {
+        target =
+            Number(target);
 
         if (
             !Number.isInteger(target)
         ) {
-
             return;
-
         }
 
-
-        if (
-            target < 0 ||
-            target >= totalSpreads
-        ) {
-
-            return;
-
-        }
-
-
-        if (
-            isAnimating ||
-            target === currentSpread
-        ) {
-
-            return;
-
-        }
-
-
-        /*
-           Move forward physically.
-        */
-
-        if (
-            target >
-            currentSpread
-        ) {
-
-            while (
-                currentSpread <
-                target
-            ) {
-
-                await turnForward();
-
-            }
-
-        }
-
-
-        /*
-           Move backward physically.
-        */
-
-        else {
-
-            while (
-                currentSpread >
-                target
-            ) {
-
-                await turnBackward();
-
-            }
-
-        }
-
-
-        /*
-           The individual turn functions update the hash
-           as they go.
-
-           If this navigation originated from a direct
-           section request, make sure the final URL is
-           correct.
-        */
-
-        if (
-            updateBrowserHistory
-        ) {
-
-            updateHash(
-                false
+        target =
+            Math.max(
+                0,
+                Math.min(
+                    target,
+                    totalSpreads - 1
+                )
             );
 
+        if (
+            target === currentSpread
+        ) {
+            return;
         }
 
+        if (isAnimating) {
+            return;
+        }
+
+        /*
+         * Forward navigation physically flips every
+         * intervening sheet.
+         */
+
+        while (
+            currentSpread < target
+        ) {
+            const didFlip =
+                await turnForward();
+
+            if (!didFlip) {
+                break;
+            }
+        }
+
+        /*
+         * Backward navigation physically flips every
+         * intervening sheet backward.
+         */
+
+        while (
+            currentSpread > target
+        ) {
+            const didFlip =
+                await turnBackward();
+
+            if (!didFlip) {
+                break;
+            }
+        }
     }
 
-
-    /* ========================================================
+    /* =====================================================
        GO TO SECTION
-    ======================================================== */
+       ===================================================== */
 
-    function goToSection(
-        section,
-        updateBrowserHistory = true
-    ) {
-
-        if (
-            !Object.prototype.hasOwnProperty.call(
-                sectionMap,
-                section
-            )
-        ) {
-
+    async function goToSection(section) {
+        if (!section) {
             return;
-
         }
 
+        const cleanSection =
+            section.replace(
+                /^#/,
+                ""
+            );
 
         const target =
-            sectionMap[section];
+            sectionMap[
+                cleanSection
+            ];
 
+        if (
+            typeof target !==
+            "number"
+        ) {
+            return;
+        }
 
-        goToSpread(
-            target,
-            updateBrowserHistory
-        );
-
+        await goToSpread(target);
     }
 
-
-    /* ========================================================
-       BUTTON HANDLING
-    ======================================================== */
+    /* =====================================================
+       BUTTON EVENTS
+       ===================================================== */
 
     document.addEventListener(
         "click",
         event => {
-
-            const button =
+            const actionElement =
                 event.target.closest(
                     "[data-action]"
                 );
 
-
-            if (!button) {
+            if (!actionElement) {
                 return;
             }
 
-
             const action =
-                button.dataset.action;
+                actionElement.dataset.action;
 
-
-            switch (action) {
-
-                case "next":
-
-                    event.preventDefault();
-
-                    nextSpread();
-
-                    break;
-
-
-                case "previous":
-
-                    event.preventDefault();
-
-                    previousSpread();
-
-                    break;
-
-
-                case "home":
-
-                    event.preventDefault();
-
-                    goHome();
-
-                    break;
-
-
-                case "index":
-
-                    event.preventDefault();
-
-                    goToSection(
-                        "index"
-                    );
-
-                    break;
-
+            if (
+                action === "next"
+            ) {
+                event.preventDefault();
+                nextSpread();
             }
 
+            else if (
+                action === "previous"
+            ) {
+                event.preventDefault();
+                previousSpread();
+            }
+
+            else if (
+                action === "home"
+            ) {
+                event.preventDefault();
+                goHome();
+            }
+
+            else if (
+                action === "index"
+            ) {
+                event.preventDefault();
+                goToSection("index");
+            }
         }
     );
 
-
-    /* ========================================================
-       INDEX / ARCHIVE LINKS
-       ======================================================== */
+    /* =====================================================
+       DATA-GO-TO LINKS
+       ===================================================== */
 
     document.addEventListener(
         "click",
         event => {
-
-            /*
-               Your index links use:
-
-                   data-go-to="characters"
-
-               so they physically turn to that spread.
-            */
-
-            const dataLink =
+            const link =
                 event.target.closest(
                     "[data-go-to]"
                 );
 
-
-            if (dataLink) {
-
-                event.preventDefault();
-
-
-                if (
-                    isAnimating
-                ) {
-
-                    return;
-
-                }
-
-
-                goToSection(
-                    dataLink.dataset.goTo
-                );
-
-
+            if (!link) {
                 return;
-
             }
 
+            const target =
+                link.dataset.goTo;
 
-            /*
-               Also support normal hash links such as:
+            if (!target) {
+                return;
+            }
 
-                   href="#characters"
+            event.preventDefault();
 
-               but ONLY when the hash corresponds to one
-               of the archive's actual sections.
+            goToSection(target);
+        }
+    );
 
-               Character links like #axel are left alone.
-            */
+    /* =====================================================
+       NORMAL HASH LINKS
+       ===================================================== */
 
-            const anchor =
+    document.addEventListener(
+        "click",
+        event => {
+            const link =
                 event.target.closest(
                     'a[href^="#"]'
                 );
 
-
-            if (!anchor) {
+            if (!link) {
                 return;
             }
 
+            /*
+             * Do not interfere with character/modal hashes
+             * unless they are actual archive sections.
+             */
 
-            const href =
-                anchor.getAttribute(
+            const hash =
+                link.getAttribute(
                     "href"
                 );
 
-
             if (
-                !href ||
-                href === "#"
+                !hash ||
+                hash === "#"
             ) {
-
                 return;
-
             }
-
 
             const section =
-                href
-                    .substring(1)
-                    .trim();
-
+                hash.replace(
+                    /^#/,
+                    ""
+                );
 
             if (
-                !Object.prototype.hasOwnProperty.call(
-                    sectionMap,
+                typeof sectionMap[
                     section
-                )
+                ] !== "number"
             ) {
-
-                /*
-                   Not an archive section.
-
-                   Let normal browser behavior happen.
-                */
-
                 return;
-
             }
-
 
             event.preventDefault();
 
-
-            if (
-                isAnimating
-            ) {
-
-                return;
-
-            }
-
-
-            goToSection(
-                section
-            );
-
+            goToSection(section);
         }
     );
 
-
-    /* ========================================================
-       KEYBOARD NAVIGATION
-    ======================================================== */
+    /* =====================================================
+       KEYBOARD
+       ===================================================== */
 
     document.addEventListener(
         "keydown",
         event => {
-
-            const target =
-                event.target;
-
-
             const tag =
-                target &&
-                target.tagName
-                    ? target.tagName.toLowerCase()
-                    : "";
-
-
-            /*
-               Don't hijack keyboard controls while the
-               user is typing.
-            */
+                event.target.tagName;
 
             if (
-                tag === "input" ||
-                tag === "textarea" ||
-                tag === "select" ||
-                target?.isContentEditable
+                tag === "INPUT" ||
+                tag === "TEXTAREA" ||
+                tag === "SELECT" ||
+                event.target.isContentEditable
             ) {
-
                 return;
-
             }
-
-
-            /* ------------------------------------------------
-               RIGHT ARROW
-               ------------------------------------------------ */
 
             if (
                 event.key ===
                 "ArrowRight"
             ) {
-
                 event.preventDefault();
 
                 nextSpread();
-
-                return;
-
             }
 
-
-            /* ------------------------------------------------
-               LEFT ARROW
-               ------------------------------------------------ */
-
-            if (
+            else if (
                 event.key ===
                 "ArrowLeft"
             ) {
-
                 event.preventDefault();
 
                 previousSpread();
-
-                return;
-
             }
 
-
-            /* ------------------------------------------------
-               HOME
-               ------------------------------------------------ */
-
-            if (
+            else if (
                 event.key ===
                 "Home"
             ) {
-
                 event.preventDefault();
 
                 goHome();
-
-                return;
-
             }
 
-
-            /* ------------------------------------------------
-               PAGE DOWN
-               ------------------------------------------------ */
-
-            if (
+            else if (
                 event.key ===
                 "PageDown"
             ) {
-
                 event.preventDefault();
 
                 nextSpread();
-
-                return;
-
             }
 
-
-            /* ------------------------------------------------
-               PAGE UP
-               ------------------------------------------------ */
-
-            if (
+            else if (
                 event.key ===
                 "PageUp"
             ) {
-
                 event.preventDefault();
 
                 previousSpread();
-
-                return;
-
             }
-
         }
     );
 
+    /* =====================================================
+       INITIAL HASH
+       ===================================================== */
 
-    /* ========================================================
-       HASH → SPREAD
-    ======================================================== */
-
-    async function handleHash(
-        animate = true
-    ) {
-
+    function handleHash() {
         const hash =
-            window.location.hash
-                .replace(/^#/, "")
-                .trim();
-
+            window.location.hash.replace(
+                /^#/,
+                ""
+            );
 
         if (!hash) {
-
-            if (
-                !isAnimating &&
-                currentSpread !== 0
-            ) {
-
-                if (animate) {
-
-                    await goToSpread(
-                        0,
-                        false
-                    );
-
-                } else {
-
-                    currentSpread = 0;
-
-                    setSheetState(
-                        0
-                    );
-
-                    updateCounter();
-
-                    updateButtons();
-
-                }
-
-            }
-
             return;
-
         }
-
-
-        if (
-            !Object.prototype.hasOwnProperty.call(
-                sectionMap,
-                hash
-            )
-        ) {
-
-            return;
-
-        }
-
 
         const target =
             sectionMap[hash];
 
-
-        /*
-           If the requested section is already visible,
-           nothing needs to happen.
-        */
-
         if (
-            target === currentSpread
+            typeof target !==
+            "number"
         ) {
-
             return;
-
         }
 
-
         /*
-           For a normal hash change, physically travel
-           through the book.
-        */
+         * If the hash exists on initial load, establish the
+         * correct physical state immediately.
+         *
+         * We do NOT animate through every page on refresh.
+         */
 
         if (
-            animate &&
-            !isAnimating
+            !book.dataset.initialized
         ) {
-
-            await goToSpread(
-                target,
-                false
-            );
-
-            return;
-
-        }
-
-
-        /*
-           For the initial page load, don't animate through
-           six sheets after the browser opens the site.
-
-           Instead establish the correct physical state
-           immediately.
-        */
-
-        if (!isAnimating) {
-
-            currentSpread =
-                target;
-
-            setSheetState(
-                currentSpread
-            );
+            setSheetState(target);
 
             updateCounter();
 
-            updateButtons();
+            updateNavigationButtons();
 
+            book.dataset.initialized =
+                "true";
+
+            return;
         }
 
+        goToSpread(target);
     }
-
-
-    /* ========================================================
-       BROWSER BACK / FORWARD
-    ======================================================== */
-
-    window.addEventListener(
-        "popstate",
-        () => {
-
-            handleHash(
-                true
-            );
-
-        }
-    );
-
 
     window.addEventListener(
         "hashchange",
         () => {
-
-            /*
-               Hash changes caused by our own navigation are
-               already reflected in currentSpread.
-
-               If the user manually changes the URL/hash,
-               physically navigate to it.
-            */
-
-            const hash =
-                window.location.hash
-                    .replace(/^#/, "")
-                    .trim();
-
-
-            if (
-                !hash ||
-                !Object.prototype.hasOwnProperty.call(
-                    sectionMap,
-                    hash
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            const target =
-                sectionMap[hash];
-
-
-            if (
-                target === currentSpread
-            ) {
-
-                return;
-
-            }
-
-
             if (
                 !isAnimating
             ) {
-
-                goToSpread(
-                    target,
-                    false
-                );
-
+                handleHash();
             }
-
         }
     );
 
-
-    /* ========================================================
-       INITIAL URL
-    ======================================================== */
-
-    function initializeFromHash() {
-
-        const hash =
-            window.location.hash
-                .replace(/^#/, "")
-                .trim();
-
-
-        if (
-            hash &&
-            Object.prototype.hasOwnProperty.call(
-                sectionMap,
-                hash
-            )
-        ) {
-
-            /*
-               Initial URL loads directly on the requested
-               spread.
-
-               We establish the physical sheet positions
-               immediately.
-
-               Subsequent navigation is animated normally.
-            */
-
-            currentSpread =
-                sectionMap[hash];
-
-
-            setSheetState(
-                currentSpread
-            );
-
+    window.addEventListener(
+        "popstate",
+        () => {
+            if (
+                !isAnimating
+            ) {
+                handleHash();
+            }
         }
+    );
 
+    /* =====================================================
+       BUILD EVERYTHING
+       ===================================================== */
 
-        updateCounter();
+    buildPhysicalBook();
 
-        updateButtons();
+    /*
+     * Establish initial state.
+     */
 
+    let initialSpread = 0;
 
-        /*
-           Replace the URL state without creating a new
-           browser-history entry.
-        */
-
-        updateHash(
-            false
+    const initialHash =
+        window.location.hash.replace(
+            /^#/,
+            ""
         );
 
+    if (
+        initialHash &&
+        typeof sectionMap[
+            initialHash
+        ] === "number"
+    ) {
+        initialSpread =
+            sectionMap[
+                initialHash
+            ];
     }
 
+    setSheetState(
+        initialSpread
+    );
 
-    initializeFromHash();
+    updateCounter();
 
+    updateNavigationButtons();
 
-    /* ========================================================
+    book.dataset.initialized =
+        "true";
+
+    /* =====================================================
        PUBLIC API
-    ======================================================== */
+       ===================================================== */
 
     window.Scrapbook = {
-
-        next:
-            nextSpread,
+        next: nextSpread,
 
         previous:
             previousSpread,
@@ -1829,7 +1101,5 @@ document.addEventListener("DOMContentLoaded", () => {
         getTotalSpreads:
             () =>
                 totalSpreads
-
     };
-
 });
