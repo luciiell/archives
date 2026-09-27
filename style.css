@@ -2213,14 +2213,3 @@ body:has(#page-3:target) .p-middle-2 {
       none !important;
   }
 }
-
-
-/* Dreamland Residents use the exact Friends polaroid structure.
-   The embedded 1px transparent placeholder is only a temporary blank image. */
-.residents-wrap .polaroid img {
-  background: rgba(198, 153, 165, 0.18);
-}
-
-.residents-wrap .friend {
-  text-decoration: none;
-}
