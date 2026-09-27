@@ -15,7 +15,7 @@
 (() => {
   "use strict";
 
-  const PAGE_TOTAL = 6;
+  const PAGE_TOTAL = 5;
 
   const pageNumber =
     document.getElementById("page-number");
@@ -60,7 +60,9 @@
 
       page 1 -> cover + index
       page 2 -> socials + series
-      page 3 -> friends + creators
+      page 3 -> friends + residents
+      page 4 -> dream gallery I + dream gallery II
+      page 5 -> closing
     */
 
     if (previousLink) {
@@ -72,7 +74,7 @@
 
     if (nextLink) {
       nextLink.href =
-        current >= 3
+        current >= PAGE_TOTAL
           ? "#page-3"
           : `#page-${current + 1}`;
     }
@@ -110,7 +112,7 @@
       ) {
         event.preventDefault();
 
-        if (current < 3) {
+        if (current < PAGE_TOTAL) {
           window.location.hash =
             `page-${current + 1}`;
         }
@@ -178,7 +180,7 @@
 
         if (
           ratio >= .925 &&
-          current < 3
+          current < PAGE_TOTAL
         ) {
           window.location.hash =
             `page-${current + 1}`;
